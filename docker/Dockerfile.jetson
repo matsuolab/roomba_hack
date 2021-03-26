@@ -1,0 +1,64 @@
+ARG L4T_VERSION="r32.4.4"
+FROM nvcr.io/nvidia/l4t-base:${L4T_VERSION}
+
+ENV DEBIAN_FRONTEND noninteractive
+SHELL ["/bin/bash", "-c"]
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        gnupg \
+        lsb-release && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# install ROS melodic
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        ros-melodic-ros-base && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        python-rosdep \
+        python-rosinstall \
+        python-rosinstall-generator \
+        python-catkin-tools \
+        python-wstool \
+        build-essential && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# install ROS sensor pacakge
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        ros-melodic-usb-cam \
+        ros-melodic-rplidar-ros && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# external ROS setting
+WORKDIR /root
+RUN mkdir -p external_catkin_ws/src && \
+    cd external_catkin_ws && \
+    bash -c "source /opt/ros/melodic/setup.bash; catkin init" && \
+    cd src && \
+    git clone https://github.com/autonomylab/create_robot.git -b melodic && \
+    cd /root/external_catkin_ws && \
+    bash -c "source /opt/ros/melodic/setup.bash; rosdep init; rosdep update" && \
+    apt-get update && \
+    bash -c "source /opt/ros/melodic/setup.bash; rosdep install --from-paths src -i -r -y" && \
+    bash -c "source /opt/ros/melodic/setup.bash; catkin build"
+
+WORKDIR /root/
+
+COPY ./docker/scripts/. /root/scripts/
+RUN chmod -R +x /root/scripts/*
+
+RUN echo "source /root/scripts/initialize-bash-shell.sh" > /root/.bashrc
+
+ENTRYPOINT []
+
+CMD ["/bin/bash"}]
