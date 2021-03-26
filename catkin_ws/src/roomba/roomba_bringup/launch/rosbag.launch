@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="bagfile_name" default="$(env HOME)/bagfiles/$(anon roomba).bag"/>
+    <node name="rosbag_record" pkg="rosbag" type="record" output="screen"
+        args="-O $(arg bagfile_name)
+        /bumper /cmd_vel /odom /tf /tf_static /scan 
+        /wheeldrop /amcl_pose"/>
+</launch>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- joy -->
+  <node pkg="joy" type="joy_node" name="joy"/>
+  <node pkg="roomba_teleop" type="teleop_twist_joy" name="teleop_twist_joy"/>
+
+</launch>
