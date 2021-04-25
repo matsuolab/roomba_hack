@@ -5,7 +5,7 @@
   <arg name="vel_ratio" default="0.5"/>
   <!-- joy -->
   <node pkg="joy" type="joy_node" name="joy"/>
-  <node pkg="roomba_teleop" type="teleop_twist_joy" name="teleop_twist_joy">
+  <node pkg="roomba_teleop" type="roomba_teleop" name="roomba_teleop">
     <param name="MAX_SPEED" value="$(arg max_speed)"/>
     <param name="MAX_YAWRATE" value="$(arg max_yawrate)"/>
     <param name="VEL_RATIO" value="$(arg vel_ratio)"/>
