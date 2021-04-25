@@ -1,4 +1,4 @@
-ARG L4T_VERSION="r32.4.4"
+ARG L4T_VERSION="r32.5.0"
 FROM nvcr.io/nvidia/l4t-base:${L4T_VERSION}
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -7,13 +7,14 @@ SHELL ["/bin/bash", "-c"]
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         gnupg \
+        curl \
         lsb-release && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # install ROS melodic
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+RUN curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | apt-key add -
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         ros-melodic-ros-base && \
