@@ -5,7 +5,7 @@ dev: "/dev/roomba"
 # baud: 115200
 
 # Base frame ID
-base_frame: "base_link"
+base_frame: "base_footprint"
 
 # Odometry frame ID
 odom_frame: "odom"
