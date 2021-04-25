@@ -48,4 +48,11 @@
     <parent link="base_link"/>
     <child link="rplidar"/>
   </joint>
+
+  <link name="laser"/>
+  <joint name="laser_to_rplidar" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 3.14"/>
+    <parent link="rplidar"/>
+    <child link="laser"/>
+  </joint>
 </robot>
