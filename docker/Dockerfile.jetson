@@ -62,4 +62,4 @@ RUN echo "source /root/scripts/initialize-bash-shell.sh" > /root/.bashrc
 
 ENTRYPOINT []
 
-CMD ["/bin/bash"}]
+CMD ["/bin/bash"]
