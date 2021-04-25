@@ -73,6 +73,7 @@ WORKDIR /root/
 COPY ./docker/scripts/. /root/scripts/
 RUN chmod -R +x /root/scripts/*
 
+RUN echo "ROOMBA_HSOTNAME=\"TMP_HOSTNAME\"" >> /root/.bashrc
 RUN echo "source /root/scripts/initialize-bash-shell.sh" > /root/.bashrc
 
 ENTRYPOINT []
