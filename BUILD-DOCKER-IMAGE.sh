@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 IMAGE_NAME=roomba_hack
 TAG_NAME=latest
