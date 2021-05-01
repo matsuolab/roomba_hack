@@ -13,8 +13,6 @@ else
         docker run -it --rm \
             --privileged \
             --runtime nvidia \
-            --env ROS_MASTER_URI=${ros_master_uri} \
-            --env ROS_IP=${ros_ip} \
             --net host \
             --volume ${PWD}/catkin_ws/:/root/roomba_hack/catkin_ws/ \
             --volume /dev/:/dev/ \
@@ -35,8 +33,6 @@ else
             --privileged \
             --gpus all \
             --env DISPLAY=${DISPLAY} \
-            --env ROS_MASTER_URI=${ros_master_uri} \
-            --env ROS_IP=${ros_ip} \
             --net host \
             --volume ${PWD}/catkin_ws/:/root/roomba_hack/catkin_ws/ \
             --volume /dev/:/dev/ \
