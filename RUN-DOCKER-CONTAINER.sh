@@ -15,7 +15,18 @@ EXISTING_CONTAINER_ID=`docker ps -aq -f name=${CONTAINER_NAME}`
 if [ ! -z "${EXISTING_CONTAINER_ID}" ]; then
     docker exec -it ${CONTAINER_NAME} bash
 else
-    if [ "$(uname -m)" == "aarch64" ]; then
+    dpkg -s nvidia-container-runtime > /dev/null 2>&1
+    if [ ! $? -eq 0 ];then
+        docker run -it --rm \
+            --privileged \
+            --publish 5900:5900 \
+            --env DISPLAY=:0 \
+            --volume ${PWD}/catkin_ws/:/root/roomba_hack/catkin_ws/ \
+            --volume /dev/:/dev/ \
+            --name ${CONTAINER_NAME} \
+            ${IMAGE_NAME}:cpu \
+            bash -c "/root/scripts/run-vnc.sh > /dev/null 2>&1 & bash"
+    elif [ "$(uname -m)" == "aarch64" ]; then
         docker run -it --rm \
             --privileged \
             --runtime nvidia \
