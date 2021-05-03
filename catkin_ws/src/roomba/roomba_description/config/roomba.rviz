@@ -6,9 +6,10 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /TF1/Frames1
         - /RobotModel1/Links1
       Splitter Ratio: 0.5
-    Tree Height: 416
+    Tree Height: 557
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -54,19 +55,70 @@ Visualization Manager:
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz/TF
-      Enabled: false
+      Enabled: true
       Frame Timeout: 15
       Frames:
-        All Enabled: true
+        All Enabled: false
+        base_footprint:
+          Value: false
+        base_link:
+          Value: true
+        front_wheel_link:
+          Value: false
+        gyro_link:
+          Value: false
+        laser:
+          Value: true
+        left_cliff_sensor_link:
+          Value: false
+        left_wheel_link:
+          Value: false
+        leftfront_cliff_sensor_link:
+          Value: false
+        lidar_base:
+          Value: false
+        right_cliff_sensor_link:
+          Value: false
+        right_wheel_link:
+          Value: false
+        rightfront_cliff_sensor_link:
+          Value: false
+        rplidar:
+          Value: false
+        wall_sensor_link:
+          Value: false
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        {}
+        base_footprint:
+          base_link:
+            front_wheel_link:
+              {}
+            gyro_link:
+              {}
+            left_cliff_sensor_link:
+              {}
+            left_wheel_link:
+              {}
+            leftfront_cliff_sensor_link:
+              {}
+            lidar_base:
+              rplidar:
+                laser:
+                  {}
+            right_cliff_sensor_link:
+              {}
+            right_wheel_link:
+              {}
+            rightfront_cliff_sensor_link:
+              {}
+            wall_sensor_link:
+              {}
       Update Interval: 0
-      Value: false
+      Value: true
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
@@ -96,11 +148,6 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        jetson_nano:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         laser:
           Alpha: 1
           Show Axes: false
@@ -119,11 +166,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
         lidar_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        mobile_battery:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -184,16 +226,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 0.8906172513961792
+      Distance: 0.9260901212692261
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -0.015520046465098858
+        Y: -0.03655562177300453
+        Z: 0.07762329280376434
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
@@ -207,10 +249,10 @@ Visualization Manager:
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 713
+  Height: 855
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000001560000022bfc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000022b000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f0000022bfc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003d0000022b000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000005130000003efc0100000002fb0000000800540069006d0065010000000000000513000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000002a20000022b00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd000000040000000000000156000002b8fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005d00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003e000002b8000000cb00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f000002b8fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003e000002b8000000a500fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000005780000003efc0100000002fb0000000800540069006d00650100000000000005780000026c00fffffffb0000000800540069006d0065010000000000000450000000000000000000000307000002b800000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -219,6 +261,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1299
-  X: 67
-  Y: 27
+  Width: 1400
+  X: -6
+  Y: -6
