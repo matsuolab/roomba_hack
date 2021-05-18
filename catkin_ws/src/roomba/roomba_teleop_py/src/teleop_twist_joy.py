@@ -6,7 +6,7 @@ from sensor_msgs.msg import Joy
 class TeleopTwistJoy:
     def __init__(self):
         rospy.Subscriber('/joy', Joy, self.joy_callback)
-        rospy.Subscriber('/planner/cmd_vel', Twist, self.cmd_callback)
+       # rospy.Subscriber('/planner/cmd_vel', Twist, self.cmd_callback)
         
         self.vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
         
@@ -41,8 +41,8 @@ class TeleopTwistJoy:
             self.joy_vel.linear.x = 0.0
             self.joy_vel.angular.z = -self.vel_ratio*self.max_yawrate
 
-    def cmd_callback(self, cmd):
-        self.cmd_vel = cmd
+   # def cmd_callback(self, cmd):
+      # self.cmd_vel = cmd
 
 if __name__ == '__main__':
     rospy.init_node('teleop_twist_joy')
