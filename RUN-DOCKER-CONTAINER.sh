@@ -35,7 +35,7 @@ else
             --volume /dev/:/dev/ \
             --name ${CONTAINER_NAME} \
             ${IMAGE_NAME}:jetson \
-            bash
+            bash -c "source /root/.bashrc; roslaunch roomba_bringup bringup.launch"
     else
         xhost +
         ROOMBA_HOSTNAME=${ROOMBA_NAME}.local

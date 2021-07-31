@@ -7,51 +7,44 @@ SHELL ["/bin/bash", "-c"]
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         gnupg \
+        ca-certificates \
+        apt-transport-https \
+        software-properties-common \
         curl \
-        lsb-release && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+        lsb-release
 
 # install ROS melodic
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-RUN curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | apt-key add -
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        ros-melodic-ros-base && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+        ros-melodic-ros-base
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         python-rosdep \
         python-rosinstall \
         python-rosinstall-generator \
-        python-catkin-tools \
         python-wstool \
-        build-essential && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+        build-essential
 
 # install ROS sensor pacakge
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+        ros-melodic-joint-state-publisher \
         ros-melodic-usb-cam \
-        ros-melodic-rplidar-ros && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+        ros-melodic-rplidar-ros
 
 # external ROS setting
 WORKDIR /root
 RUN mkdir -p external_catkin_ws/src && \
-    cd external_catkin_ws && \
-    bash -c "source /opt/ros/melodic/setup.bash; catkin init" && \
-    cd src && \
+    cd external_catkin_ws/src && \
     git clone https://github.com/autonomylab/create_robot.git -b melodic && \
     cd /root/external_catkin_ws && \
     bash -c "source /opt/ros/melodic/setup.bash; rosdep init; rosdep update" && \
     apt-get update && \
     bash -c "source /opt/ros/melodic/setup.bash; rosdep install --from-paths src -i -r -y" && \
-    bash -c "source /opt/ros/melodic/setup.bash; catkin build"
+    bash -c "source /opt/ros/melodic/setup.bash; catkin_make"
 
 WORKDIR /root/
 
@@ -59,6 +52,9 @@ COPY ./docker/scripts/. /root/scripts/
 RUN chmod -R +x /root/scripts/*
 
 RUN echo "source /root/scripts/initialize-bash-shell.sh" > /root/.bashrc
+
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT []
 
