@@ -138,6 +138,7 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/navigation_tutorial_node.cpp)
 add_executable(go_straight src/go_straight.cpp)
+add_executable(avoidance src/avoidance.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -154,9 +155,9 @@ add_executable(go_straight src/go_straight.cpp)
 #   ${catkin_LIBRARIES}
 # )
 
-target_link_libraries(go_straight
-  ${catkin_LIBRARIES}
-)
+target_link_libraries(go_straight ${catkin_LIBRARIES})
+target_link_libraries(avoidance ${catkin_LIBRARIES})
+
 #############
 ## Install ##
 #############
