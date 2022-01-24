@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chapter 1 | Online Courses</title><link>/course/chap1/</link><atom:link href="/course/chap1/index.xml" rel="self" type="application/rss+xml"/><description>Chapter 1</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sun, 09 Sep 2018 00:00:00 +0000</lastBuildDate><image><url>/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url><title>Chapter 1</title><link>/course/chap1/</link></image><item><title>Python basics</title><link>/course/chap1/python/</link><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate><guid>/course/chap1/python/</guid><description>&lt;p>Build a foundation in Python.&lt;/p>
+&lt;p>
+&lt;i class="fas fa-clock pr-1 fa-fw">&lt;/i> 1-2 hours per week, for 8 weeks&lt;/p>
+&lt;h2 id="learn">Learn&lt;/h2>
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+&lt;iframe src="https://www.youtube.com/embed/rfscVS0vtbw" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
+&lt;/div>
+&lt;h2 id="quiz">Quiz&lt;/h2>
+&lt;details class="spoiler " id="spoiler-2">
+&lt;summary>What is the difference between lists and tuples?&lt;/summary>
+&lt;p>&lt;p>Lists&lt;/p>
+&lt;ul>
+&lt;li>Lists are mutable - they can be changed&lt;/li>
+&lt;li>Slower than tuples&lt;/li>
+&lt;li>Syntax: &lt;code>a_list = [1, 2.0, 'Hello world']&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>Tuples&lt;/p>
+&lt;ul>
+&lt;li>Tuples are immutable - they can&amp;rsquo;t be changed&lt;/li>
+&lt;li>Tuples are faster than lists&lt;/li>
+&lt;li>Syntax: &lt;code>a_tuple = (1, 2.0, 'Hello world')&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-3">
+&lt;summary>Is Python case-sensitive?&lt;/summary>
+&lt;p>Yes&lt;/p>
+&lt;/details></description></item></channel></rss>
