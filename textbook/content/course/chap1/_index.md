@@ -1,7 +1,7 @@
 ---
 # Title, summary, and page position.
 linktitle: Chapter 1
-summary: ロボットシステムの重要性を理解する
+summary: ロボットシステムの基礎知識
 weight: 1
 icon: book
 icon_pack: fas
