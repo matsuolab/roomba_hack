@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- teleop -->
+    <include file="$(find roomba_teleop)/launch/teleop.launch">
+    </include>
+
+    <!-- rviz -->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find roomba_bringup)/config/roomba.rviz"/>
+
+    <!-- map server -->
+    <include file="$(find navigation_tutorial)/launch/map_server.launch">
+    </include>
+
+    <!-- localization -->
+    <include file="$(find navigation_tutorial)/launch/amcl.launch">
+    </include>
+</launch>

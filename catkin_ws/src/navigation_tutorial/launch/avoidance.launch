@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <node pkg="navigation_tutorial" name="avoidance" type="avoidance" output="screen">
+  <node pkg="navigation_tutorial" name="avoidance.py" type="avoidance" output="screen">
       <remap from="/cmd_vel" to="/planner/cmd_vel"/>
   </node>
 

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="map_file" default="$(find navigation_tutorial)/map/map.yaml"/>
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)" output="screen"/>
+
+</launch>
