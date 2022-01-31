@@ -11,10 +11,10 @@ main:
     url: '/course'
     weight: 20
     identifier: courses
-  - name: Data science
-    url: '/course/example/'
-    weight: 10
-    parent: courses
+  # - name: Data science
+  #   url: '/course'
+  #   weight: 10
+  #   parent: courses
   - name: Blog
     url: '/post'
     weight: 30
