@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chapter 4 | Online Courses</title><link>/course/chap4/</link><atom:link href="/course/chap4/index.xml" rel="self" type="application/rss+xml"/><description>Chapter 4</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sun, 09 Sep 2018 00:00:00 +0000</lastBuildDate><image><url>/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url><title>Chapter 4</title><link>/course/chap4/</link></image><item><title>Localization</title><link>/course/chap4/localization/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>/course/chap4/localization/</guid><description>&lt;h2 id="learn">Learn&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chapter 4 | Online Courses</title><link>roomba_hack/course/chap4/</link><atom:link href="roomba_hack/course/chap4/index.xml" rel="self" type="application/rss+xml"/><description>Chapter 4</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sun, 09 Sep 2018 00:00:00 +0000</lastBuildDate><image><url>/roomba_hack/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url><title>Chapter 4</title><link>roomba_hack/course/chap4/</link></image><item><title>Localization</title><link>roomba_hack/course/chap4/localization/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>roomba_hack/course/chap4/localization/</guid><description>&lt;h2 id="learn">Learn&lt;/h2>
 &lt;h3 id="tf">TF&lt;/h3>
 &lt;h3 id="自己位置推定">自己位置推定&lt;/h3>
 &lt;h2 id="演習">演習&lt;/h2>
@@ -13,7 +13,7 @@
 &lt;details class="spoiler " id="spoiler-2">
 &lt;summary>amclのparamをチューニングする&lt;/summary>
 &lt;p>&lt;/p>
-&lt;/details></description></item><item><title>Navigation</title><link>/course/chap4/navigation/</link><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate><guid>/course/chap4/navigation/</guid><description>&lt;p>ロボットシステムの開発環境に使われている要素の概要を理解する&lt;/p>
+&lt;/details></description></item><item><title>Navigation</title><link>roomba_hack/course/chap4/navigation/</link><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate><guid>roomba_hack/course/chap4/navigation/</guid><description>&lt;p>ロボットシステムの開発環境に使われている要素の概要を理解する&lt;/p>
 &lt;h2 id="learn">Learn&lt;/h2>
 &lt;h3 id="navigationシステム">Navigationシステム&lt;/h3>
 &lt;h3 id="cost-map">Cost Map&lt;/h3>
