@@ -5,8 +5,8 @@
 
 # Appearance
 
-theme: custom
-day_night: false
+theme: forest
+day_night: true
 font: ''
 font_size: L
 
@@ -20,13 +20,13 @@ twitter: ''
 
 # Contact (edit or remove options as required)
 
-email: test@example.org
+email: trail@weblab.t.u-tokyo.ac.jp
 appointment_url: 'https://calendly.com'
-contact_links:
-  - icon: comments
-    icon_pack: fas
-    name: Discuss on the forum
-    link: 'https://github.com/wowchemy/wowchemy-hugo-modules/discussions'
+# contact_links:
+#   - icon: comments
+#     icon_pack: fas
+#     name: Discuss on the forum
+#     link: 'https://github.com/wowchemy/wowchemy-hugo-modules/discussions'
 
 # Site header
 
@@ -41,25 +41,25 @@ main_menu:
 
 # Localization
 
-date_format: 'Jan 2, 2006'
-time_format: '3:04 PM'
-address_format: en-us
+date_format: '2006/1/2'
+time_format: '15:04'
+address_format: zh
 
 # Site features
 
-highlight: false
-highlight_languages: []
-math: false
-diagram: false
+highlight: true
+highlight_languages: ['shell', 'bash', 'python', 'cpp', 'makefile']  # https://cdnjs.com/libraries/highlight.js
+math: true
+diagram: true
 privacy_pack: false
 edit_page:
-  repo_url: ''
-  content_dir: ''
-  repo_branch: main
+  repo_url: 'https://github.com/matsuolab/roomba_hack'
+  content_dir: 'textbook/content'
+  repo_branch: 'master'
   editable:
-    page: false
-    post: false
-    book: false
+    page: true
+    post: true
+    book: true
 show_related:
   book: true
   page: false
@@ -67,7 +67,7 @@ show_related:
   project: true
   publication: true
   event: true
-reading_time: true
+reading_time: false
 section_pager: false
 docs_section_pager: true
 sharing: true
