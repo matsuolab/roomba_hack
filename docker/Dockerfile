@@ -25,6 +25,7 @@ ENV ROS_DISTRO=${ros_distro}
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 ### Setup keys
 RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 ###  Install ros-${ROS_DISTRO}-base
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
@@ -51,6 +52,7 @@ RUN rosdep init && \
 # install ROS sensor pacakge
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+        ros-${ROS_DISTRO}-navigation \
         ros-${ROS_DISTRO}-usb-cam \
         ros-${ROS_DISTRO}-rplidar-ros && \
     apt-get clean && \
