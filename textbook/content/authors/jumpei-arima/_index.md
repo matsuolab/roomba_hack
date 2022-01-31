@@ -1,57 +1,55 @@
 ---
 # Display name
-title: TRAIL Admin
+title: "有馬 純平"
+
+# Username (this should match the folder name and the name on publications)
+authors:
+- "jumpei-arima"
 
 # Is this the primary user of the site?
-superuser: true
+superuser: false
 
 # Role/position
-role: TRAIL管理者
+role: ""
 
 # Organizations/Affiliations
 organizations:
-- name: 東京大学松尾豊研究室
+- name: ""
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: TRAILに関する最新情報をお届けします．
+bio: I am an engineer working for a motor company in Japan.
 
 interests:
-- 人工知能
-- 深層学習
 - ロボティクス
-# - Computational Linguistics
-# - Information Retrieval
+- 人工知能
 
 education:
-  # courses:
-  # - course: PhD in Artificial Intelligence
-  #   institution: Stanford University
-  #   year: 2012
-  # - course: MEng in Artificial Intelligence
-  #   institution: Massachusetts Institute of Technology
-  #   year: 2009
-  # - course: BSc in Artificial Intelligence
-  #   institution: Massachusetts Institute of Technology
-  #   year: 2008
+  courses:
+  - course: 理工学研究科
+    institution: 明治大学大学院
+    year: 2021
+  - course: 理工学部
+    institution: 明治大学
+    year: 2019
 
 # Social/Academic Networking
 # For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
 #   For an email link, use "fas" icon pack, "envelope" icon, and a link in the
 #   form "mailto:your-email@example.com" or "#contact" for contact widget.
 social:
-# - icon: envelope
-#   icon_pack: fas
-#   link: 'mailto:test@example.org'
-# - icon: twitter
-#   icon_pack: fab
-#   link: https://twitter.com/GeorgeCushen
+- icon: envelope
+  icon_pack: fas
+  link: 'mailto:arijun0307@gmail.com'
+- icon: twitter
+  icon_pack: fab
+  link: https://twitter.com/arijun37
 # - icon: google-scholar
 #   icon_pack: ai
-#   link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
-# - icon: github
-#   icon_pack: fab
-#   link: https://github.com/gcushen
+#   link: 
+- icon: github
+  icon_pack: fab
+  link: https://github.com/Jumpei-Arima
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
 # - icon: cv
@@ -67,7 +65,7 @@ highlight_name: false
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- []
-# - Researchers
+- 研究協力
+- Teachers
+
 ---
-TRAILに関する最新情報をお届けします．

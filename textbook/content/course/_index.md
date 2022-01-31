@@ -1,12 +1,12 @@
 ---
-title: 📊 Learn Data Science
-linkTitle: Data Science
-summary: An example of using Wowchemy's Book layout for publishing online courses.
+title: 📊 ロボットシステム入門
+linkTitle: ロボットシステム入門
+summary: rooombaを用いた実ロボットシステム入門
 date: '2021-01-24'
 type: book
 ---
 
-{{< figure src="featured.jpg" >}}
+<!-- {{< figure src="featured.jpg" >}} -->
 
 {{< toc hide_on="xl" >}}
 
@@ -17,8 +17,7 @@ type: book
 - Gain experience with the {{<hl>}}Scikit{{</hl>}}, including data visualization with {{<hl>}}Plotly{{</hl>}} and data wrangling with {{<hl>}}Pandas{{</hl>}}
 
 ## Program overview
-
-The demand for skilled data science practitioners is rapidly growing. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi.
+実ロボット(roomba)を利用した演習を通じて、ロボットシステムの仕組みから、センシング・認識・行動について研究開発に必要な最低限の知識や実装スキルを習得する。
 
 ## Courses in this program
 
@@ -34,8 +33,5 @@ The demand for skilled data science practitioners is rapidly growing. Lorem ipsu
 There are no prerequisites for the first course.
 {{< /spoiler >}}
 
-{{< spoiler text="How often do the courses run?" >}}
-Continuously, at your own pace.
-{{< /spoiler >}}
 
-{{< cta cta_text="Begin the course" cta_link="python" >}}
+{{< cta cta_text="Begin the course" cta_link="course" >}}
