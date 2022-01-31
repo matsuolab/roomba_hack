@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Online Courses</title><link>roomba_hack/</link><atom:link href="roomba_hack/index.xml" rel="self" type="application/rss+xml"/><description>Online Courses</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sat, 22 Jan 2022 00:00:00 +0000</lastBuildDate><image><url>/roomba_hack/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url><title>Online Courses</title><link>roomba_hack/</link></image><item><title>Localization</title><link>roomba_hack/course/chap4/localization/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>roomba_hack/course/chap4/localization/</guid><description>&lt;h2 id="learn">Learn&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ロボットシステム入門</title><link>roomba_hack/</link><atom:link href="roomba_hack/index.xml" rel="self" type="application/rss+xml"/><description>ロボットシステム入門</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ja</language><copyright>© 2022 Tokyo Robot And Intelligence Lab (TRAIL)</copyright><lastBuildDate>Sat, 22 Jan 2022 00:00:00 +0000</lastBuildDate><image><url>/roomba_hack/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url><title>ロボットシステム入門</title><link>roomba_hack/</link></image><item><title>Localization</title><link>roomba_hack/course/chap4/localization/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>roomba_hack/course/chap4/localization/</guid><description>&lt;h2 id="learn">Learn&lt;/h2>
 &lt;h3 id="tf">TF&lt;/h3>
 &lt;h3 id="自己位置推定">自己位置推定&lt;/h3>
 &lt;h2 id="演習">演習&lt;/h2>
@@ -91,11 +91,11 @@
 &lt;h2 id="演習">演習&lt;/h2>
 &lt;details class="spoiler " id="spoiler-5">
 &lt;summary>【linuxコマンド、git, エディタ】リポジトリをforkして、編集しpushする&lt;/summary>
-&lt;p>&lt;pre>&lt;code>git clone https://github.com/*****/roomba_hack.git
+&lt;p>&lt;pre>&lt;code class="language-shell">git clone https://github.com/*****/roomba_hack.git
 cd roomba_hack
 vim README.md
 &lt;/code>&lt;/pre>
-&lt;pre>&lt;code>git add README.md
+&lt;pre>&lt;code class="language-shell">git add README.md
 git commit -m &amp;quot;update README.md&amp;quot;
 git push origin master
 &lt;/code>&lt;/pre>
@@ -103,9 +103,9 @@ git push origin master
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-6">
 &lt;summary>【ssh】jetsonにsshする&lt;/summary>
-&lt;p>&lt;pre>&lt;code>vim ~/.ssh/config
+&lt;p>&lt;pre>&lt;code class="language-shell">vim ~/.ssh/config
 &lt;/code>&lt;/pre>
-&lt;pre>&lt;code>ssh roomba_dev@jetson_nano.local
+&lt;pre>&lt;code class="language-shell">ssh roomba_dev@jetson_nano.local
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
