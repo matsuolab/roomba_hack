@@ -1,28 +1,207 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chapter 1 | Online Courses</title><link>/course/chap1/</link><atom:link href="/course/chap1/index.xml" rel="self" type="application/rss+xml"/><description>Chapter 1</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sun, 09 Sep 2018 00:00:00 +0000</lastBuildDate><image><url>/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url><title>Chapter 1</title><link>/course/chap1/</link></image><item><title>Python basics</title><link>/course/chap1/python/</link><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate><guid>/course/chap1/python/</guid><description>&lt;p>Build a foundation in Python.&lt;/p>
-&lt;p>
-&lt;i class="fas fa-clock pr-1 fa-fw">&lt;/i> 1-2 hours per week, for 8 weeks&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chapter 1 | Online Courses</title><link>/course/chap1/</link><atom:link href="/course/chap1/index.xml" rel="self" type="application/rss+xml"/><description>Chapter 1</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sun, 09 Sep 2018 00:00:00 +0000</lastBuildDate><image><url>/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url><title>Chapter 1</title><link>/course/chap1/</link></image><item><title>開発環境</title><link>/course/chap1/%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83/</link><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate><guid>/course/chap1/%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83/</guid><description>&lt;p>ロボットシステムの開発環境に使われている要素の概要を理解する&lt;/p>
 &lt;h2 id="learn">Learn&lt;/h2>
-&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-&lt;iframe src="https://www.youtube.com/embed/rfscVS0vtbw" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video">&lt;/iframe>
-&lt;/div>
-&lt;h2 id="quiz">Quiz&lt;/h2>
+&lt;details class="spoiler " id="spoiler-0">
+&lt;summary>Linuxコマンド&lt;/summary>
+&lt;p>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>command&lt;/th>
+&lt;th>&lt;/th>
+&lt;th>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>ls&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>mkdir&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>cd&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-1">
+&lt;summary>ssh&lt;/summary>
+&lt;p>&lt;/p>
+&lt;/details>
 &lt;details class="spoiler " id="spoiler-2">
-&lt;summary>What is the difference between lists and tuples?&lt;/summary>
-&lt;p>&lt;p>Lists&lt;/p>
-&lt;ul>
-&lt;li>Lists are mutable - they can be changed&lt;/li>
-&lt;li>Slower than tuples&lt;/li>
-&lt;li>Syntax: &lt;code>a_list = [1, 2.0, 'Hello world']&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;p>Tuples&lt;/p>
-&lt;ul>
-&lt;li>Tuples are immutable - they can&amp;rsquo;t be changed&lt;/li>
-&lt;li>Tuples are faster than lists&lt;/li>
-&lt;li>Syntax: &lt;code>a_tuple = (1, 2.0, 'Hello world')&lt;/code>&lt;/li>
+&lt;summary>エディタ&lt;/summary>
+&lt;p>&lt;ul>
+&lt;li>vim&lt;/li>
+&lt;li>emacs&lt;/li>
 &lt;/ul>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-3">
-&lt;summary>Is Python case-sensitive?&lt;/summary>
-&lt;p>Yes&lt;/p>
+&lt;summary>git/GitHub&lt;/summary>
+&lt;p>&lt;ul>
+&lt;li>gitとは&lt;/li>
+&lt;li>GitHubとは&lt;/li>
+&lt;/ul>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-4">
+&lt;summary>docker&lt;/summary>
+&lt;p>&lt;ul>
+&lt;li>Dockerとは&lt;/li>
+&lt;li>Docker Image
+&lt;ul>
+&lt;li>Dockerfile&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Docker Container&lt;/li>
+&lt;/ul>
+&lt;/p>
+&lt;/details>
+&lt;h2 id="演習">演習&lt;/h2>
+&lt;details class="spoiler " id="spoiler-5">
+&lt;summary>【linuxコマンド、git, エディタ】リポジトリをforkして、編集しpushする&lt;/summary>
+&lt;p>&lt;pre>&lt;code>git clone https://github.com/*****/roomba_hack.git
+cd roomba_hack
+vim README.md
+&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>git add README.md
+git commit -m &amp;quot;update README.md&amp;quot;
+git push origin master
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-6">
+&lt;summary>【ssh】jetsonにsshする&lt;/summary>
+&lt;p>&lt;pre>&lt;code>vim ~/.ssh/config
+&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>ssh roomba_dev@jetson_nano.local
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-7">
+&lt;summary>【docker】roomba_hackの開発環境のdocker imageをビルドする&lt;/summary>
+&lt;p>&lt;pre>&lt;code>./BUILD-DOCKER-IMAGE.sh
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details></description></item><item><title>ROSとは</title><link>/course/chap1/ros/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>/course/chap1/ros/</guid><description>&lt;p>ロボット開発によく用いられるROSの概要を理解する&lt;/p>
+&lt;h2 id="learn">Learn&lt;/h2>
+&lt;details class="spoiler " id="spoiler-0">
+&lt;summary>ROSの概要&lt;/summary>
+&lt;p>&lt;p>ROS(Robot Operating System)は、ロボット・アプリケーション作成を支援するライブラリとツールを提供するミドルウェアです。
+具体的には以下にあげるものをROSは提供しています。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>メッセージ通信&lt;/p>
+&lt;p>プロセス間、コンピュータ間の通信ライブラリが提供されています。用途に応じて、多対多や一対多、非同期、同期などの通信形態を選択することができます。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>デバイスドライバ&lt;/p>
+&lt;p>ロボットに搭載される多くのセンサやアクチュエータがROSのAPIで標準化された形で提供されています。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>ライブラリ&lt;/p>
+&lt;p>ロボットを動作させるソフトウェア(ナビゲーション、マニピュレーション)の基本機能の大半が提供されています。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>視覚化ツール&lt;/p>
+&lt;p>ロボットの内部状態やセンサ出力を2次元、3次元で視覚化するRvizや3次元動力学シミュレータのGazeboなどが提供されています。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>パッケージ管理&lt;/p>
+&lt;p>多種多様なプログラミング言語、依存関係で記述されたプログラム(パッケージ)同士を統合的にセットアップ、ビルド、テスト、リリースすることが可能です。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-1">
+&lt;summary>ROSのメッセージ通信&lt;/summary>
+&lt;p>&lt;ul>
+&lt;li>node&lt;/li>
+&lt;li>topic&lt;/li>
+&lt;li>message&lt;/li>
+&lt;li>service&lt;/li>
+&lt;li>ROS master&lt;/li>
+&lt;li>parameter&lt;/li>
+&lt;/ul>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-2">
+&lt;summary>デバイスドライバ&lt;/summary>
+&lt;p>&lt;ul>
+&lt;li>カメラ&lt;/li>
+&lt;li>LiDAR&lt;/li>
+&lt;li>IMU&lt;/li>
+&lt;/ul>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-3">
+&lt;summary>ライブラリ(ROSと連動するソフトウェア)&lt;/summary>
+&lt;p>&lt;p>ROSは以下のソフトウェアと連動して使うためのパッケージが提供されています。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>OpenCV&lt;/p>
+&lt;p>コンピュータビジョンの標準的なライブラリ。&lt;/p>
+&lt;p>OpenCVのデータ形式である、MatクラスとROSのメッセージ形式を変換するcv_bridgeや３次元座標上の物体を２次元画像上に投影する機能であるimage_geometryといったパッケージ(vision_opencv)が提供されています。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>PCL(Point Cloud Library)&lt;/p>
+&lt;p>3次元点群処理のライブラリ。&lt;/p>
+&lt;p>OpenCV同様PCLのデータ形式とROSのメッセージ形式を変換するパッケージが提供されています。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>OpenSLAM&lt;/p>
+&lt;p>移動ロボットの自己位置推定と地図生成を同時に行うSLAM(Simultaneous Localization and Mapping)のソースコードを公開するためのプラットフォーム。&lt;/p>
+&lt;p>ROSではOpenSLAMで実装されているgmappingパッケージのラッパーやそれと連携して自律走行を実現するnavigationメタパッケージが提供されています。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Navigation Stack&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Move it&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-4">
+&lt;summary>視覚化ツール&lt;/summary>
+&lt;p>&lt;ul>
+&lt;li>rqt&lt;/li>
+&lt;li>rviz&lt;/li>
+&lt;li>gazebo&lt;/li>
+&lt;/ul>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-5">
+&lt;summary>パッケージ管理&lt;/summary>
+&lt;p>&lt;ul>
+&lt;li>プログラミング言語&lt;/li>
+&lt;li>rosdep&lt;/li>
+&lt;li>&lt;/li>
+&lt;/ul>
+&lt;/p>
+&lt;/details>
+&lt;h2 id="演習">演習&lt;/h2>
+&lt;details class="spoiler " id="spoiler-6">
+&lt;summary>roomba driverを起動し、動作していることを確認する&lt;/summary>
+&lt;p>&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-7">
+&lt;summary>コントローラーを使って、ロボットを動かす&lt;/summary>
+&lt;p>&lt;/p>
 &lt;/details></description></item></channel></rss>
