@@ -4,7 +4,7 @@
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
 title: ロボットシステム入門 # Website name
-baseurl: 'roomba_hack' # Website URL
+baseurl: 'https://matsuolab.github.io/roomba_hack' # Website URL
 copyright: '© {year} Tokyo Robot And Intelligence Lab (TRAIL)' # Footer text, e.g. '© {year} Me'
 
 ############################
