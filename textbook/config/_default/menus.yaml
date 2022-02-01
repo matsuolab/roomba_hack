@@ -4,11 +4,8 @@
 #   The weight parameter defines the order that the links will appear in.
 
 main:
-  - name: Home
-    url: '/'
-    weight: 10
   - name: Courses
-    url: '/course'
+    url: course
     weight: 20
     identifier: courses
   # - name: Data science
@@ -16,8 +13,8 @@ main:
   #   weight: 10
   #   parent: courses
   - name: Blog
-    url: '/post'
+    url: post
     weight: 30
   - name: Contact
-    url: '/contact'
+    url: contact
     weight: 60
