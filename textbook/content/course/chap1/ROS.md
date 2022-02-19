@@ -22,6 +22,9 @@ ROS(Robot Operating System)は、ロボット・アプリケーション作成�
     
     ロボットに搭載される多くのセンサやアクチュエータがROSのAPIで標準化された形で提供されています。
 
+    https://github.com/ros-drivers
+    http://wiki.ros.org/Sensors
+
 - ライブラリ
     
     ロボットを動作させるソフトウェア(ナビゲーション、マニピュレーション)の基本機能の大半が提供されています。
@@ -32,7 +35,9 @@ ROS(Robot Operating System)は、ロボット・アプリケーション作成�
 
 - パッケージ管理
 
-    多種多様なプログラミング言語、依存関係で記述されたプログラム(パッケージ)同士を統合的にセットアップ、ビルド、テスト、リリースすることが可能です。
+    多種多様なプログラミング言語(python, C++, ...)、依存関係で記述されたプログラム(パッケージ)同士を統合的にセットアップ、ビルド、テスト、リリースすることが可能です。
+
+    たとえば、経路計画など処理が重いプロセスはC++で、画像認識など機械学習系のプロセスはpythonで実装し、それらプロセス間の通信を容易に実装できる。
 
 ### ROSのメッセージ通信
 ロボットシステムでは、多数のプログラムを並列に実行し、それぞれがデータをやりとりします。
@@ -57,6 +62,25 @@ ROS(Robot Operating System)は、ロボット・アプリケーション作成�
     トピックへ配信したり、購読したりするときのROSのデータ型のことを「メッセージ(message)」と呼びます。
     メッセージの型はmsgファイルに記述されており、使用言語に依存しないデータ形式になっています。
 
+    以下に、物体やロボットの位置を表す時によく用いる`geomemtry_msgs/PoseStamped`型のmsgファイルを示します。
+    位置情報の時間や座標フレームの情報が含まれるheaderと座標位置を表すposeで定義されています。
+    ```
+    std_msgs/Header header
+        uint32 seq
+        time stamp
+        string frame_id
+    geometry_msgs/Pose pose
+        geometry_msgs/Point position
+            float64 x
+            float64 y
+            float64 z
+        geometry_msgs/Quaternion orientation
+            float64 x
+            float64 y
+            float64 z
+            float64 w
+    ```
+
 - サービス(service)
 
     「サービス(service)」はノードが他のノードとお互いに通信するための一つの手段です。
@@ -67,6 +91,15 @@ ROS(Robot Operating System)は、ロボット・アプリケーション作成�
     サービスにおいて送受信されるデータの型はsrvファイルに記述されています。
     メッセージと同様使用言語に依存しないデータ形式ですが、メッセージと異なるのは、引数と戻り値の二つの形式を定義する必要があるところです。
 
+    以下に、srvの例として`std_srvs/SetBool`を示します。
+    このように引数と戻り値の間に`---`を入れて定義します。
+    ```
+    bool data
+    ---
+    bool success
+    string message
+    ```
+
 - ROSマスタ(ROS master)
 
     「ROSマスタ(ROS master)」は、ノード、トピックおよびサービスの名前登録を行い、それぞれのノードが他のノードから見えるようにする役割を担っています。
@@ -74,6 +107,7 @@ ROS(Robot Operating System)は、ロボット・アプリケーション作成�
 
     ROSマスタとノード間の通信はXML-RPCを用いて行われます。
     ROSマスタを起動するには「roscore」というコマンドを実行します。
+
 
 - パラメータサーバ(parameter server)
 
@@ -87,10 +121,11 @@ ROS(Robot Operating System)は、ロボット・アプリケーション作成�
 
 {{< figure src="../ros_communication.png" caption="ROS通信" >}}
 
-### デバイスドライバ
+<!-- ### デバイスドライバ
+
 - カメラ
 - LiDAR
-- IMU
+- IMU -->
 
 ### ROSと連動するソフトウェア
 ROSは以下のソフトウェアと連動して使うためのパッケージが提供されています。
@@ -106,30 +141,92 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
 
     OpenCV同様PCLのデータ形式とROSのメッセージ形式を変換するパッケージが提供されています。
 
-- OpenSLAM
+- OpenSLAM, Navigation Stack
 
-    移動ロボットの自己位置推定と地図生成を同時に行うSLAM(Simultaneous Localization and Mapping)のソースコードを公開するためのプラットフォーム。
+    移動ロボットの自己位置推定と地図生成を同時に行うSLAM(Simultaneous Localization and Mapping)のソースコードを公開するためのプラットフォームと、。
 
     ROSではOpenSLAMで実装されているgmappingパッケージのラッパーやそれと連携して自律走行を実現するnavigationメタパッケージが提供されています。
-
-- Navigation Stack
 
 - Move it
 
 ### 視覚化ツール
 - rqt
+
+{{< figure src="../ros_gui.png" caption="rqt window" >}}
+
+ <!-- http://wiki.ros.org/rqt -->
+
 - rviz
+
+{{< youtube i--Sd4xH9ZE >}}
+<!-- http://wiki.ros.org/ja/rviz -->
+
 - gazebo
 
-### パッケージ管理
+<!-- ### パッケージ管理
 - プログラミング言語
 - rosdep
-- 
-
+-  -->
 
 ## 演習
 {{< spoiler text="roomba driverを起動し、動作していることを確認する" >}}
+
+- roombaにアクセスする
+    ``` sh
+    ssh roommba
+    ```
+
+- docker containerを起動する
+    ``` sh
+    cd ~/workspace/roomba_hack
+    ./RUN-DOCKER-CONTAINER.sh
+    ```
+
+- roomba driverなどを起動するlaunchファイルを起動する
+
+    ``` sh
+    roslaunch roomma_bringup roomba_bringup.launch
+    ```
+
+- 正常に起動できているかを確認
+    ``` sh
+    rosnode list
+    rostopic list
+    rostopic echo /odom
+    rqt_graph
+    ```
+
 {{< /spoiler >}}
 
+
 {{< spoiler text="コントローラーを使って、ロボットを動かす" >}}
+
+- コントローラーを起動
+    ``` sh
+    roslauunch roomba_teleop roomaba_teleop.launch
+    ```
+
+- コントローラのモード
+    - 移動・停止 
+    - 自動・マニュアル
+    - ドッキング・アンドッキング
+
+- コントローラによる操縦
+    - 移動ロック解除
+        
+        L2を押している時のみ移動コマンドが動作します。
+    - 左ジョイスティック
+        縦方向で前進速度(手前に倒すとバック)、横方向は回転速度に対応しています。
+    - 左矢印
+        それぞれ、一定に低速度で前進・後退・回転します。
+
+- 正常に起動できているかを確認
+    ``` sh
+    rosnode list
+    rostopic list
+    rostopic echo /cmd_vel
+    rqt_graph
+    rviz
+    ```
+
 {{< /spoiler >}}
