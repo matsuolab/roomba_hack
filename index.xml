@@ -17,34 +17,43 @@
 &lt;h2 id="スライド">スライド&lt;/h2>
 &lt;p>&lt;a href="https://docs.google.com/presentation/d/1-q6zq3vV91GTj7mw9uqwT4B8LyHDpFHBNVi4lEyCa5A/edit?usp=sharing">https://docs.google.com/presentation/d/1-q6zq3vV91GTj7mw9uqwT4B8LyHDpFHBNVi4lEyCa5A/edit?usp=sharing&lt;/a>&lt;/p>
 &lt;h2 id="learn">Learn&lt;/h2>
-&lt;details class="spoiler " id="spoiler-0">
-&lt;summary>Linuxコマンド&lt;/summary>
-&lt;p>&lt;table>
+&lt;h3 id="linuxコマンド">Linuxコマンド&lt;/h3>
+&lt;table>
 &lt;thead>
 &lt;tr>
 &lt;th>command&lt;/th>
-&lt;th>&lt;/th>
-&lt;th>&lt;/th>
+&lt;th>　説明&lt;/th>
+&lt;th>option&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
 &lt;td>ls&lt;/td>
-&lt;td>&lt;/td>
-&lt;td>&lt;/td>
+&lt;td>ディレクトリ内のファイル・ディレクトリの表示&lt;/td>
+&lt;td>-l: 詳細を表示 -a: 全て表示&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>mkdir&lt;/td>
-&lt;td>&lt;/td>
+&lt;td>ディレクトリ作成&lt;/td>
 &lt;td>&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>cd&lt;/td>
-&lt;td>&lt;/td>
+&lt;td>ディレクトリ移動&lt;/td>
 &lt;td>&lt;/td>
 &lt;/tr>
 &lt;tr>
+&lt;td>mv&lt;/td>
+&lt;td>ファイル移動&lt;/td>
 &lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>rm&lt;/td>
+&lt;td>ファイル削除&lt;/td>
+&lt;td>-r:ディレクトリ内を再起的に削除 -f:強制削除&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>cat&lt;/td>
 &lt;td>&lt;/td>
 &lt;td>&lt;/td>
 &lt;/tr>
@@ -55,70 +64,145 @@
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;/p>
-&lt;/details>
-&lt;details class="spoiler " id="spoiler-1">
-&lt;summary>ssh&lt;/summary>
-&lt;p>&lt;/p>
-&lt;/details>
-&lt;details class="spoiler " id="spoiler-2">
-&lt;summary>エディタ&lt;/summary>
-&lt;p>&lt;ul>
-&lt;li>vim&lt;/li>
-&lt;li>emacs&lt;/li>
-&lt;/ul>
-&lt;/p>
-&lt;/details>
-&lt;details class="spoiler " id="spoiler-3">
-&lt;summary>git/GitHub&lt;/summary>
-&lt;p>&lt;ul>
-&lt;li>gitとは&lt;/li>
-&lt;li>GitHubとは&lt;/li>
-&lt;/ul>
-&lt;/p>
-&lt;/details>
-&lt;details class="spoiler " id="spoiler-4">
-&lt;summary>docker&lt;/summary>
-&lt;p>&lt;ul>
-&lt;li>Dockerとは&lt;/li>
-&lt;li>Docker Image
+&lt;h3 id="ssh">ssh&lt;/h3>
+&lt;pre>&lt;code>ssh &amp;lt;username&amp;gt;@&amp;lt;hostname&amp;gt; -p &amp;lt;port&amp;gt; -i &amp;lt;identity_file&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;h3 id="エディタ">エディタ&lt;/h3>
 &lt;ul>
-&lt;li>Dockerfile&lt;/li>
+&lt;li>vim
+&lt;ul>
+&lt;li>チュートリアル： &lt;code>vimtuter&lt;/code>&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>Docker Container&lt;/li>
+&lt;li>emacs&lt;/li>
 &lt;/ul>
-&lt;/p>
-&lt;/details>
+&lt;h3 id="gitgithub">git/GitHub&lt;/h3>
+&lt;ul>
+&lt;li>gitとは
+&lt;ul>
+&lt;li>add&lt;/li>
+&lt;li>push&lt;/li>
+&lt;li>pull&lt;/li>
+&lt;li>fetch&lt;/li>
+&lt;li>clone&lt;/li>
+&lt;li>merge&lt;/li>
+&lt;li>reset&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;h2 id="githubとは">GitHubとは&lt;/h2>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="docker">docker&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Dockerとは&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>DockerFileのビルド&lt;/p>
+&lt;pre>&lt;code>docker build -t &amp;lt;image_name&amp;gt;:&amp;lt;tag_name&amp;gt; -f &amp;lt;Dockerfile&amp;gt; &amp;lt;relative_dir&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Docker Image&lt;/p>
+&lt;pre>&lt;code># Docker image一覧
+docker images
+# Docker Imageのダウンロード
+docker pull &amp;lt;image_name&amp;gt;:&amp;lt;tag_name&amp;gt;
+# 削除
+docker rmi &amp;lt;image_id&amp;gt;
+# 不要なDocker imageを消す
+docker image prune
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>Docker Container&lt;/p>
+&lt;pre>&lt;code># Docker containerの起動
+docker run &amp;lt;image_name&amp;gt; &amp;lt;command&amp;gt;
+# Docker container一覧
+docker ps -a
+# Docker containerに接続
+docker exec -it &amp;lt;container_name&amp;gt; bash
+&lt;/code>&lt;/pre>
+&lt;p>※&lt;code>docker run&lt;/code>でよく使うオプション&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>-it&lt;/code>
+&lt;ul>
+&lt;li>標準入出力有効になる&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>--name &amp;lt;container_name&amp;gt;&lt;/code>
+&lt;ul>
+&lt;li>コンテナの名前の指定&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>--rm&lt;/code>
+&lt;ul>
+&lt;li>コンテナを抜けた際に自動的にコンテナを削除する&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>--gpus all&lt;/code>
+&lt;ul>
+&lt;li>コンテナに全gpuを渡す&lt;/li>
+&lt;li>gpuの個数を指定する場合は all の代わりに数字(0, 1,&amp;hellip;)&lt;/li>
+&lt;li>gpuを指定する場合は &lt;code>--gpus '&amp;quot;device=0,1&amp;quot;'&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>-v &amp;lt;host/path/to/dir:container/path/to/dir&amp;gt;&lt;/code>
+&lt;ul>
+&lt;li>コンテナ内にホストのディレクトリをマウントする&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>-p &amp;lt;host_port&amp;gt;:&amp;lt;container_port&amp;gt;&lt;/code>
+&lt;ul>
+&lt;li>ホストのポートをコンテナのポートにマップする&lt;/li>
+&lt;li>コンテナ内でwebサーバを動かす場合などに使う&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>--net=host&lt;/code>
+&lt;ul>
+&lt;li>コンテナとホストでネットワークを共有する(IPアドレスなどが同じになる)&lt;/li>
+&lt;li>ROSノードをコンテナ内で動かす場合などはこれを使うと楽&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>--privileged&lt;/code>
+&lt;ul>
+&lt;li>コンテナからのデバイスへのアクセスを許可&lt;/li>
+&lt;li>コンテナからWEBカメラにアクセスしたいときなど&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
 &lt;h2 id="演習">演習&lt;/h2>
-&lt;details class="spoiler " id="spoiler-5">
+&lt;details class="spoiler " id="spoiler-0">
 &lt;summary>【ssh】開発用PCにsshする&lt;/summary>
 &lt;p>&lt;pre>&lt;code class="language-shell">vim ~/.ssh/config
 ssh robot_dev2
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-6">
+&lt;details class="spoiler " id="spoiler-1">
 &lt;summary>【Linuxコマンド】個人のディレクトリを作成し移動する&lt;/summary>
 &lt;p>&lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~$ mkdir yikeda
 robot_dev2@robot-dev2:~$ cd yikeda
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-7">
+&lt;details class="spoiler " id="spoiler-2">
 &lt;summary>【git】roomba_hackリポジトリをcloneし移動する&lt;/summary>
 &lt;p>&lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~/yikeda$ git clone https://github.com/matsuolab/roomba_hack.git
 robot_dev2@robot-dev2:~/yikeda$ cd roomba_hack
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-8">
+&lt;details class="spoiler " id="spoiler-3">
 &lt;summary>【docker】roomba_hackの開発環境のdocker imageをビルドする&lt;/summary>
 &lt;p>&lt;pre>&lt;code>robot_dev2@robot-dev2:~/yikeda/roomba_hack$ ./BUILD_DOCKER_IMAGE.sh
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-9">
+&lt;details class="spoiler " id="spoiler-4">
 &lt;summary>【ssh】jetsonにsshする&lt;/summary>
 &lt;p>&lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~/yikeda/roomba_hack$ vim ~/.ssh/config
 robot_dev2@robot-dev2:~/yikeda/roomba_hack$ ssh roomba_dev1
