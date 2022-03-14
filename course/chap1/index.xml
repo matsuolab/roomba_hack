@@ -77,8 +77,7 @@
 &lt;details class="spoiler " id="spoiler-5">
 &lt;summary>【ssh】開発用PCにsshする&lt;/summary>
 &lt;p>&lt;pre>&lt;code class="language-shell">vim ~/.ssh/config
-&lt;/code>&lt;/pre>
-&lt;pre>&lt;code class="language-shell">ssh robot_dev2
+ssh robot_dev2
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
