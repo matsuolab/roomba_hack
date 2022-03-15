@@ -213,6 +213,14 @@ robot_dev2@robot-dev2:~/yikeda$ cd roomba_hack
 &lt;p>&lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~/yikeda/roomba_hack$ ssh roomba_dev1
 &lt;/code>&lt;/pre>
 &lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-6">
+&lt;summary>【ssh】jetsonにsshする&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~/yikeda/roomba_hack$ exit
+ssh robot_dev2 -L 5900:localhost:5900
+&lt;/code>&lt;/pre>
+&lt;p>手元のVNC viewerでlocalhost:5900を開く&lt;/p>
+&lt;/p>
 &lt;/details></description></item><item><title>ROSとは</title><link>https://matsuolab.github.io/roomba_hack/course/chap1/ros/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap1/ros/</guid><description>&lt;p>ロボット開発によく用いられるROSの概要を理解する&lt;/p>
 &lt;h2 id="learn">Learn&lt;/h2>
 &lt;h3 id="rosの概要">ROSの概要&lt;/h3>
