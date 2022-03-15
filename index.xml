@@ -204,14 +204,13 @@ robot_dev2@robot-dev2:~/yikeda$ cd roomba_hack
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-4">
 &lt;summary>【docker】roomba_hackの開発環境のdocker imageをビルドする&lt;/summary>
-&lt;p>&lt;pre>&lt;code>robot_dev2@robot-dev2:~/yikeda/roomba_hack$ ./BUILD_DOCKER_IMAGE.sh
+&lt;p>&lt;pre>&lt;code>robot_dev2@robot-dev2:~/yikeda/roomba_hack$ ./BUILD-DOCKER-IMAGE.sh
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-5">
 &lt;summary>【ssh】jetsonにsshする&lt;/summary>
-&lt;p>&lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~/yikeda/roomba_hack$ vim ~/.ssh/config
-robot_dev2@robot-dev2:~/yikeda/roomba_hack$ ssh roomba_dev1
+&lt;p>&lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~/yikeda/roomba_hack$ ssh roomba_dev1
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details></description></item><item><title>ROSとは</title><link>https://matsuolab.github.io/roomba_hack/course/chap1/ros/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap1/ros/</guid><description>&lt;p>ロボット開発によく用いられるROSの概要を理解する&lt;/p>
