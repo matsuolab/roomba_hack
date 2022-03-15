@@ -215,7 +215,7 @@ robot_dev2@robot-dev2:~/yikeda$ cd roomba_hack
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-6">
-&lt;summary>【ssh】jetsonにsshする&lt;/summary>
+&lt;summary>【ssh】VNCを使う&lt;/summary>
 &lt;p>&lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~/yikeda/roomba_hack$ exit
 ssh robot_dev2 -L 5900:localhost:5900
 &lt;/code>&lt;/pre>
