@@ -19,8 +19,22 @@
 &lt;/ul>
 &lt;p>などが内界センサである。&lt;/p>
 &lt;p>参考: &lt;a href="https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor">https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor&lt;/a>&lt;/p>
+&lt;h3 id="rosのパッケージ">ROSのパッケージ&lt;/h3>
+&lt;p>ROSのプログラムはパッケージとして管理される。&lt;/p>
+&lt;p>navigation_tutorailパッケージの例を示す。&lt;/p>
+&lt;figure id="figure-navigation_tutorailパッケージの構成">
+&lt;div class="d-flex justify-content-center">
+&lt;div class="w-100" >&lt;img src="../package.png" alt="navigation_tutorailパッケージの構成" loading="lazy" data-zoomable />&lt;/div>
+&lt;/div>&lt;figcaption>
+navigation_tutorailパッケージの構成
+&lt;/figcaption>&lt;/figure>
+&lt;p>作成したプログラムは&lt;code>rosrun&lt;/code>コマンドで実行することができる。&lt;/p>
+&lt;p>実行時にパッケージを指定するので、(パスが通ってさえれば)ディレクトリに関係なく実行が可能である。&lt;/p>
+&lt;pre>&lt;code class="language-shell">(Python) rosrun navigation_tutorail simple_control2.py
+(C++) rosrun navigation_tutorail go_straight
+&lt;/code>&lt;/pre>
 &lt;h2 id="演習">演習&lt;/h2>
-&lt;details class="spoiler " id="spoiler-0">
+&lt;details class="spoiler " id="spoiler-1">
 &lt;summary>【jetson・開発マシン】ブランチ切り替え&lt;/summary>
 &lt;p>&lt;pre>&lt;code class="language-shell">cd roomba_hack
 git fetch
@@ -28,7 +42,7 @@ git checkout lec_0405
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-1">
+&lt;details class="spoiler " id="spoiler-2">
 &lt;summary>【jetson・開発マシン】それぞれdockerコンテナを起動&lt;/summary>
 &lt;p>&lt;p>try it! roomba_modeの前後で&lt;code>echo $ROS_MASTER_URI&lt;/code>をしてみよう&lt;/p>
 &lt;pre>&lt;code class="language-shell">cd roomba_hack
@@ -37,7 +51,7 @@ git checkout lec_0405
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-2">
+&lt;details class="spoiler " id="spoiler-3">
 &lt;summary>【jetson・開発マシン】ビルドをしてパスを通す&lt;/summary>
 &lt;p>&lt;p>try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧&lt;code>rospack list&lt;/code>に追加されているかを確認してみよう&lt;/p>
 &lt;pre>&lt;code class="language-shell">(docker) cd catkin_ws
@@ -46,7 +60,7 @@ git checkout lec_0405
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-3">
+&lt;details class="spoiler " id="spoiler-4">
 &lt;summary>【jetson】ROSマスタ、各種ノードを起動&lt;/summary>
 &lt;p>&lt;p>try it! &lt;code>bringup.launch&lt;/code>の中身を読んでみよう&lt;/p>
 &lt;p>hint &lt;code>roscd &amp;lt;パッケージ名&amp;gt;&lt;/code>とするとパッケージへ簡単に移動ができる&lt;/p>
@@ -54,7 +68,7 @@ git checkout lec_0405
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-4">
+&lt;details class="spoiler " id="spoiler-5">
 &lt;summary>【jetson】RealSenseを起動&lt;/summary>
 &lt;p>&lt;pre>&lt;code class="language-shell"> cd realsense_docker
 ./launch_realsense.sh
@@ -62,7 +76,7 @@ git checkout lec_0405
 &lt;/p>
 &lt;/details>
 &lt;h3 id="rosメッセージの可視化">ROSメッセージの可視化&lt;/h3>
-&lt;details class="spoiler " id="spoiler-5">
+&lt;details class="spoiler " id="spoiler-6">
 &lt;summary>【開発PC】topicの確認&lt;/summary>
 &lt;p>&lt;p>topic一覧を表示&lt;/p>
 &lt;pre>&lt;code class="language-shell">(docker) rostopic list
@@ -82,7 +96,7 @@ sensor_msgs/Image型 &lt;a href="http://docs.ros.org/en/noetic/api/sensor_msgs/h
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-6">
+&lt;details class="spoiler " id="spoiler-7">
 &lt;summary>【開発PC】topicのpublish(配信)&lt;/summary>
 &lt;p>&lt;p>topic&lt;code>/cmd_vel&lt;/code>の型を確認&lt;/p>
 &lt;pre>&lt;code class="language-shell">(docker) rostopic type /cmd_vel
