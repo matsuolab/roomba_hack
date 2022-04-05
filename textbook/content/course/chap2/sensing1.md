@@ -126,9 +126,18 @@ topic`/cmd_vel`の型を確認
 geometry_msgs/Twist型 http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Twist.html
 
 topic`/cmd_vel`をpublish
+
 ```shell
-(docker) 
+(docker) rostopic pub /cmd_vel geometry_msgs/Twist "linear:
+  x: 1.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0"
 ```
+
 
 {{< /spoiler >}}
 
