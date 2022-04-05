@@ -244,7 +244,7 @@ ssh robot_dev2 -L 5900:localhost:5900
 &lt;p>参考: &lt;a href="https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor">https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor&lt;/a>&lt;/p>
 &lt;h2 id="演習">演習&lt;/h2>
 &lt;details class="spoiler " id="spoiler-0">
-&lt;summary>【jetson】ブランチ切り替え&lt;/summary>
+&lt;summary>【jetson・開発マシン】ブランチ切り替え&lt;/summary>
 &lt;p>&lt;pre>&lt;code class="language-shell">cd roomba_hack
 git fetch
 git checkout lec_0405
@@ -252,24 +252,28 @@ git checkout lec_0405
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-1">
-&lt;summary>【開発マシン】ブランチ切り替え&lt;/summary>
-&lt;p>&lt;pre>&lt;code class="language-shell">cd roomba_hack
-git fetch
-マージ
-&lt;/code>&lt;/pre>
-&lt;/p>
-&lt;/details>
-&lt;details class="spoiler " id="spoiler-2">
 &lt;summary>【jetson・開発マシン】それぞれdockerコンテナを起動&lt;/summary>
-&lt;p>&lt;pre>&lt;code class="language-shell">cd roomba_hack
+&lt;p>&lt;p>try it! roomba_modeの前後で&lt;code>echo $ROS_MASTER_URIをしてみよう&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-shell">cd roomba_hack
 ./RUN-DOCKER-CONTAINER.sh
 (docker) roomba_mode
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
+&lt;details class="spoiler " id="spoiler-2">
+&lt;summary>【jetson・開発マシン】ビルドをしてパスを通す&lt;/summary>
+&lt;p>&lt;p>try it! パスを通した後にcatkin_wsの中にあるパッケージが&lt;code>rospack list&lt;/code>に追加されているかを確認してみよう&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) cd catkin_ws
+(docker) catkin_make
+(docker) source ./devel/setup.bash
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
 &lt;details class="spoiler " id="spoiler-3">
-&lt;summary>【jetson】ルンバを起動&lt;/summary>
-&lt;p>&lt;pre>&lt;code class="language-shell">(docker) roslaunch roomba_bringup bringup.launch
+&lt;summary>【jetson】ROSマスタ、各種ノードを起動&lt;/summary>
+&lt;p>&lt;p>try it! &lt;code>bringup.launch&lt;/code>の中身を読んでみよう&lt;/p>
+&lt;p>hint &lt;code>roscd &amp;lt;パッケージ名&amp;gt;&lt;/code>とするとパッケージへ簡単に移動ができる&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) roslaunch roomba_bringup bringup.launch
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
