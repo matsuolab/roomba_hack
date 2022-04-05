@@ -253,7 +253,7 @@ git checkout lec_0405
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-1">
 &lt;summary>【jetson・開発マシン】それぞれdockerコンテナを起動&lt;/summary>
-&lt;p>&lt;p>try it! roomba_modeの前後で&lt;code>echo $ROS_MASTER_URIをしてみよう&lt;/code>&lt;/p>
+&lt;p>&lt;p>try it! roomba_modeの前後で&lt;code>echo $ROS_MASTER_URI&lt;/code>をしてみよう&lt;/p>
 &lt;pre>&lt;code class="language-shell">cd roomba_hack
 ./RUN-DOCKER-CONTAINER.sh
 (docker) roomba_mode
@@ -262,7 +262,7 @@ git checkout lec_0405
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-2">
 &lt;summary>【jetson・開発マシン】ビルドをしてパスを通す&lt;/summary>
-&lt;p>&lt;p>try it! パスを通した後にcatkin_wsの中にあるパッケージが&lt;code>rospack list&lt;/code>に追加されているかを確認してみよう&lt;/p>
+&lt;p>&lt;p>try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧&lt;code>rospack list&lt;/code>に追加されているかを確認してみよう&lt;/p>
 &lt;pre>&lt;code class="language-shell">(docker) cd catkin_ws
 (docker) catkin_make
 (docker) source ./devel/setup.bash
@@ -284,7 +284,38 @@ git checkout lec_0405
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;h3 id="rosメッセージの可視化">ROSメッセージの可視化&lt;/h3></description></item><item><title>ROSとは</title><link>https://matsuolab.github.io/roomba_hack/course/chap1/ros/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap1/ros/</guid><description>&lt;p>ロボット開発によく用いられるROSの概要を理解する&lt;/p>
+&lt;h3 id="rosメッセージの可視化">ROSメッセージの可視化&lt;/h3>
+&lt;details class="spoiler " id="spoiler-5">
+&lt;summary>【開発PC】topicの確認&lt;/summary>
+&lt;p>&lt;p>topic一覧を表示&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rostopic list
+&lt;/code>&lt;/pre>
+&lt;p>特定のtopicの型を確認&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rostopic type /camera/color/image_raw
+(docker) rostopic type /scan
+&lt;/code>&lt;/pre>
+&lt;p>sensor_msgs/LaserScan型 &lt;a href="http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/LaserScan.html">http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/LaserScan.html&lt;/a>
+sensor_msgs/Image型 &lt;a href="http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Image.html">http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Image.html&lt;/a>&lt;/p>
+&lt;p>特定のtopicの中身を確認&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rostopic echo /camera/color/image_raw
+(docker) rostopic echo /scan
+&lt;/code>&lt;/pre>
+&lt;p>rvizを用いて可視化&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rviz
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-6">
+&lt;summary>【開発PC】topicのpublish(配信)&lt;/summary>
+&lt;p>&lt;p>topic&lt;code>/cmd_vel&lt;/code>の型を確認&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rostopic type /cmd_vel
+&lt;/code>&lt;/pre>
+&lt;p>geometry_msgs/Twist型 &lt;a href="http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Twist.html">http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Twist.html&lt;/a>&lt;/p>
+&lt;p>topic&lt;code>/cmd_vel&lt;/code>をpublish&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker)
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details></description></item><item><title>ROSとは</title><link>https://matsuolab.github.io/roomba_hack/course/chap1/ros/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap1/ros/</guid><description>&lt;p>ロボット開発によく用いられるROSの概要を理解する&lt;/p>
 &lt;h2 id="learn">Learn&lt;/h2>
 &lt;h3 id="rosの概要">ROSの概要&lt;/h3>
 &lt;p>ROS(Robot Operating System)は、ロボット・アプリケーション作成を支援するライブラリとツールを提供するミドルウェアです。
