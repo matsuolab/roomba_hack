@@ -46,7 +46,7 @@ git checkout lec_0405
 
 {{< spoiler text="【jetson・開発マシン】それぞれdockerコンテナを起動" >}}
 
-try it! roomba_modeの前後で`echo $ROS_MASTER_URIをしてみよう`
+try it! roomba_modeの前後で`echo $ROS_MASTER_URI`をしてみよう
 
 ```shell
 cd roomba_hack
@@ -57,7 +57,7 @@ cd roomba_hack
 
 {{< spoiler text="【jetson・開発マシン】ビルドをしてパスを通す" >}}
 
-try it! パスを通した後にcatkin_wsの中にあるパッケージが`rospack list`に追加されているかを確認してみよう
+try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧`rospack list`に追加されているかを確認してみよう
 
 ```shell
 (docker) cd catkin_ws
@@ -85,6 +85,53 @@ hint `roscd <パッケージ名>`とするとパッケージへ簡単に移動�
 {{< /spoiler >}}
 
 ### ROSメッセージの可視化
+{{< spoiler text="【開発PC】topicの確認" >}}
+
+topic一覧を表示
+
+```shell
+(docker) rostopic list
+```
+
+特定のtopicの型を確認
+
+```shell
+(docker) rostopic type /camera/color/image_raw
+(docker) rostopic type /scan
+```
+
+sensor_msgs/LaserScan型 http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/LaserScan.html
+sensor_msgs/Image型 http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Image.html
+
+特定のtopicの中身を確認
+```shell
+(docker) rostopic echo /camera/color/image_raw
+(docker) rostopic echo /scan
+```
+
+rvizを用いて可視化
+```shell
+(docker) rviz
+```
+{{< /spoiler >}}
+
+{{< spoiler text="【開発PC】topicのpublish(配信)" >}}
+
+topic`/cmd_vel`の型を確認
+
+```shell
+(docker) rostopic type /cmd_vel
+```
+
+geometry_msgs/Twist型 http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Twist.html
+
+topic`/cmd_vel`をpublish
+```shell
+(docker) 
+```
+
+{{< /spoiler >}}
+
 
 
 
