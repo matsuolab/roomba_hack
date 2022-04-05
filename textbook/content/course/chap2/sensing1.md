@@ -33,9 +33,10 @@ weight: 21
 
 参考: https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor
 
+
 ## 演習
 
-{{< spoiler text="【jetson】ブランチ切り替え" >}}
+{{< spoiler text="【jetson・開発マシン】ブランチ切り替え" >}}
 ```shell
 cd roomba_hack
 git fetch
@@ -43,15 +44,10 @@ git checkout lec_0405
 ```
 {{< /spoiler >}}
 
-{{< spoiler text="【開発マシン】ブランチ切り替え" >}}
-```shell
-cd roomba_hack
-git fetch
-マージ
-```
-{{< /spoiler >}}
-
 {{< spoiler text="【jetson・開発マシン】それぞれdockerコンテナを起動" >}}
+
+try it! roomba_modeの前後で`echo $ROS_MASTER_URIをしてみよう`
+
 ```shell
 cd roomba_hack
 ./RUN-DOCKER-CONTAINER.sh
@@ -59,7 +55,23 @@ cd roomba_hack
 ```
 {{< /spoiler >}}
 
-{{< spoiler text="【jetson】ルンバを起動" >}}
+{{< spoiler text="【jetson・開発マシン】ビルドをしてパスを通す" >}}
+
+try it! パスを通した後にcatkin_wsの中にあるパッケージが`rospack list`に追加されているかを確認してみよう
+
+```shell
+(docker) cd catkin_ws
+(docker) catkin_make
+(docker) source ./devel/setup.bash
+```
+{{< /spoiler >}}
+
+{{< spoiler text="【jetson】ROSマスタ、各種ノードを起動" >}}
+
+try it! `bringup.launch`の中身を読んでみよう
+
+hint `roscd <パッケージ名>`とするとパッケージへ簡単に移動ができる
+
 ```shell
 (docker) roslaunch roomba_bringup bringup.launch
 ```
