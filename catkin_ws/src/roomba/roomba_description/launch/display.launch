@@ -1,11 +1,9 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="rviz" default="true"/>
-    <arg name="model" default="$(find roomba_description)/urdf/roomba.urdf.xacro"/>
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
 
-    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
-    <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" />
+    <param name="robot_description" command="$(find xacro)xacro '$(find roomba_description)/urdf/roomba.urdf.xacro'"/>
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="roboto_state_publisher"/>
 
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find roomba_description)/config/roomba.rviz" if="$(arg rviz)"/>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find roomba_description)/config/rviz.config" if="$(arg rviz)"/>
 </launch>
