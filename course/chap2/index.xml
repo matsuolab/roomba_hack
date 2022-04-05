@@ -1,1 +1,60 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chapter 2 | ロボットシステム入門</title><link>https://matsuolab.github.io/roomba_hack/course/chap2/</link><atom:link href="https://matsuolab.github.io/roomba_hack/course/chap2/index.xml" rel="self" type="application/rss+xml"/><description>Chapter 2</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ja</language><copyright>© 2022 Tokyo Robot And Intelligence Lab (TRAIL)</copyright><lastBuildDate>Sun, 09 Sep 2018 00:00:00 +0000</lastBuildDate><image><url>https://matsuolab.github.io/roomba_hack/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url><title>Chapter 2</title><link>https://matsuolab.github.io/roomba_hack/course/chap2/</link></image></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chapter 2 | ロボットシステム入門</title><link>https://matsuolab.github.io/roomba_hack/course/chap2/</link><atom:link href="https://matsuolab.github.io/roomba_hack/course/chap2/index.xml" rel="self" type="application/rss+xml"/><description>Chapter 2</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ja</language><copyright>© 2022 Tokyo Robot And Intelligence Lab (TRAIL)</copyright><lastBuildDate>Sun, 09 Sep 2018 00:00:00 +0000</lastBuildDate><image><url>https://matsuolab.github.io/roomba_hack/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url><title>Chapter 2</title><link>https://matsuolab.github.io/roomba_hack/course/chap2/</link></image><item><title>ロボットシステムにおけるセンシング・アクチュエーション・通信①</title><link>https://matsuolab.github.io/roomba_hack/course/chap2/sensing1/</link><pubDate>Tue, 05 Apr 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap2/sensing1/</guid><description>&lt;p>センサの値を読み取りロボットを動かしてみよう&lt;/p>
+&lt;h2 id="learn">Learn&lt;/h2>
+&lt;h3 id="ロボットセンサの基礎知識">ロボットセンサの基礎知識&lt;/h3>
+&lt;p>ロボットが動作するために必要なセンサは大きく2種類に分けられる。&lt;/p>
+&lt;p>1つ目が外界センサで、これはロボットが行動する環境の情報を取得するためのセンサーである。
+具体的なセンサとして、&lt;/p>
+&lt;ul>
+&lt;li>LiDAR&lt;/li>
+&lt;li>デプスカメラ&lt;/li>
+&lt;li>ホイールエンコーダ&lt;/li>
+&lt;li>IMU&lt;/li>
+&lt;/ul>
+&lt;p>などがあげられる。&lt;/p>
+&lt;p>センサのノイズの影響を軽減するため、複数のセンサを組み合わせて利用されることもある。&lt;/p>
+&lt;p>2つ目は内界センサで、これは(ロボットアームのような変形可能な)ロボットが自身の内部状態を把握し、位置や姿勢を制御するために使われるセンサーである。&lt;/p>
+&lt;ul>
+&lt;li>関節位置・角度センサ&lt;/li>
+&lt;li>関節姿勢センサ&lt;/li>
+&lt;/ul>
+&lt;p>などが内界センサである。&lt;/p>
+&lt;p>参考: &lt;a href="https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor">https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor&lt;/a>&lt;/p>
+&lt;h2 id="演習">演習&lt;/h2>
+&lt;details class="spoiler " id="spoiler-0">
+&lt;summary>【jetson】ブランチ切り替え&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-shell">cd roomba_hack
+git fetch
+git checkout lec_0405
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-1">
+&lt;summary>【開発マシン】ブランチ切り替え&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-shell">cd roomba_hack
+git fetch
+マージ
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-2">
+&lt;summary>【jetson・開発マシン】それぞれdockerコンテナを起動&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-shell">cd roomba_hack
+./RUN-DOCKER-CONTAINER.sh
+(docker) roomba_mode
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-3">
+&lt;summary>【jetson】ルンバを起動&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-shell">(docker) roslaunch roomba_bringup bringup.launch
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-4">
+&lt;summary>【jetson】RealSenseを起動&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-shell"> cd realsense_docker
+./launch_realsense.sh
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;h3 id="rosメッセージの可視化">ROSメッセージの可視化&lt;/h3></description></item></channel></rss>
