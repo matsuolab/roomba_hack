@@ -43,12 +43,18 @@ navigation_tutorailパッケージの例を示す。
 
 作成したプログラムは`rosrun`コマンドで実行することができる。
 
-実行時にパッケージを指定するので、(パスが通ってさえれば)ディレクトリに関係なく実行が可能である。
-
 ```shell
 (Python) rosrun navigation_tutorail simple_control2.py
 (C++) rosrun navigation_tutorail go_straight
 ```
+
+実行時にパッケージを指定するので、(パスが通ってさえれば)ディレクトリに関係なく実行が可能である。
+
+### ROSのワークスペース
+
+ROSのパッケージはワークスペースと呼ばれる作業スペースに
+
+{{< figure src="../package.png" caption="catkin_wsの構成" >}}
 
 
 ## 演習
