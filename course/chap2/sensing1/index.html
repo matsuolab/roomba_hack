@@ -88,7 +88,7 @@ roscd                    指定したpackage内に移動する
 </code></pre><h2 id=演習>演習</h2><details class=spoiler id=spoiler-0><summary>【jetson・開発マシン】ブランチ切り替え</summary><p><pre><code class=language-shell>cd roomba_hack
 git fetch
 git checkout lec_0405 
-</code></pre></p></details><details class=spoiler id=spoiler-1><summary>【jetson・開発マシン】それぞれdockerコンテナを起動</summary><p><p>try it! roomba_modeの前後で<code>echo $ROS_MASTER_URI</code>をしてみよう</p><pre><code class=language-shell>cd roomba_hack
+</code></pre></p></details><details class=spoiler id=spoiler-1><summary>【jetson・開発マシン】それぞれdockerコンテナを起動</summary><p><p>try it! roomba_modeの前後で<code>echo $ROS_MASTER_URI</code>をしてみよう</p><p>参考(ROS_MASTER_URIについて)</p><ul><li><a href=https://qiita.com/srs/items/7d4aeb5e44138f97c770>https://qiita.com/srs/items/7d4aeb5e44138f97c770</a></li></ul><pre><code class=language-shell>cd roomba_hack
 ./RUN-DOCKER-CONTAINER.sh
 (docker) roomba_mode
 </code></pre></p></details><details class=spoiler id=spoiler-2><summary>【jetson・開発マシン】ビルドをしてパスを通す</summary><p><p>try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧<code>rospack list</code>に追加されているかを確認してみよう</p><pre><code class=language-shell>(docker) cd catkin_ws

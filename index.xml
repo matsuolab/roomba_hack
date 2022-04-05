@@ -364,6 +364,10 @@ git checkout lec_0405
 &lt;details class="spoiler " id="spoiler-1">
 &lt;summary>【jetson・開発マシン】それぞれdockerコンテナを起動&lt;/summary>
 &lt;p>&lt;p>try it! roomba_modeの前後で&lt;code>echo $ROS_MASTER_URI&lt;/code>をしてみよう&lt;/p>
+&lt;p>参考(ROS_MASTER_URIについて)&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://qiita.com/srs/items/7d4aeb5e44138f97c770">https://qiita.com/srs/items/7d4aeb5e44138f97c770&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;pre>&lt;code class="language-shell">cd roomba_hack
 ./RUN-DOCKER-CONTAINER.sh
 (docker) roomba_mode
