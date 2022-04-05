@@ -20,7 +20,7 @@ else
             --volume /dev/:/dev/ \
             --name ${CONTAINER_NAME} \
             ${IMAGE_NAME}:jetson \
-            bash -c "source /root/.bashrc; roslaunch roomba_bringup bringup.launch"
+            bash -c "sed -i 's/TMP_IP/${ROOMBA_IP}/' ~/scripts/initialize-bash-shell.sh; bash"
     else
         docker run -it --rm \
             --privileged \

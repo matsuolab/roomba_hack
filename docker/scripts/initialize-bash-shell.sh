@@ -26,7 +26,7 @@ source /opt/ros/melodic/setup.bash
 # Source the Catkin workspace.
 echo "Sourcing the Catkin workspace from '/root/roomba_hack/catkin_ws/devel/setup.bash'."
 source /root/external_catkin_ws/devel/setup.bash
-source /root/roomba_hack/catkin_ws/devel/setup.bash
+source /root/roomba_hack/catkin_ws/devel/setup.bash 
 
 ################################################################################
 
