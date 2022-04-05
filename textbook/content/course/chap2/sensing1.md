@@ -182,6 +182,9 @@ git checkout lec_0405
 
 try it! roomba_modeの前後で`echo $ROS_MASTER_URI`をしてみよう
 
+参考(ROS_MASTER_URIについて)
+- https://qiita.com/srs/items/7d4aeb5e44138f97c770
+
 ```shell
 cd roomba_hack
 ./RUN-DOCKER-CONTAINER.sh
