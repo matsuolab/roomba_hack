@@ -37,9 +37,38 @@ weight: 21
 
 ROSのプログラムはパッケージとして管理される。
 
-navigation_tutorailパッケージの例を示す。
+navigation_tutorailパッケージのファイル構成を示す。
 
-{{< figure src="../package.png" caption="navigation_tutorailパッケージの構成" >}}
+```
+navigation_tutorial
+   ├── CMakeLists.txt
+   ├── launch
+   │   ├── amcl.launch
+   │   ├── avoidance.launch
+   │   ├── gmapping.launch
+   │   ├── go_straight.launch
+   │   ├── localization.launch
+   │   ├── map_server.launch
+   │   ├── move_base.launch
+   │   └── navigation.launch
+   ├── package.xml
+   ├── params
+   │   ├── base_global_planner_params.yaml
+   │   ├── base_local_planner_params.yaml
+   │   ├── costmap_common_params.yaml
+   │   ├── dwa_local_planner_params.yaml
+   │   ├── global_costmap_params.yaml
+   │   ├── local_costmap_params.yaml
+   │   └── move_base_params.yaml
+   ├── scripts
+   │   ├── avoidance.py
+   │   ├── simple_control2.py
+   │   └── simple_control.py
+   └── src
+       ├── avoidance.cpp
+       └── go_straight.cpp
+
+```
 
 作成したプログラムは`rosrun`コマンドで実行することができる。
 
@@ -48,14 +77,64 @@ navigation_tutorailパッケージの例を示す。
 (C++) rosrun navigation_tutorail go_straight
 ```
 
+launchファイルについてでも同様に`roslaunch`コマンドで実行することができる。
+
+```shell
+(Python) roslaunch navigation_tutorial move_base.launch
+```
+
 実行時にパッケージを指定するので、(パスが通ってさえれば)ディレクトリに関係なく実行が可能である。
 
 ### ROSのワークスペース
 
-ROSのパッケージはワークスペースと呼ばれる作業スペースに
+ROSのパッケージはワークスペースと呼ばれる作業スペースに配置される。
 
-{{< figure src="../package.png" caption="catkin_wsの構成" >}}
+一般的に`catkin_ws`という名前が使われることが多い。
 
+catkin_wsのファイル構成を示す。
+
+```
+catkin_ws
+   ├── build
+   ├── devel
+   └── src
+       ├── CMakeLists.txt
+       ├── navigation_tutorial
+       │   ├── CMakeLists.txt
+       │   ├── launch
+       │   ├── package.xml
+       │   ├── params
+       │   ├── scripts
+       │   └── src
+       └── roomba
+           ├── roomba_bringup
+           │   ├── CMakeLists.txt
+           │   ├── config
+           │   ├── launch
+           │   └── package.xml
+           ├── roomba_description
+           │   ├── CMakeLists.txt
+           │   ├── config
+           │   ├── launch
+           │   ├── meshes
+           │   ├── package.xml
+           │   └── urdf
+           ├── roomba_gazebo
+           │   ├── CMakeLists.txt
+           │   ├── launch
+           │   └── package.xml
+           └── roomba_teleop
+               ├── CMakeLists.txt
+               ├── include
+               ├── launch
+               ├── package.xml
+               └── src
+```
+
+catkin_wsのsrc内でパッケージ作成を行い、catkin_ws直下で`catkin_make`コマンドでビルドをすると、buildディレクトリとdevelディレクトリが作成される。
+
+develディレクトリの中のsetup.bashをソース`source devel/setup.bash`することで、ワークスペース内のパッケージのパスを通すことができる。　
+ 
 
 ## 演習
 
