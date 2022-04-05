@@ -31,7 +31,9 @@ weight: 21
 
 などが内界センサである。
 
-参考: https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor
+参考
+- https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor
+
 
 ### ROSのパッケージ
 
@@ -135,6 +137,36 @@ catkin_wsのsrc内でパッケージ作成を行い、catkin_ws直下で`catkin_
 
 develディレクトリの中のsetup.bashをソース`source devel/setup.bash`することで、ワークスペース内のパッケージのパスを通すことができる。　
  
+### ROSのコマンド
+
+ROSのコマンドのうち、よく用いるものを紹介する。
+
+- Topic関連
+
+```
+rostopic list            topicの一覧を表示する
+rostopic echo            指定されたtopicの中身を表示する
+rostopic hz              topicの配信周波数を取得する
+rostopic info            topicの情報を表示する
+rostopic pub             topicを配信する
+rostopic type            topicの型を確認する  
+```
+
+- Node関連
+
+```
+rosnode list             nodeの一覧を表示する
+rosnode ping             nodeの接続テストを行う
+rosnode info             nodeの情報を表示する
+rosnode kill             nodeをシャットダウンする
+```
+
+- Package関連
+```
+rospack list             packageの一覧を表示する
+roscd                    指定したpackage内に移動する
+```
+
 
 ## 演習
 
@@ -219,6 +251,12 @@ rvizを用いて可視化
 
 {{< spoiler text="【開発PC】topicのpublish(配信)" >}}
 
+topic`/cmd_vel`の情報を確認
+
+```shell
+(docker) rostopic info /cmd_vel
+```
+
 topic`/cmd_vel`の型を確認
 
 ```shell
@@ -249,7 +287,3 @@ topicをスクリプトからpublish
 try it! `simple_control.py`の中身を読んでコードを変更してみよう
 
 {{< /spoiler >}}
-
-
-
-
