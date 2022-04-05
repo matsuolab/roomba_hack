@@ -33,6 +33,23 @@ weight: 21
 
 参考: https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor
 
+### ROSのパッケージ
+
+ROSのプログラムはパッケージとして管理される。
+
+navigation_tutorailパッケージの例を示す。
+
+{{< figure src="../package.png" caption="navigation_tutorailパッケージの構成" >}}
+
+作成したプログラムは`rosrun`コマンドで実行することができる。
+
+実行時にパッケージを指定するので、(パスが通ってさえれば)ディレクトリに関係なく実行が可能である。
+
+```shell
+(Python) rosrun navigation_tutorail simple_control2.py
+(C++) rosrun navigation_tutorail go_straight
+```
+
 
 ## 演習
 
