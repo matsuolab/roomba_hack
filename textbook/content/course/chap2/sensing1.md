@@ -129,15 +129,22 @@ topic`/cmd_vel`をpublish
 
 ```shell
 (docker) rostopic pub /cmd_vel geometry_msgs/Twist "linear:
-  x: 1.0
-  y: 0.0
-  z: 0.0
-angular:
-  x: 0.0
-  y: 0.0
-  z: 0.0"
+    x: 1.0
+    y: 0.0
+    z: 0.0
+  angular:
+    x: 0.0
+    y: 0.0
+    z: 0.0"
 ```
 
+topicをスクリプトからpublish
+
+```shell
+(docker) rosrun navigation_tutorial simple_control.py
+```
+
+try it! `simple_control.py`の中身を読んでコードを変更してみよう
 
 {{< /spoiler >}}
 
