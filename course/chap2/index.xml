@@ -18,7 +18,10 @@
 &lt;li>関節姿勢センサ&lt;/li>
 &lt;/ul>
 &lt;p>などが内界センサである。&lt;/p>
-&lt;p>参考: &lt;a href="https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor">https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor&lt;/a>&lt;/p>
+&lt;p>参考&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor">https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;h3 id="rosのパッケージ">ROSのパッケージ&lt;/h3>
 &lt;p>ROSのプログラムはパッケージとして管理される。&lt;/p>
 &lt;p>navigation_tutorailパッケージのファイル構成を示す。&lt;/p>
@@ -100,6 +103,32 @@
 &lt;/code>&lt;/pre>
 &lt;p>catkin_wsのsrc内でパッケージ作成を行い、catkin_ws直下で&lt;code>catkin_make&lt;/code>コマンドでビルドをすると、buildディレクトリとdevelディレクトリが作成される。&lt;/p>
 &lt;p>develディレクトリの中のsetup.bashをソース&lt;code>source devel/setup.bash&lt;/code>することで、ワークスペース内のパッケージのパスを通すことができる。　&lt;/p>
+&lt;h3 id="rosのコマンド">ROSのコマンド&lt;/h3>
+&lt;p>ROSのコマンドのうち、よく用いるものを紹介する。&lt;/p>
+&lt;ul>
+&lt;li>Topic関連&lt;/li>
+&lt;/ul>
+&lt;pre>&lt;code>rostopic list topicの一覧を表示する
+rostopic echo 指定されたtopicの中身を表示する
+rostopic hz topicの配信周波数を取得する
+rostopic info topicの情報を表示する
+rostopic pub topicを配信する
+rostopic type topicの型を確認する
+&lt;/code>&lt;/pre>
+&lt;ul>
+&lt;li>Node関連&lt;/li>
+&lt;/ul>
+&lt;pre>&lt;code>rosnode list nodeの一覧を表示する
+rosnode ping nodeの接続テストを行う
+rosnode info nodeの情報を表示する
+rosnode kill nodeをシャットダウンする
+&lt;/code>&lt;/pre>
+&lt;ul>
+&lt;li>Package関連&lt;/li>
+&lt;/ul>
+&lt;pre>&lt;code>rospack list packageの一覧を表示する
+roscd 指定したpackage内に移動する
+&lt;/code>&lt;/pre>
 &lt;h2 id="演習">演習&lt;/h2>
 &lt;details class="spoiler " id="spoiler-0">
 &lt;summary>【jetson・開発マシン】ブランチ切り替え&lt;/summary>
@@ -165,7 +194,10 @@ sensor_msgs/Image型 &lt;a href="http://docs.ros.org/en/noetic/api/sensor_msgs/h
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-6">
 &lt;summary>【開発PC】topicのpublish(配信)&lt;/summary>
-&lt;p>&lt;p>topic&lt;code>/cmd_vel&lt;/code>の型を確認&lt;/p>
+&lt;p>&lt;p>topic&lt;code>/cmd_vel&lt;/code>の情報を確認&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rostopic info /cmd_vel
+&lt;/code>&lt;/pre>
+&lt;p>topic&lt;code>/cmd_vel&lt;/code>の型を確認&lt;/p>
 &lt;pre>&lt;code class="language-shell">(docker) rostopic type /cmd_vel
 &lt;/code>&lt;/pre>
 &lt;p>geometry_msgs/Twist型 &lt;a href="http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Twist.html">http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Twist.html&lt;/a>&lt;/p>
