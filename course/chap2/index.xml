@@ -98,5 +98,9 @@ x: 0.0
 y: 0.0
 z: 0.0&amp;quot;
 &lt;/code>&lt;/pre>
+&lt;p>topicをスクリプトからpublish&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rosrun navigation_tutorial simple_control.py
+&lt;/code>&lt;/pre>
+&lt;p>try it! &lt;code>simple_control.py&lt;/code>の中身を読んでコードを変更してみよう&lt;/p>
 &lt;/p>
 &lt;/details></description></item></channel></rss>

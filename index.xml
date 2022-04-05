@@ -321,6 +321,10 @@ x: 0.0
 y: 0.0
 z: 0.0&amp;quot;
 &lt;/code>&lt;/pre>
+&lt;p>topicをスクリプトからpublish&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rosrun navigation_tutorial simple_control.py
+&lt;/code>&lt;/pre>
+&lt;p>try it! &lt;code>simple_control.py&lt;/code>の中身を読んでコードを変更してみよう&lt;/p>
 &lt;/p>
 &lt;/details></description></item><item><title>ROSとは</title><link>https://matsuolab.github.io/roomba_hack/course/chap1/ros/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap1/ros/</guid><description>&lt;p>ロボット開発によく用いられるROSの概要を理解する&lt;/p>
 &lt;h2 id="learn">Learn&lt;/h2>
