@@ -1,5 +1,5 @@
-ARG L4T_VERSION="r32.5.0"
-FROM nvcr.io/nvidia/l4t-base:${L4T_VERSION}
+ARG BASE_IMAGE=nvcr.io/nvidia/l4t-base:r32.6.1
+FROM ${BASE_IMAGE}
 
 ENV DEBIAN_FRONTEND noninteractive
 SHELL ["/bin/bash", "-c"]
@@ -44,6 +44,17 @@ RUN mkdir -p external_catkin_ws/src && \
     bash -c "source /opt/ros/melodic/setup.bash; rosdep init; rosdep update" && \
     apt-get update && \
     bash -c "source /opt/ros/melodic/setup.bash; rosdep install --from-paths src -i -r -y" && \
+    bash -c "source /opt/ros/melodic/setup.bash; catkin_make"
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        gstreamer1.0-tools libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev
+
+RUN cd external_catkin_ws/src && \
+    git clone https://github.com/ros-drivers/gscam.git && \
+    cd /root/external_catkin_ws/src/gscam && \
+    sed -e "s/EXTRA_CMAKE_FLAGS = -DUSE_ROSBUILD:BOOL=1$/EXTRA_CMAKE_FLAGS = -DUSE_ROSBUILD:BOOL=1 -DGSTREAMER_VERSION_1_x=On/" -i Makefile && \
+    cd /root/external_catkin_ws/ && \
     bash -c "source /opt/ros/melodic/setup.bash; catkin_make"
 
 WORKDIR /root/

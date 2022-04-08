@@ -10,7 +10,7 @@ rosdep update
 apt-get update
 
 # Source the updated ROS environment.
-source /opt/ros/melodic/setup.bash
+source /opt/ros/noetic/setup.bash
 source /root/external_catkin_ws/devel/setup.bash
 
 ################################################################################
