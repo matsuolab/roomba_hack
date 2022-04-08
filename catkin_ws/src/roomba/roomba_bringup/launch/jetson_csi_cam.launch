@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Command Line Arguments -->
+  <arg name="sensor_id" default="0" />                       <!-- The sensor id of the camera -->
+  <arg name="cam_name" default="csi_cam_$(arg sensor_id)" /> <!-- The name of the camera (corrsponding to the camera info) -->
+  <arg name="frame_id" default="/$(arg cam_name)_link" />    <!-- The TF frame ID. -->
+  <arg name="sync_sink" default="true" />                    <!-- Synchronize the app sink. Setting this to false may resolve problems with sub-par framerates. -->
+  <arg name="width" default="640" />                         <!-- Image Width to stream -->
+  <arg name="height" default="480" />                        <!-- Image Height to stream -->
+  <arg name="fps" default="20" />                            <!-- Desired framerate. True framerate may not reach this if set too high. -->
+  <arg name="flip_method" default="0" />                     <!-- flip_method -->
+  <arg name="load_camera_info" default="true" />             <!-- Load the camera info or not-->
+  <arg name="camera_info_url" default="package://roomba_bringup/config/csi_cam_config.yaml" />
+
+  <!-- Make arguments available to parameter server -->
+  <param name="$(arg cam_name)/camera_id" type="int" value="$(arg sensor_id)" />
+  <param name="$(arg cam_name)/image_width" type="int" value="$(arg width)" />
+  <param name="$(arg cam_name)/image_height" type="int" value="$(arg height)" />
+  <param name="$(arg cam_name)/target_fps" type="int" value="$(arg fps)" />
+
+  <!-- Define the camera calibration parameter -->
+  <param name="$(arg cam_name)/camera_info_url" type="string" if="$(arg load_camera_info)" value="$(arg camera_info_url)" />
+
+  <!-- Define the GSCAM pipeline -->
+  <param name="$(arg cam_name)/gscam_config" type="string" value="nvarguscamerasrc sensor-id=$(arg sensor_id) ! video/x-raw(memory:NVMM),
+    width=(int)$(arg width), height=(int)$(arg height), format=(string)NV12, framerate=(fraction)$(arg fps)/1 !
+    nvvidconv flip-method=$(arg flip_method) ! videoconvert" />
+
+  <!-- Start the GSCAM node -->
+  <node pkg="gscam" type="gscam" name="$(arg cam_name)">
+    <param name="camera_name" value="$(arg cam_name)" />
+    <param name="frame_id" value="$(arg frame_id)" />
+    <param name="sync_sink" value="$(arg sync_sink)" />
+    <remap from="camera/image_raw" to="$(arg cam_name)/image_raw" />
+    <remap from="/set_camera_info" to="$(arg cam_name)/set_camera_info" />
+  </node>
+</launch>
