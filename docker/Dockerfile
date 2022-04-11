@@ -67,7 +67,6 @@ RUN mkdir -p external_catkin_ws/src && \
     git clone https://github.com/autonomylab/create_robot.git -b melodic && \
     cd /root/external_catkin_ws && \
     rm -r src/create_robot/create_bringup && \
-    rm -r src/create_robot/create_description && \
     rm -r src/create_robot/create_driver && \
     rm -r src/create_robot/create_robot && \
     rosdep update && \
