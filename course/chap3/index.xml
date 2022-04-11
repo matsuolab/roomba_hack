@@ -1,1 +1,357 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chapter 3 | ロボットシステム入門</title><link>https://matsuolab.github.io/roomba_hack/course/chap3/</link><atom:link href="https://matsuolab.github.io/roomba_hack/course/chap3/index.xml" rel="self" type="application/rss+xml"/><description>Chapter 3</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ja</language><copyright>© 2022 Tokyo Robot And Intelligence Lab (TRAIL)</copyright><lastBuildDate>Sun, 09 Sep 2018 00:00:00 +0000</lastBuildDate><image><url>https://matsuolab.github.io/roomba_hack/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url><title>Chapter 3</title><link>https://matsuolab.github.io/roomba_hack/course/chap3/</link></image></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chapter 3 | ロボットシステム入門</title><link>https://matsuolab.github.io/roomba_hack/course/chap3/</link><atom:link href="https://matsuolab.github.io/roomba_hack/course/chap3/index.xml" rel="self" type="application/rss+xml"/><description>Chapter 3</description><generator>Wowchemy (https://wowchemy.com)</generator><language>ja</language><copyright>© 2022 Tokyo Robot And Intelligence Lab (TRAIL)</copyright><lastBuildDate>Sun, 09 Sep 2018 00:00:00 +0000</lastBuildDate><image><url>https://matsuolab.github.io/roomba_hack/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url><title>Chapter 3</title><link>https://matsuolab.github.io/roomba_hack/course/chap3/</link></image><item><title>ロボットシステムにおけるセンシング・アクチュエーション・通信②</title><link>https://matsuolab.github.io/roomba_hack/course/chap3/sensing2/</link><pubDate>Tue, 05 Apr 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap3/sensing2/</guid><description>&lt;p>複数のセンサを組み合わせてよりかしこくロボットを動かしてみよう&lt;/p>
+&lt;h2 id="learn">Learn&lt;/h2>
+&lt;p>&lt;a href="../../chap2/sensing1/#%e6%bc%94%e7%bf%92">前回の演習&lt;/a>では，速度と時間の指令を使ってロボットを制御しました．&lt;/p>
+&lt;p>周囲に障害物が何もない状況や，ロボットの滑りがない環境では，速度と時間のコマンドを使って思った通りにロボットを動かすことができるかもしれませんが，実環境では，ロボットの周囲には障害物が存在しますし，移動距離で制御する方が直感的です．&lt;/p>
+&lt;p>前回の演習のようにロボットに速度と時間を一回与えて，その通りに動かすようなフィードフォワード制御ではなく，今回は，ロボットが逐次的にセンサの情報を反映して振る舞いを変える&lt;mark>フィードバック制御&lt;/mark>を行なってみましょう．&lt;/p>
+&lt;h3 id="オドメトリのセンサ情報を使ってロボットを動かしてみよう">オドメトリのセンサ情報を使ってロボットを動かしてみよう&lt;/h3>
+&lt;p>まずは，ロボットのタイヤの回転量から計算される移動距離である&lt;mark>オドメトリ（odometry）&lt;/mark>を使った制御をしてみましょう．&lt;/p>
+&lt;h4 id="オドメトリのメッセージodomの中身を見てみよう">オドメトリのメッセージ（&lt;code>/odom&lt;/code>）の中身を見てみよう&lt;/h4>
+&lt;p>roombaのオドメトリの情報は，&lt;code>/odom&lt;/code>トピックにpublishされています．&lt;/p>
+&lt;p>&lt;code>rostopic echo /odom&lt;/code>をしてみるとメッセージとしてどんな情報が流れているかわかります．
+&lt;details class="spoiler " id="spoiler-2">
+&lt;summary>&lt;code>rostopic echo -n 1 /odom&lt;/code>&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-bash">root@dynamics:~/roomba_hack# rostopic echo -n 1 /odom
+header:
+seq: 2115
+stamp:
+secs: 1649692132
+nsecs: 791056254
+frame_id: &amp;quot;odom&amp;quot;
+child_frame_id: &amp;quot;base_footprint&amp;quot;
+pose:
+pose:
+position:
+x: -0.014664691872894764
+y: -0.0010878229513764381
+z: 0.0
+orientation:
+x: 0.0
+y: 0.0
+z: 0.0056752621080531414
+w: 0.9999838955703261
+covariance: [0.08313143998384476, 0.00019857974257320166, 0.0, 0.0, 0.0, 0.004368376452475786, 0.00019857988809235394, 0.015032557770609856, 0.0, 0.0, 0.0, -0.26573312282562256, 0.0, 0.0, 1e-05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1e-05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1e-05, 0.0, 0.0043683769181370735, -0.26573312282562256, 0.0, 0.0, 0.0, 6.021446704864502]
+twist:
+twist:
+linear:
+x: 0.0
+y: 0.0
+z: 0.0
+angular:
+x: 0.0
+y: 0.0
+z: 0.0
+covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1e-05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1e-05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1e-05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+---
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>&lt;/p>
+&lt;p>&lt;code>rostopic type /odom&lt;/code>をしてみると，メッセージとして，&lt;code>nav_msgs/Odometry&lt;/code>型が使われていることがわかります．
+&lt;details class="spoiler " id="spoiler-3">
+&lt;summary>&lt;code>rostopic type /odom&lt;/code>&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-bash">root@dynamics:~/roomba_hack# rostopic type /odom
+nav_msgs/Odometry
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>&lt;/p>
+&lt;p>&lt;code>nav_msgs/Odometry&lt;/code>型の&lt;a href="http://docs.ros.org/en/noetic/api/nav_msgs/html/msg/Odometry.html" target="_blank" rel="noopener">ドキュメント&lt;/a>を確認してみると，このメッセージは&lt;code>pose&lt;/code>と&lt;code>twist&lt;/code>で構成されていることがわかります．&lt;/p>
+&lt;p>&lt;code>pose&lt;/code>は．（&lt;code>child_frame&lt;/code>から見た）ロボットの推定姿勢（位置と回転角）を表していて，&lt;code>covariance&lt;/code>にはその不確かさを表す共分散が記録されています．&lt;/p>
+&lt;p>一方，&lt;code>twist&lt;/code>は，（&lt;code>child_frame&lt;/code>から見た）ロボットの速度を表していて，&lt;code>pose&lt;/code>と同様に&lt;code>covariance&lt;/code>にはその不確かさを表す共分散が記録されています．&lt;/p>
+&lt;p>なお，メッセージ型の定義は，&lt;code>rosmsg info nav_msgs/Odometry&lt;/code>することでもコマンドから確認できます．
+&lt;details class="spoiler " id="spoiler-4">
+&lt;summary>&lt;code>rosmsg info nav_msgs/Odometry&lt;/code>&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-bash">root@dynamics:~/roomba_hack# rosmsg info nav_msgs/Odometry
+std_msgs/Header header
+uint32 seq
+time stamp
+string frame_id
+string child_frame_id
+geometry_msgs/PoseWithCovariance pose
+geometry_msgs/Pose pose
+geometry_msgs/Point position
+float64 x
+float64 y
+float64 z
+geometry_msgs/Quaternion orientation
+float64 x
+float64 y
+float64 z
+float64 w
+float64[36] covariance
+geometry_msgs/TwistWithCovariance twist
+geometry_msgs/Twist twist
+geometry_msgs/Vector3 linear
+float64 x
+float64 y
+float64 z
+geometry_msgs/Vector3 angular
+float64 x
+float64 y
+float64 z
+float64[36] covariance
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>&lt;/p>
+&lt;h4 id="クォータニオンquaternion">クォータニオン(quaternion)&lt;/h4>
+&lt;p>さて，&lt;code>/odom&lt;/code>のトピックでは，ロボットの回転角は&lt;mark>クォータニオン（quaternion）&lt;/mark>で記述されています．&lt;/p>
+&lt;p>クォータニオンは，日本語では四元数と呼ばれ，3次元空間上での回転角を表現する方法の一つで，4つの要素を持つベクトルで表現されます．&lt;/p>
+&lt;p>クォータニオンによる3次元回転の表現は，角度を連続的にかつ簡潔に表現できるためROSではよく用いられます（その他には，オイラー角による表現や回転行列による表現があります）．&lt;/p>
+&lt;p>それぞれの回転角に関する表現のメリット・デメリットを調べてみましょう（「ジンバルロック」などのキーワードで調べるとよりよく理解できると思います）．&lt;/p>
+&lt;p>クォータニオンからオイラー角へは，&lt;code>tf&lt;/code>パッケージの&lt;code>tf.transformations.euler_from_quaternion&lt;/code>を使うことで変換できます（&lt;a href="http://docs.ros.org/en/jade/api/tf/html/python/transformations.html#tf.transformations.euler_from_quaternion" target="_blank" rel="noopener">ドキュメント&lt;/a>）．&lt;/p>
+&lt;h4 id="サブスクライバsubscriberの仕組みを知ろう">サブスクライバ（subscriber)の仕組みを知ろう&lt;/h4>
+&lt;p>それでは，オドメトリ&lt;code>/odom&lt;/code>の情報を使った制御の実装の例として&lt;code>navigation_tutorial&lt;/code>パッケージの中の&lt;code>simple_control2.py&lt;/code>を見てみましょう（&lt;a href="https://github.com/matsuolab/roomba_hack/blob/master/catkin_ws/src/navigation_tutorial/scripts/simple_control2.py" target="_blank" rel="noopener">github&lt;/a>）．&lt;/p>
+&lt;p>前回までに強調されてきた通り，ROSは非同期分散のシステムを簡単に作ることができるのが特徴です．
+そのため，ロボットから非同期に送られてくる&lt;code>/odom&lt;/code>の情報をうまく扱うことが重要です．&lt;/p>
+&lt;p>実装例にあるように，Pythonによるノードの実装では，クラスとして定義するのがわかりやすい方法でしょう．&lt;/p>
+&lt;p>実装例では，&lt;code>SimpleControlller&lt;/code>クラスとして，&lt;code>simple_controller&lt;/code>というノードを定義しています．
+以下のように，ノードを初期化する際に，コマンドを&lt;code>/cmd_vel&lt;/code>トピックに送信するパブリッシャ（publisher)と，&lt;code>/odom&lt;/code>を受信するサブスクライバ(subscriber)を作成しています．&lt;/p>
+&lt;pre>&lt;code class="language-python">class SimpleController:
+def __init__(self):
+rospy.init_node('simple_controller', anonymous=True)
+# Publisher
+self.cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+# Subscriber
+odom_sub = rospy.Subscriber('/odom', Odometry, self.callback_odom)
+self.x = None
+self.y = None
+self.yaw = None
+while self.x is None:
+rospy.sleep(0.1)
+&lt;/code>&lt;/pre>
+&lt;p>パブリッシャの使い方は前回の&lt;code>simple_control.py&lt;/code>の&lt;a href="https://github.com/matsuolab/roomba_hack/blob/master/catkin_ws/src/navigation_tutorial/scripts/simple_control.py" target="_blank" rel="noopener">実装&lt;/a>を確認してください．&lt;/p>
+&lt;p>パブリッシャと同様に，サブスクライバは&lt;code>rospy&lt;/code>の&lt;code>Subscriber&lt;/code>を用いて作成できます．
+サブスクライバの特徴として，メッセージを受信した時の処理である&lt;mark>コールバック（callback）&lt;/mark>を定義できます．&lt;/p>
+&lt;p>この実装例では，&lt;code>self.callback_odom&lt;/code>として定義されており，インスタンスの属性（&lt;code>self.x&lt;/code>, &lt;code>self.y&lt;/code>, &lt;code>self.yaw&lt;/code>）を，受信したメッセージで変更するようなプログラムになっています．&lt;/p>
+&lt;pre>&lt;code class="language-python"> def callback_odom(self, data):
+self.x = data.pose.pose.position.x
+self.y = data.pose.pose.position.y
+self.yaw = self.get_yaw_from_quaternion(data.pose.pose.orientation)
+&lt;/code>&lt;/pre>
+&lt;p>つまり，&lt;code>self.x&lt;/code>には&lt;code>/odom&lt;/code>から受信した位置のx座標，&lt;code>self.y&lt;/code>には位置のy座標，&lt;code>self.yaw&lt;/code>には，回転角のyawを格納しています．&lt;/p>
+&lt;p>クォータニオンとして受信した姿勢の回転角のyaw成分を取り出すための&lt;code>self.get_yaw_from_quaternion&lt;/code>は以下のようになっています（オイラー角はroll, pitch, yawの順で返ってくるので&lt;code>e[2]&lt;/code>でyawを取得しています）．&lt;/p>
+&lt;pre>&lt;code class="language-python"> def get_yaw_from_quaternion(self, quaternion):
+e = tf.transformations.euler_from_quaternion(
+(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
+return e[2]
+&lt;/code>&lt;/pre>
+&lt;p>これらのセンサの値を使うことで，以下のように，指定した距離ロボットが移動するまで直進させ続けたり，指定した角度までロボットが回転するまで回転させ続けることができるようになります．&lt;/p>
+&lt;p>直進&lt;/p>
+&lt;pre>&lt;code class="language-python"> def go_straight(self, dis, velocity=0.3):
+vel = Twist()
+x0 = self.x
+y0 = self.y
+while(np.sqrt((self.x-x0)**2+(self.y-y0)**2)&amp;lt;dis):
+vel.linear.x = velocity
+vel.angular.z = 0.0
+self.cmd_vel_pub.publish(vel)
+rospy.sleep(0.1)
+self.stop()
+&lt;/code>&lt;/pre>
+&lt;p>右回転&lt;/p>
+&lt;pre>&lt;code class="language-python"> def turn_right(self, yaw, yawrate=-0.5):
+vel = Twist()
+yaw0 = self.yaw
+while(abs(self.yaw-yaw0)&amp;lt;np.deg2rad(yaw)):
+vel.linear.x = 0.0
+vel.angular.z = yawrate
+self.cmd_vel_pub.publish(vel)
+rospy.sleep(0.1)
+self.stop()
+&lt;/code>&lt;/pre>
+&lt;p>左回転&lt;/p>
+&lt;pre>&lt;code class="language-python"> def turn_left(self, yaw, yawrate=0.5):
+vel = Twist()
+yaw0 = self.yaw
+while(abs(self.yaw-yaw0)&amp;lt;np.deg2rad(yaw)):
+vel.linear.x = 0.0
+vel.angular.z = yawrate
+self.cmd_vel_pub.publish(vel)
+rospy.sleep(0.1)
+self.stop()
+&lt;/code>&lt;/pre>
+&lt;p>それでは，オドメトリを使って実際にロボットを制御してみましょう．&lt;/p>
+&lt;h2 id="演習">演習&lt;/h2>
+&lt;details class="spoiler " id="spoiler-7">
+&lt;summary>【jetson・開発マシン】ブランチをmaster切り替えて最新の状態にする&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-shell">cd roomba_hack
+git fetch
+git checkout master
+git pull master
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-8">
+&lt;summary>【jetson・開発マシン】それぞれdockerコンテナを起動&lt;/summary>
+&lt;p>&lt;p>注：前回との間に仕様が変わりました（簡単になりました）．
+以下のコマンドの&lt;code>&amp;lt;&amp;lt;IP ADDRESS&amp;gt;&amp;gt;&lt;/code>の部分を自分のroomba（jetson）のIPアドレスに変更して起動してください（例：192.168.10.70）．&lt;/p>
+&lt;pre>&lt;code class="language-shell">cd roomba_hack
+./RUN-DOCKER-CONTAINER.sh &amp;lt;&amp;lt;IP ADDRESS&amp;gt;&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-9">
+&lt;summary>【jetson・開発マシン】ビルドをしてパスを通す&lt;/summary>
+&lt;p>&lt;p>try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧&lt;code>rospack list&lt;/code>に追加されているかを確認してみよう&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) cd catkin_ws
+(docker) catkin_make
+(docker) source ./devel/setup.bash
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-10">
+&lt;summary>【jetson】ROSマスタ、各種ノードを起動&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-shell">(docker) roslaunch roomba_bringup bringup.launch
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;h3 id="rosメッセージの可視化">ROSメッセージの可視化&lt;/h3>
+&lt;details class="spoiler " id="spoiler-11">
+&lt;summary>【開発PC】topicの確認&lt;/summary>
+&lt;p>&lt;p>&lt;code>/odom&lt;/code>の型を確認&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rostopic type /odom
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>/odom&lt;/code>の中身を確認&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rostopic echo /odom
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-12">
+&lt;summary>オドメトリを使ったフィードバック制御&lt;/summary>
+&lt;p>&lt;p>&lt;code>simple_control2.py&lt;/code>を実行してみよう．&lt;/p>
+&lt;p>このプログラムを動かすときには，コントローラの&lt;code>Y&lt;/code>ボタンを押してから&lt;code>B&lt;/code>ボタンを押して&lt;code>auto&lt;/code>モードにしておきましょう．&lt;/p>
+&lt;p>1メートルほど前に進んだあと，左に90度程度旋回し，右に90度程度旋回したら成功です．&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rosrun navigation_tutorial simple_control2.py
+&lt;/code>&lt;/pre>
+&lt;p>try it! &lt;code>simple_control2.py&lt;/code>の中身を読んでコードを変更してみよう&lt;/p>
+&lt;/p>
+&lt;/details></description></item><item><title>ロボットシステムにおけるセンシング・アクチュエーション・通信③</title><link>https://matsuolab.github.io/roomba_hack/course/chap3/sensing3/</link><pubDate>Tue, 05 Apr 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap3/sensing3/</guid><description>&lt;p>複数のセンサを組み合わせてよりかしこくロボットを動かしてみよう&lt;/p>
+&lt;h2 id="learn">Learn&lt;/h2>
+&lt;h3 id="lidarのスキャンデータを使って障害物を回避してみよう">LiDARのスキャンデータを使って，障害物を回避してみよう&lt;/h3>
+&lt;p>次に，LiDARでスキャンしたデータを使って，障害物を回避するようなプログラムを作ってみましょう．&lt;/p>
+&lt;h4 id="lidarスキャンのメッセージscanの中身を見てみよう">LiDARスキャンのメッセージ（&lt;code>/scan&lt;/code>）の中身を見てみよう&lt;/h4>
+&lt;p>LiDARは，Light Detection And Rangingの略で，レーザ光を使って離れた場所にある物体形状や距離を測定するためのセンサです．
+近年では，自動車の自動運転にも用いられることの多いセンサの一つです．&lt;/p>
+&lt;p>roombaに搭載されたLiDARセンサ（rplidar）の値は，&lt;code>/scan&lt;/code>のトピックに流れていて，&lt;code>rostopic echo /scan&lt;/code>をしてみるとメッセージとしてどんな情報が流れているかわかります．&lt;/p>
+&lt;p>大きなデータなので今回はテキストに掲載するのは省略しますが，&lt;code>rostopic type /scan&lt;/code>をしてみると，メッセージとして，&lt;code>sensor_msgs/LaserScan&lt;/code>型が使われていることがわかります．
+&lt;details class="spoiler " id="spoiler-0">
+&lt;summary>&lt;code>rostopic type /scan&lt;/code>&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-bash">root@dynamics:~/roomba_hack# rostopic type /scan
+sensor_msgs/LaserScan
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>&lt;/p>
+&lt;p>&lt;code>sensor_msgs/LaserScan&lt;/code>型の定義を確認してみましょう．
+メッセージ型の定義は，&lt;a href="http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/LaserScan.html" target="_blank" rel="noopener">ドキュメント&lt;/a>のほか，&lt;code>rosmsg info sensor_msgs/LaserScan&lt;/code>することでもコマンドから確認できます．
+&lt;details class="spoiler " id="spoiler-1">
+&lt;summary>&lt;code>rosmsg info sensor_msgs/LaserScan&lt;/code>&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-bash">root@dynamics:~/roomba_hack# rosmsg info sensor_msgs/LaserScan
+std_msgs/Header header
+uint32 seq
+time stamp
+string frame_id
+float32 angle_min
+float32 angle_max
+float32 angle_increment
+float32 time_increment
+float32 scan_time
+float32 range_min
+float32 range_max
+float32[] ranges
+float32[] intensities
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>&lt;/p>
+&lt;p>&lt;code>angle_min&lt;/code>にはスキャンの開始角度，&lt;code>angle_max&lt;/code>にはスキャンの終了角度がラジアンで記録されています．
+&lt;code>angle_increment&lt;/code>は，計測した間隔がラジアンで記録されています．
+&lt;code>range_max&lt;/code>にはスキャンの間で検出された最大の距離，&lt;code>range_min&lt;/code>には最小の距離がメートルで記録されています．&lt;/p>
+&lt;h4 id="rvizでlidarスキャンの値を可視化してみよう">rvizでLiDARスキャンの値を可視化してみよう&lt;/h4>
+&lt;p>rvizでLiDARのスキャン結果を可視化してみましょう．&lt;/p>
+&lt;p>&lt;code>LaserScan&lt;/code>をAddして，&lt;code>topic&lt;/code>に&lt;code>/scan&lt;/code>を設定すると，以下のように，ロボットを中心にLiDARによって計測された障害物が赤く表示されます．&lt;/p>
+&lt;figure id="figure-lidarスキャンをrvizで可視化">
+&lt;div class="d-flex justify-content-center">
+&lt;div class="w-100" >&lt;img src="../lidar_scan.png" alt="LiDARスキャンをrvizで可視化" loading="lazy" data-zoomable />&lt;/div>
+&lt;/div>&lt;figcaption>
+LiDARスキャンをrvizで可視化
+&lt;/figcaption>&lt;/figure>
+&lt;h4 id="lidarを使って障害物を回避しよう">LiDARを使って障害物を回避しよう&lt;/h4>
+&lt;p>それでは，LiDARスキャン&lt;code>/scen&lt;/code>の情報を使った制御の実装の例として&lt;code>navigation_tutorial&lt;/code>パッケージの中の&lt;code>avoidance.py&lt;/code>を見てみましょう（&lt;a href="https://github.com/matsuolab/roomba_hack/blob/master/catkin_ws/src/navigation_tutorial/scripts/avoidance.py" target="_blank" rel="noopener">github&lt;/a>）．&lt;/p>
+&lt;p>このプログラムでは，LiDARを使って進行方向に存在する障害物を見つけ，それを回避しながら進むようにロボットを制御しています．具体的には，&lt;/p>
+&lt;ul>
+&lt;li>ロボットの進行方向に物体がなかったら直進&lt;/li>
+&lt;li>ロボットの右側に障害物があったら左回転&lt;/li>
+&lt;li>ロボットの左側に障害物があったら右回転&lt;/li>
+&lt;/ul>
+&lt;p>することで障害物を回避（ぶつかる前に方向転換）しています．&lt;/p>
+&lt;p>では，プログラムの中身を見ていきます．&lt;/p>
+&lt;p>&lt;a href="../sensing2/">&lt;code>/odom&lt;/code>を使った制御の場合&lt;/a>と同様に，ノードを定義する際に，コマンドを送るパブリッシャと，LiDARスキャンのデータを読み取るサブスクライバを作成します．&lt;/p>
+&lt;pre>&lt;code class="language-python">class Avoidance:
+def __init__(self):
+rospy.init_node('avoidance', anonymous=True)
+# Publisher
+self.cmd_vel_pub = rospy.Publisher('/planner/cmd_vel', Twist, queue_size=10)
+# Subscriber
+scan_sub = rospy.Subscriber('/scan', LaserScan, self.callback_scan)
+self.min_range = None
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>/scan&lt;/code>のコールバックは，&lt;/p>
+&lt;pre>&lt;code class="language-python"> def callback_scan(self, data):
+fov = np.deg2rad(60)
+min_range = data.range_max
+min_idx = -1
+angle = data.angle_min
+for idx, r in enumerate(data.ranges):
+angle += data.angle_increment
+if -fov&amp;lt;angle&amp;lt;fov:
+if r&amp;lt;min_range:
+min_range = r
+min_idx = idx
+if min_idx &amp;lt; len(data.ranges)/2.0:
+self.direction = &amp;quot;RIGHT&amp;quot;
+else:
+self.direction = &amp;quot;LEFT&amp;quot;
+self.min_range = min_range
+&lt;/code>&lt;/pre>
+&lt;p>となっており，正面から左右60度の範囲内で最も短い距離を&lt;code>self.min_range&lt;/code>に格納し，それが右側にあるのか左側にあるのかを&lt;code>self.direction&lt;/code>に格納しています．．&lt;/p>
+&lt;p>このプログラムを実行すると&lt;code>process&lt;/code>メソッドが（0.1秒おきに）常に実行されます．&lt;/p>
+&lt;pre>&lt;code class="language-python"> def process(self):
+r = rospy.Rate(10)
+while not rospy.is_shutdown():
+vel = Twist()
+if self.min_range is not None:
+if self.min_range &amp;gt;= 0.4:
+vel.linear.x = 0.2
+vel.angular.z = 0.0
+else:
+vel.linear.x = 0.0
+if self.direction == &amp;quot;RIGHT&amp;quot;:
+vel.angular.z = 0.5
+elif self.direction == &amp;quot;LEFT&amp;quot;:
+vel.angular.z = -0.5
+self.cmd_vel_pub.publish(vel)
+rospy.sleep(0.1)
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>process&lt;/code>メソッド内部では，格納された&lt;code>self.min_range&lt;/code>が0.4（メートル）より大きい場合は，ロボットの前に何もないと判断して直進，小さい場合は，&lt;code>self.direction&lt;/code>の値を見て，&lt;code>RIGHT&lt;/code>であれば右に障害物があると判断して左回転，&lt;code>LEFT&lt;/code>であれば左に障害物があると判断して右回転するようなプログラムになっています．&lt;/p>
+&lt;p>それでは，実際にLiDARを使って障害物を回避するプログラムを実行してみましょう．&lt;/p>
+&lt;h2 id="演習">演習&lt;/h2>
+&lt;h3 id="rosメッセージの可視化">ROSメッセージの可視化&lt;/h3>
+&lt;details class="spoiler " id="spoiler-3">
+&lt;summary>【開発PC】topicの確認&lt;/summary>
+&lt;p>&lt;p>&lt;code>/scan&lt;/code>の型を確認&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rostopic type /scan
+&lt;/code>&lt;/pre>
+&lt;p>&lt;code>/scan&lt;/code>の中身を確認&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) rostopic echo /scan
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-4">
+&lt;summary>LiDARスキャンを使ったフィードバック制御&lt;/summary>
+&lt;p>&lt;p>&lt;code>avoidance.py&lt;/code>を実行してみよう．&lt;/p>
+&lt;p>このプログラムを動かすときには，コントローラの&lt;code>Y&lt;/code>ボタンを押してから&lt;code>B&lt;/code>ボタンを押して&lt;code>auto&lt;/code>モードにしておきましょう．&lt;/p>
+&lt;p>今回はせっかくなので，launchfileから起動してみましょう．s
+このlaunchfileは，&lt;code>navigation_tutorial&lt;/code>パッケージの中の&lt;code>launch&lt;/code>フォルダの中にある&lt;code>avoidance.launch&lt;/code>に記述されています（&lt;a href="https://github.com/matsuolab/roomba_hack/blob/master/catkin_ws/src/navigation_tutorial/launch/avoidance.launch">github&lt;/a>）．&lt;/p>
+&lt;pre>&lt;code class="language-shell">(docker) roslaunch navigation_tutorial avoidance
+&lt;/code>&lt;/pre>
+&lt;p>ロボットの進行方向に障害物があるときに，それを避けるように方向転換したら成功です．&lt;/p>
+&lt;p>try it! &lt;code>avoidance.py&lt;/code>の中身を読んでコードを変更してみよう&lt;/p>
+&lt;/p>
+&lt;/details></description></item></channel></rss>
