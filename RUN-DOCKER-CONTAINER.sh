@@ -29,7 +29,7 @@ else
                      sed -i 's/noetic/melodic/' ~/.bashrc;
                      sed -i 's/noetic/melodic/' ~/scripts/initialize-bash-shell.sh;
                      source /root/.bashrc;
-                     roslaunch roomba_bringup bringup.launch"
+                     bash"
     else
         xhost +
         docker run -it --rm \
