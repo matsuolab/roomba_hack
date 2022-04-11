@@ -2,7 +2,7 @@
 title: ロボットシステムにおけるセンシング・アクチュエーション・通信②
 date: '2022-04-05'
 type: book
-weight: 21
+weight: 20
 ---
 
 複数のセンサを組み合わせてよりかしこくロボットを動かしてみよう
@@ -227,10 +227,9 @@ class SimpleController:
         self.stop()
 ```
 
-それでは，
+それでは，オドメトリを使って実際にロボットを制御してみましょう．
 
-
-## 演習 ①
+## 演習
 
 {{< spoiler text="【jetson・開発マシン】ブランチをmaster切り替えて最新の状態にする" >}}
 ```shell
@@ -288,7 +287,13 @@ try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧
 {{< spoiler text="オドメトリを使ったフィードバック制御" >}}
 
 
-`simple_control2.py`を実行してみよう
+`simple_control2.py`を実行してみよう．
+
+このプログラムを動かすときには，コントローラの`Y`ボタンを押してから`B`ボタンを押して`auto`モードにしておきましょう．
+
+1メートルほど前に進んだあと，左に90度程度旋回し，右に90度程度旋回したら成功です．
+
+
 
 ```shell
 (docker) rosrun navigation_tutorial simple_control2.py
