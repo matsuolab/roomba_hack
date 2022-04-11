@@ -7,7 +7,7 @@ DOCKERFILE_NAME=Dockerfile
 
 dpkg -s nvidia-container-runtime > /dev/null 2>&1
 if [ ! $? -eq 0 ];then
-    BASE_IMAGE=20.04
+    BASE_IMAGE=ubuntu:20.04
 elif [ "$(uname -m)" == "aarch64" ]; then
     echo "Build docker image for jetson"
     DOCKERFILE_NAME=Dockerfile.jetson
