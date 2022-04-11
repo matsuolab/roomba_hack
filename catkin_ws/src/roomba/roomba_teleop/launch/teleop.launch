@@ -1,7 +1,14 @@
 <?xml version="1.0"?>
 <launch>
+  <arg name="max_speed" default="0.5"/>
+  <arg name="max_yawrate" default="1.0"/>
+  <arg name="vel_ratio" default="0.5"/>
   <!-- joy -->
   <node pkg="joy" type="joy_node" name="joy"/>
-  <node pkg="roomba_teleop" type="teleop_twist_joy" name="teleop_twist_joy"/>
+  <node pkg="roomba_teleop" type="roomba_teleop" name="roomba_teleop" output="screen">
+    <param name="MAX_SPEED" value="$(arg max_speed)"/>
+    <param name="MAX_YAWRATE" value="$(arg max_yawrate)"/>
+    <param name="VEL_RATIO" value="$(arg vel_ratio)"/>
+  </node>
 
 </launch>
