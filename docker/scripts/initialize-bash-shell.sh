@@ -20,8 +20,8 @@ umask 0002
 ################################################################################
 
 # Source the ROS environment.
-echo "Sourcing the ROS environment from '/opt/ros/melodic/setup.bash'."
-source /opt/ros/melodic/setup.bash
+echo "Sourcing the ROS environment from '/opt/ros/noetic/setup.bash'."
+source /opt/ros/noetic/setup.bash
 
 # Source the Catkin workspace.
 echo "Sourcing the Catkin workspace from '/root/roomba_hack/catkin_ws/devel/setup.bash'."
@@ -42,8 +42,9 @@ echo "ROS_IP is set to '${ROS_IP}'."
 
 export ROS_HOME=~/.ros
 
+export ROS_MASTER_URI=http://TMP_IP:11311
+
 alias sim_mode='export ROS_MASTER_URI=http://localhost:11311; export PS1="\[[44;1;37m\]<local>\[[0m\]\w$ "'
-alias roomba_mode='export ROS_MASTER_URI=http://TMP_IP:11311; export PS1="\[[41;1;37m\]<roomba>\[[0m\]\w$ "'
 
 ################################################################################
 

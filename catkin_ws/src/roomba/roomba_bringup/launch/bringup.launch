@@ -21,4 +21,7 @@
         <param name="frame_id" value="laser"/>
     </node>
 
+    <!-- csi camera -->
+    <include file="$(find roomba_bringup)/launch/jetson_csi_cam.launch">
+    </include>
 </launch>

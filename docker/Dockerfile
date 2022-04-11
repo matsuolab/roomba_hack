@@ -1,8 +1,8 @@
-ARG nvidia_cudagl_version=11.1.1-devel-ubuntu18.04
-ARG ros_distro=melodic
-ARG python_version=python
+ARG BASE_IMAGE=nvidia/cudagl:11.1.1-devel-ubuntu18.04
+ARG ros_distro=noetic
+ARG python_version=python3
 
-FROM nvidia/cudagl:${nvidia_cudagl_version}
+FROM ${BASE_IMAGE}
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -13,6 +13,8 @@ RUN apt-get update -y && \
         wget \
         curl \
         git \
+        gnupg2 \
+        ca-certificates \
         lsb-release && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -24,7 +26,6 @@ ENV ROS_DISTRO=${ros_distro}
 ### Setup source.list
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 ### Setup keys
-RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 ###  Install ros-${ROS_DISTRO}-base
 RUN apt-get update -y && \
@@ -54,6 +55,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         ros-${ROS_DISTRO}-navigation \
         ros-${ROS_DISTRO}-usb-cam \
+        ros-${ROS_DISTRO}-joy \
         ros-${ROS_DISTRO}-rplidar-ros && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -62,8 +64,12 @@ RUN apt-get update && \
 WORKDIR /root
 RUN mkdir -p external_catkin_ws/src && \
     cd external_catkin_ws/src && \
-    git clone https://github.com/autonomylab/create_robot.git -b ${ROS_DISTRO}&& \
+    git clone https://github.com/autonomylab/create_robot.git -b melodic && \
     cd /root/external_catkin_ws && \
+    rm -r src/create_robot/create_bringup && \
+    rm -r src/create_robot/create_description && \
+    rm -r src/create_robot/create_driver && \
+    rm -r src/create_robot/create_robot && \
     rosdep update && \
     apt-get update && \
     rosdep install --from-paths src -i -r -y && \

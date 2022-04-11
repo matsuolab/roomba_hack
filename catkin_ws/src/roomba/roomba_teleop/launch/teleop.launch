@@ -3,6 +3,7 @@
   <arg name="max_speed" default="0.5"/>
   <arg name="max_yawrate" default="1.0"/>
   <arg name="vel_ratio" default="0.5"/>
+  <arg name="rviz" default="true"/>
   <!-- joy -->
   <node pkg="joy" type="joy_node" name="joy"/>
   <node pkg="roomba_teleop" type="roomba_teleop" name="roomba_teleop" output="screen">
@@ -10,5 +11,7 @@
     <param name="MAX_YAWRATE" value="$(arg max_yawrate)"/>
     <param name="VEL_RATIO" value="$(arg vel_ratio)"/>
   </node>
+
+  <node pkg="rviz" type="rviz" name="roomba_rviz" if="$(arg rviz)" args="-d $(find roomba_bringup)/config/roomba.rviz"/>
 
 </launch>
