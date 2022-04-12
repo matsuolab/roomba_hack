@@ -176,6 +176,7 @@ self.stop()
 git fetch
 git checkout master
 git pull master
+./BUILD-DOCKER-IMAGE.sh
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
