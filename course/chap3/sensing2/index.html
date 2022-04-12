@@ -129,7 +129,7 @@ geometry_msgs/TwistWithCovariance twist
 </code></pre><p>それでは，オドメトリを使って実際にロボットを制御してみましょう．</p><h2 id=演習>演習</h2><details class=spoiler id=spoiler-7><summary>【jetson・開発マシン】ブランチをmaster切り替えて最新の状態にする</summary><p><pre><code class=language-shell>cd roomba_hack
 git fetch
 git checkout master
-git pull master
+git pull origin master
 ./BUILD-DOCKER-IMAGE.sh
 </code></pre></p></details><details class=spoiler id=spoiler-8><summary>【jetson・開発マシン】それぞれdockerコンテナを起動</summary><p><p>注：前回との間に仕様が変わりました（簡単になりました）．
 以下のコマンドの<code>&lt;&lt;IP ADDRESS>></code>の部分を自分のroomba（jetson）のIPアドレスに変更して起動してください（例：192.168.10.70）．</p><pre><code class=language-shell>cd roomba_hack

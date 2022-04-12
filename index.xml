@@ -175,7 +175,7 @@ self.stop()
 &lt;p>&lt;pre>&lt;code class="language-shell">cd roomba_hack
 git fetch
 git checkout master
-git pull master
+git pull origin master
 ./BUILD-DOCKER-IMAGE.sh
 &lt;/code>&lt;/pre>
 &lt;/p>
