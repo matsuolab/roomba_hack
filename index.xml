@@ -798,7 +798,7 @@ rospy.sleep(0.1)
 &lt;p>このプログラムを動かすときには，コントローラの&lt;code>Y&lt;/code>ボタンを押してから&lt;code>B&lt;/code>ボタンを押して&lt;code>auto&lt;/code>モードにしておきましょう．&lt;/p>
 &lt;p>今回はせっかくなので，launchfileから起動してみましょう．s
 このlaunchfileは，&lt;code>navigation_tutorial&lt;/code>パッケージの中の&lt;code>launch&lt;/code>フォルダの中にある&lt;code>avoidance.launch&lt;/code>に記述されています（&lt;a href="https://github.com/matsuolab/roomba_hack/blob/master/catkin_ws/src/navigation_tutorial/launch/avoidance.launch">github&lt;/a>）．&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) roslaunch navigation_tutorial avoidance
+&lt;pre>&lt;code class="language-shell">(docker) roslaunch navigation_tutorial avoidance.launch
 &lt;/code>&lt;/pre>
 &lt;p>ロボットの進行方向に障害物があるときに，それを避けるように方向転換したら成功です．&lt;/p>
 &lt;p>try it! &lt;code>avoidance.py&lt;/code>の中身を読んでコードを変更してみよう&lt;/p>
