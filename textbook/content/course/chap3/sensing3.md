@@ -170,7 +170,7 @@ class Avoidance:
 
 
 ```shell
-(docker) roslaunch navigation_tutorial avoidance
+(docker) roslaunch navigation_tutorial avoidance.launch
 ```
 
 ロボットの進行方向に障害物があるときに，それを避けるように方向転換したら成功です．
