@@ -237,6 +237,7 @@ cd roomba_hack
 git fetch
 git checkout master
 git pull master
+./BUILD-DOCKER-IMAGE.sh
 ```
 {{< /spoiler >}}
 
