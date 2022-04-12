@@ -236,7 +236,7 @@ class SimpleController:
 cd roomba_hack
 git fetch
 git checkout master
-git pull master
+git pull origin master
 ./BUILD-DOCKER-IMAGE.sh
 ```
 {{< /spoiler >}}
