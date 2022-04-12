@@ -290,6 +290,11 @@ try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧
 
 `simple_control2.py`を実行してみよう．
 
+開発PCでteleopのコードを実行しましょう
+```shell
+(docker) roslaunch roomba_teleop teleop.launch
+```
+
 このプログラムを動かすときには，コントローラの`Y`ボタンを押してから`B`ボタンを押して`auto`モードにしておきましょう．
 
 1メートルほど前に進んだあと，左に90度程度旋回し，右に90度程度旋回したら成功です．
