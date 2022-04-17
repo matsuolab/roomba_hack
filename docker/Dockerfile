@@ -54,9 +54,8 @@ RUN rosdep init && \
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         ros-${ROS_DISTRO}-navigation \
-        ros-${ROS_DISTRO}-usb-cam \
         ros-${ROS_DISTRO}-joy \
-        ros-${ROS_DISTRO}-rplidar-ros && \
+        ros-${ROS_DISTRO}-gmapping && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
