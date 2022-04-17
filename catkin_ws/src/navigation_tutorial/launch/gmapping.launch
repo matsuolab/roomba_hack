@@ -44,4 +44,6 @@
         <param name="lasamplestep" value="0.005"/>
     </node>
 
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find navigation_tutorial)/configs/navigation.rviz"/>
+
 </launch>
