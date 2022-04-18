@@ -31,7 +31,7 @@
   </link>
 
   <joint name="lidar_base_to_base_link" type="fixed">
-    <origin xyz="-0.08 0 0.09" rpy="0 0 0"/>
+    <origin xyz="0.08 0 0.09" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="lidar_base"/>
   </joint>
