@@ -141,15 +141,25 @@ launchの詳しい書き方は、[rosのドキュメント](http://wiki.ros.org/
 <!-- {{< spoiler text="Dockerfileにamclを追加してBuildする" >}}
 {{< /spoiler >}} -->
 
+{{< spoiler text="(開発PC, jetson)起動準備" >}}
+
+```
+(jetson)./RUN-DOCKER-CONTAINER.sh
+(docker) roslaunch roomba_bringup bringup.launch
+(開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+```
+
+{{< /spoiler >}}
+
 {{< spoiler text="gmappingで地図作成" >}}
 
 ```
-(docker) roslaunch navigation_tutorial gmapping.launch`
+(docker) roslaunch navigation_tutorial gmapping.launch
 ```
 
 地図の保存。map.pgm（画像データ）とmap.yaml(地図情報)が保存される。
 ```
-(docker) roslaunch map_server map_saver`
+(docker) rosrun map_server map_saver
 ```
 `~/roomba_hack/catkin_ws/src/navigation_tutorial/map` の下に保存する。
 
