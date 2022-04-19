@@ -18,10 +18,10 @@
     <rosparam file="$(find navigation_tutorial)/params/global_costmap_params.yaml" command="load" />
 
     <rosparam file="$(find navigation_tutorial)/params/move_base_params.yaml" command="load"/>
-
-    <!-- <rosparam file="$(find navigation_tutorial)/params/dwa_local_planner_params.yaml" command="load" /> -->
-    <rosparam file="$(find navigation_tutorial)/params/base_local_planner_params.yaml" command="load" />
+    <!-- <rosparam file="$(find navigation_tutorial)/params/base_local_planner_params.yaml" command="load" /> -->
+    <rosparam file="$(find navigation_tutorial)/params/dwa_local_planner_params.yaml" command="load" />
     <rosparam file="$(find navigation_tutorial)/params/base_global_planner_params.yaml" command="load" />
+
 
   </node>
 
