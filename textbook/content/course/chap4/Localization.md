@@ -180,6 +180,7 @@ launchの詳しい書き方は、[rosのドキュメント](http://wiki.ros.org/
 localizationノードと地図サーバーを同時に起動。
 ```
 (docker) roslaunch navigation_tutorial localization.launch
+(docker) roslaunch roomba_teleop teleop.launch
 (docker) rviz -d /root/roomba_hack/catkin_ws/src/navigation_tutorial/configs/navigation.rviz
 ```
 - 初期位置の指定(rvizの2D Pose Estimate)
