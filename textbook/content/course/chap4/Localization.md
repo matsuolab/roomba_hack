@@ -141,11 +141,21 @@ launchの詳しい書き方は、[rosのドキュメント](http://wiki.ros.org/
 <!-- {{< spoiler text="Dockerfileにamclを追加してBuildする" >}}
 {{< /spoiler >}} -->
 
+{{< spoiler text="ブランチの切り替え" >}}
+
+```
+(jetson, 開発PC) git fetch
+(jetson, 開発PC) git checkout feature/move-base
+```
+
+{{< /spoiler >}}
+
+
 {{< spoiler text="(開発PC, jetson)起動準備" >}}
 
 ```
 (jetson)./RUN-DOCKER-CONTAINER.sh
-(docker) roslaunch roomba_bringup bringup.launch
+(jetson)(docker) roslaunch roomba_bringup bringup.launch
 (開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
 ```
 
