@@ -135,6 +135,7 @@ launchファイル実行時に引数で指定可能なargや、トピック名�
 &lt;summary>amclをlaunchして、自己位置推定する&lt;/summary>
 &lt;p>&lt;p>localizationノードと地図サーバーを同時に起動。&lt;/p>
 &lt;pre>&lt;code>(docker) roslaunch navigation_tutorial localization.launch
+(docker) roslaunch roomba_teleop teleop.launch
 (docker) rviz -d /root/roomba_hack/catkin_ws/src/navigation_tutorial/configs/navigation.rviz
 &lt;/code>&lt;/pre>
 &lt;ul>
