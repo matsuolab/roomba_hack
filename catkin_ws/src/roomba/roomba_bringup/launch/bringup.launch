@@ -24,4 +24,9 @@
     <!-- csi camera -->
     <include file="$(find roomba_bringup)/launch/jetson_csi_cam.launch">
     </include>
+    
+    <!-- realsense camera -->
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+        <arg name="align_depth" value="true"/>
+    </include>
 </launch>
