@@ -10,9 +10,9 @@ import matplotlib.patches as patches
 import cv2
 import copy
 
-class RealSense:
+class DetectionDistance:
     def __init__(self):
-        rospy.init_node('realsense', anonymous=True)
+        rospy.init_node('detection_distance', anonymous=True)
 
         # Publisher
         self.detection_result_pub = rospy.Publisher('/detection_result', Image, queue_size=10)
@@ -32,7 +32,6 @@ class RealSense:
 
         cv_array = self.bridge.imgmsg_to_cv2(data2, 'passthrough')
         self.depth_image = cv_array
-        print("process")
 
     def process(self):
         path = "/root/roomba_hack/catkin_ws/src/three-dimensions_tutorial/yolov3/"
@@ -69,8 +68,8 @@ class RealSense:
 
 
 if __name__ == '__main__':
-    rs = RealSense()
+    dd = DetectionDistance()
     try:
-        rs.process()
+        dd.process()
     except rospy.ROSInitException:
         pass
