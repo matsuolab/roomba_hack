@@ -302,8 +302,8 @@ depth_image_procのwikiを参考に以下のようなlaunchファイルを作成
 {{< spoiler text="(開発PC)RealSenseのトピックの可視化" >}}
 ```
 (開発PC)(docker) rviz
-`/camera/color/image_raw`と`/camera/depth/image_raw`と`/camera/aligned_depth_to_color/image_raw`を可視化して違いを確認してみよう。
 ```
+`/camera/color/image_raw`と`/camera/depth/image_raw`と`/camera/aligned_depth_to_color/image_raw`を可視化して違いを確認してみよう。
 {{< /spoiler >}}
 
 
@@ -312,7 +312,7 @@ depth_image_procのwikiを参考に以下のようなlaunchファイルを作成
 (開発PC)(docker) cd catkin_ws; catkin_make; source devel/setup.bash
 (開発PC)(docker) roscd dimensions_tutorial; cd yolov3/weights; ./download_weights.sh
 (開発PC)(docker) rosrun three-dimensions_tutorial object_detection.py
-rvizで`/detection_result`を表示し結果を確認
+rvizで`/detection_result`を表示し結果を確認してみよう。
 (開発PC)(docker) rosrun three-dimensions_tutorial detection_distance.py
 ```
 {{< /spoiler >}}
@@ -323,5 +323,7 @@ rvizで`/detection_result`を表示し結果を確認
 (開発PC)(docker) git clone https://github.com/ros-perception/image_pipeline
 (開発PC)(docker) cd ../; catkin build; source devel/setup.bash
 (開発PC)(docker) roslaunch three-dimensions_tutorial depth2pc.launch
+(開発PC)(docker) roslaunch navigation_tutorial navigation.launch
 ```
+rvizで`/camera/depth/points`トピックを追加して確認してみよう。
 {{< /spoiler >}}
