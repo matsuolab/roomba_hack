@@ -72,7 +72,7 @@
   <joint name="realsense_to_base_link" type="fixed">
     <origin xyz="0.05 -0.033 0.045" rpy="0 0 0"/>
     <parent link="lidar_base"/>
-    <child link="realsense"/>
+    <child link="camera_link"/>
   </joint>
 
   <joint name="rplidar_to_base_link" type="fixed">
