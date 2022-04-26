@@ -424,7 +424,7 @@ args=&amp;quot;load depth_image_proc/point_cloud_xyz nodelet_manager&amp;quot;&a
 &lt;details class="spoiler " id="spoiler-1">
 &lt;summary>ブランチの切り替え&lt;/summary>
 &lt;p>&lt;pre>&lt;code>(jetson, 開発PC) git fetch
-(jetson, 開発PC) git checkout feature/move-base
+(jetson, 開発PC) git checkout feature/realsense
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
@@ -434,41 +434,33 @@ args=&amp;quot;load depth_image_proc/point_cloud_xyz nodelet_manager&amp;quot;&a
 (jetson)(docker) roslaunch roomba_bringup bringup.launch
 (開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
 &lt;/code>&lt;/pre>
+&lt;p>&lt;code>roslaunch roomba_bringup bringup.launch&lt;/code>でRealSenseも同時に起動するようになりました。&lt;/p>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-3">
-&lt;summary>gmappingで地図作成&lt;/summary>
-&lt;p>&lt;pre>&lt;code>(docker) roslaunch navigation_tutorial gmapping.launch
+&lt;summary>(開発PC)RealSenseのトピックの可視化&lt;/summary>
+&lt;p>&lt;pre>&lt;code>(開発PC)(docker) rviz
+`/camera/color/image_raw`と`/camera/depth/image_raw`と`/camera/aligned_depth_to_color/image_raw`を可視化して違いを確認してみよう。
 &lt;/code>&lt;/pre>
-&lt;p>地図の保存。map.pgm（画像データ）とmap.yaml(地図情報)が保存される。&lt;/p>
-&lt;pre>&lt;code>(docker) rosrun map_server map_saver
-&lt;/code>&lt;/pre>
-&lt;p>&lt;code>~/roomba_hack/catkin_ws/src/navigation_tutorial/map&lt;/code> の下に保存する。&lt;/p>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-4">
-&lt;summary>amclをlaunchして、自己位置推定する&lt;/summary>
-&lt;p>&lt;p>localizationノードと地図サーバーを同時に起動。&lt;/p>
-&lt;pre>&lt;code>(docker) roslaunch navigation_tutorial localization.launch
-(docker) roslaunch roomba_teleop teleop.launch
-(docker) rviz -d /root/roomba_hack/catkin_ws/src/navigation_tutorial/configs/navigation.rviz
+&lt;summary>(開発PC)物体検出を行う&lt;/summary>
+&lt;p>&lt;pre>&lt;code>(開発PC)(docker) cd catkin_ws; catkin_make; source devel/setup.bash
+(開発PC)(docker) roscd dimensions_tutorial; cd yolov3/weights; ./download_weights.sh
+(開発PC)(docker) rosrun three-dimensions_tutorial object_detection.py
+rvizで`/detection_result`を表示し結果を確認
+(開発PC)(docker) rosrun three-dimensions_tutorial detection_distance.py
 &lt;/code>&lt;/pre>
-&lt;ul>
-&lt;li>初期位置の指定(rvizの2D Pose Estimate)&lt;/li>
-&lt;li>コントローラで移動させてみて自己位置を確認&lt;/li>
-&lt;li>rqt_tf_treeを見てみる&lt;/li>
-&lt;/ul>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-5">
-&lt;summary>amclのparamをチューニングする&lt;/summary>
-&lt;p>&lt;p>launchファイルの中身を見てみて、値を変えてみる。&lt;/p>
-&lt;p>各パラメータの意味は&lt;a href="https://wiki.ros.org/amcl#Parameters">amclのページ&lt;/a>を参照。&lt;/p>
-&lt;p>例えば、・・・&lt;/p>
-&lt;ul>
-&lt;li>initial_cov_**を大きくしてみて、パーティクルがちゃんと収束するかみてみる。&lt;/li>
-&lt;li>particleの数(min_particles、max_particles)を変えてみて挙動をみてみる。&lt;/li>
-&lt;/ul>
+&lt;summary>(開発PC)外部パッケージを使用&lt;/summary>
+&lt;p>&lt;pre>&lt;code>(開発PC)(docker) cd ~/external_catkin_ws/src
+(開発PC)(docker) git clone https://github.com/ros-perception/image_pipeline
+(開発PC)(docker) catkin build; source ../devel/setup.bash
+(開発PC)(docker) roslaunch three-dimensions_tutorial depth2pc.launch
+&lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details></description></item><item><title>自己位置推定</title><link>https://matsuolab.github.io/roomba_hack/course/chap4/localization/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap4/localization/</guid><description>&lt;h2 id="learn">Learn&lt;/h2>
 &lt;p>前回の演習では、オドメトリを用いてロボットを制御しました。&lt;/p>
