@@ -211,8 +211,8 @@ args=&amp;quot;load depth_image_proc/point_cloud_xyz nodelet_manager&amp;quot;&a
 &lt;details class="spoiler " id="spoiler-3">
 &lt;summary>(開発PC)RealSenseのトピックの可視化&lt;/summary>
 &lt;p>&lt;pre>&lt;code>(開発PC)(docker) rviz
-`/camera/color/image_raw`と`/camera/depth/image_raw`と`/camera/aligned_depth_to_color/image_raw`を可視化して違いを確認してみよう。
 &lt;/code>&lt;/pre>
+&lt;p>&lt;code>/camera/color/image_raw&lt;/code>と&lt;code>/camera/depth/image_raw&lt;/code>と&lt;code>/camera/aligned_depth_to_color/image_raw&lt;/code>を可視化して違いを確認してみよう。&lt;/p>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-4">
@@ -220,7 +220,7 @@ args=&amp;quot;load depth_image_proc/point_cloud_xyz nodelet_manager&amp;quot;&a
 &lt;p>&lt;pre>&lt;code>(開発PC)(docker) cd catkin_ws; catkin_make; source devel/setup.bash
 (開発PC)(docker) roscd dimensions_tutorial; cd yolov3/weights; ./download_weights.sh
 (開発PC)(docker) rosrun three-dimensions_tutorial object_detection.py
-rvizで`/detection_result`を表示し結果を確認
+rvizで`/detection_result`を表示し結果を確認してみよう。
 (開発PC)(docker) rosrun three-dimensions_tutorial detection_distance.py
 &lt;/code>&lt;/pre>
 &lt;/p>
@@ -231,6 +231,8 @@ rvizで`/detection_result`を表示し結果を確認
 (開発PC)(docker) git clone https://github.com/ros-perception/image_pipeline
 (開発PC)(docker) cd ../; catkin build; source devel/setup.bash
 (開発PC)(docker) roslaunch three-dimensions_tutorial depth2pc.launch
+(開発PC)(docker) roslaunch navigation_tutorial navigation.launch
 &lt;/code>&lt;/pre>
+&lt;p>rvizで&lt;code>/camera/depth/points&lt;/code>トピックを追加して確認してみよう。&lt;/p>
 &lt;/p>
 &lt;/details></description></item></channel></rss>
