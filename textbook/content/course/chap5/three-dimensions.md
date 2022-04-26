@@ -310,7 +310,7 @@ depth_image_procのwikiを参考に以下のようなlaunchファイルを作成
 {{< spoiler text="(開発PC)物体検出を行う" >}}
 ```
 (開発PC)(docker) cd catkin_ws; catkin_make; source devel/setup.bash
-(開発PC)(docker) roscd dimensions_tutorial; cd yolov3/weights; ./download_weights.sh
+(開発PC)(docker) roscd three-dimensions_tutorial; cd yolov3/weights; ./download_weights.sh
 (開発PC)(docker) rosrun three-dimensions_tutorial object_detection.py
 rvizで`/detection_result`を表示し結果を確認してみよう。
 (開発PC)(docker) rosrun three-dimensions_tutorial detection_distance.py
