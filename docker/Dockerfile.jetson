@@ -33,6 +33,9 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         ros-melodic-joint-state-publisher \
         ros-melodic-usb-cam \
+        ros-melodic-realsense2-camera \
+        ros-melodic-image-transport* \
+        ros-melodic-rgbd-launch \
         ros-melodic-rplidar-ros
 
 # external ROS setting
