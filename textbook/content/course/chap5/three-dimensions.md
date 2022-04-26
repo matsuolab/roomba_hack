@@ -283,7 +283,7 @@ depth_image_procのwikiを参考に以下のようなlaunchファイルを作成
 
 ```
 (jetson, 開発PC) git fetch
-(jetson, 開発PC) git checkout feature/move-base
+(jetson, 開発PC) git checkout feature/realsense
 ```
 
 {{< /spoiler >}}
@@ -296,44 +296,32 @@ depth_image_procのwikiを参考に以下のようなlaunchファイルを作成
 (jetson)(docker) roslaunch roomba_bringup bringup.launch
 (開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
 ```
-
+`roslaunch roomba_bringup bringup.launch`でRealSenseも同時に起動するようになりました。
 {{< /spoiler >}}
 
-{{< spoiler text="gmappingで地図作成" >}}
-
+{{< spoiler text="(開発PC)RealSenseのトピックの可視化" >}}
 ```
-(docker) roslaunch navigation_tutorial gmapping.launch
+(開発PC)(docker) rviz
+`/camera/color/image_raw`と`/camera/depth/image_raw`と`/camera/aligned_depth_to_color/image_raw`を可視化して違いを確認してみよう。
 ```
-
-地図の保存。map.pgm（画像データ）とmap.yaml(地図情報)が保存される。
-```
-(docker) rosrun map_server map_saver
-```
-`~/roomba_hack/catkin_ws/src/navigation_tutorial/map` の下に保存する。
-
 {{< /spoiler >}}
 
-{{< spoiler text="amclをlaunchして、自己位置推定する" >}}
 
-localizationノードと地図サーバーを同時に起動。
+{{< spoiler text="(開発PC)物体検出を行う" >}}
 ```
-(docker) roslaunch navigation_tutorial localization.launch
-(docker) roslaunch roomba_teleop teleop.launch
-(docker) rviz -d /root/roomba_hack/catkin_ws/src/navigation_tutorial/configs/navigation.rviz
+(開発PC)(docker) cd catkin_ws; catkin_make; source devel/setup.bash
+(開発PC)(docker) roscd dimensions_tutorial; cd yolov3/weights; ./download_weights.sh
+(開発PC)(docker) rosrun three-dimensions_tutorial object_detection.py
+rvizで`/detection_result`を表示し結果を確認
+(開発PC)(docker) rosrun three-dimensions_tutorial detection_distance.py
 ```
-- 初期位置の指定(rvizの2D Pose Estimate)
-- コントローラで移動させてみて自己位置を確認
-- rqt_tf_treeを見てみる
-
 {{< /spoiler >}}
 
-{{< spoiler text="amclのparamをチューニングする" >}}
-launchファイルの中身を見てみて、値を変えてみる。
-
-各パラメータの意味は[amclのページ](https://wiki.ros.org/amcl#Parameters)を参照。
-
-例えば、・・・
-- initial_cov_**を大きくしてみて、パーティクルがちゃんと収束するかみてみる。
-- particleの数(min_particles、max_particles)を変えてみて挙動をみてみる。
-
+{{< spoiler text="(開発PC)外部パッケージを使用" >}}
+```
+(開発PC)(docker) cd ~/external_catkin_ws/src 
+(開発PC)(docker) git clone https://github.com/ros-perception/image_pipeline
+(開発PC)(docker) catkin build; source ../devel/setup.bash
+(開発PC)(docker) roslaunch three-dimensions_tutorial depth2pc.launch
+```
 {{< /spoiler >}}
