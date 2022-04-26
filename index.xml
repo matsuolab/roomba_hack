@@ -230,91 +230,102 @@ git pull origin master
 &lt;/details></description></item><item><title>三次元画像処理</title><link>https://matsuolab.github.io/roomba_hack/course/chap5/three-dimensions/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap5/three-dimensions/</guid><description>&lt;h2 id="learn">Learn&lt;/h2>
 &lt;p>今回はRealSenseD435というRGBDカメラを用いて三次元画像処理を行っていきましょう。&lt;/p>
 &lt;h3 id="rgbdカメラについて">RGBDカメラについて&lt;/h3>
-&lt;h3 id="自己位置推定">自己位置推定&lt;/h3>
-&lt;p>自己位置推定は、地図が事前に与えられていて、そこのどこにロボットがいるかを逐次的に外界センサ(LiDAR)と内界センサ(Odometry)を用いて推定していく手法になります。&lt;/p>
-&lt;p>ヒストグラムフィルタやカルマンフィルタ、パーティクルフィルタなどいくつかの手法が存在し、
-それぞれメリットデメリットがありますが、ここでは代表的なパーティクルフィルタを用いた手法を紹介します。&lt;/p>
-&lt;p>自己位置推定では、観測モデルと状態遷移モデルを交互に繰り返すことによって、ロボット自身がどこにいるかの確率分布を更新していくことで自己位置推定をしていきます。&lt;/p>
-&lt;p>パーティクルフィルタでは、この確率分布を大量の粒子を用いて表現する手法になっていて、各粒子が位置とそこにロボットがいるであろう確率(尤度)を持っています。&lt;/p>
-&lt;p>ロボットが動くごと(オドメトリが更新されるごと)に、状態遷移モデルを用いて各粒子の位置情報を更新します。
-この時、一般的に分布は広がります。(人間が目を閉じて歩いたらどこにいるか分かりづらくなるのと同じ)&lt;/p>
-&lt;p>外界の情報がわかるごと(スキャン情報が更新されるごと)に、観測モデルを用いて各粒子の尤度を更新します。
-尤度は、各粒子の位置から観測できるであろうスキャン情報と、実際のロボットで取得したスキャン情報との差から算出します。&lt;/p>
-&lt;figure id="figure-monte-carlo-localizationparticle-filter-dieter-fox-et-al-1999-using-sonar-httpwwwdocicacukajdroboticsroboticsresourcesmontecarlolocalizationgif">
-&lt;div class="d-flex justify-content-center">
-&lt;div class="w-100" >&lt;img src="../montecarlolocalization.gif" alt="Monte Carlo Localization(Particle Filter) Dieter Fox et al. 1999, using sonar. http://www.doc.ic.ac.uk/~ajd/Robotics/RoboticsResources/montecarlolocalization.gif" loading="lazy" data-zoomable />&lt;/div>
-&lt;/div>&lt;figcaption>
-Monte Carlo Localization(Particle Filter) Dieter Fox et al. 1999, using sonar. &lt;a href="http://www.doc.ic.ac.uk/~ajd/Robotics/RoboticsResources/montecarlolocalization.gif">http://www.doc.ic.ac.uk/~ajd/Robotics/RoboticsResources/montecarlolocalization.gif&lt;/a>
-&lt;/figcaption>&lt;/figure>
-&lt;!-- リサンプリング -->
-&lt;h3 id="launchファイルとrosparam">launchファイルとrosparam&lt;/h3>
-&lt;p>自己位置推定では、初期位置がどこか、レーザーのスペックや、パーティクルの数など数十個のパラメータを保持します。&lt;/p>
-&lt;p>これらをプログラム内部で記述するのではなく、launchファイル内で指定することが可能です。
-rosでは、rosparamという形でパラメータを管理することが可能です。&lt;/p>
-&lt;p>以下に、今回用いる&lt;code>amcl.launch&lt;/code> を示します。
-launchファイルはxml形式で記述され、paramを指定すること以外にも、
-launchファイル実行時に引数で指定可能なargや、トピック名などのリマップをすることも可能です。&lt;/p>
-&lt;p>launchの詳しい書き方は、&lt;a href="http://wiki.ros.org/ja/roslaunch/XML" target="_blank" rel="noopener">rosのドキュメント&lt;/a>を参照してください。&lt;/p>
-&lt;pre>&lt;code class="language-xml">&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
-&amp;lt;launch&amp;gt;
-&amp;lt;arg name=&amp;quot;use_map_topic&amp;quot; default=&amp;quot;true&amp;quot;/&amp;gt;
-&amp;lt;arg name=&amp;quot;odom_topic&amp;quot; default=&amp;quot;/odom&amp;quot; /&amp;gt;
-&amp;lt;arg name=&amp;quot;scan_topic&amp;quot; default=&amp;quot;/scan&amp;quot; /&amp;gt;
-&amp;lt;node pkg=&amp;quot;amcl&amp;quot; type=&amp;quot;amcl&amp;quot; name=&amp;quot;amcl&amp;quot; output=&amp;quot;screen&amp;quot;&amp;gt;
-&amp;lt;remap from=&amp;quot;scan&amp;quot; to=&amp;quot;$(arg scan_topic)&amp;quot;/&amp;gt;
-&amp;lt;remap from=&amp;quot;odom&amp;quot; to=&amp;quot;$(arg odom_topic)&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;use_map_topic&amp;quot; value=&amp;quot;$(arg use_map_topic)&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;initial_pose_x&amp;quot; value=&amp;quot;0.0&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;initial_pose_y&amp;quot; value=&amp;quot;0.0&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;initial_pose_a&amp;quot; value=&amp;quot;0.0&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;initial_cov_xx&amp;quot; value=&amp;quot;0.1*0.1&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;initial_cov_yy&amp;quot; value=&amp;quot;0.1*0.1&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;initial_cov_aa&amp;quot; value=&amp;quot;0.3*3.14&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;gui_publish_rate&amp;quot; value=&amp;quot;10.0&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;laser_max_beams&amp;quot; value=&amp;quot;2.0&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;laser_min_range&amp;quot; value=&amp;quot;0.15&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;laser_max_range&amp;quot; value=&amp;quot;12.0&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;laser_z_hit&amp;quot; value=&amp;quot;0.8&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;laser_z_short&amp;quot; value=&amp;quot;0.1&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;laser_z_max&amp;quot; value=&amp;quot;0.1&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;laser_z_rand&amp;quot; value=&amp;quot;0.1&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;laser_sigma_hit&amp;quot; value=&amp;quot;0.2&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;laser_lambda_short&amp;quot; value=&amp;quot;0.1&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;laser_model_type&amp;quot; value=&amp;quot;likelihood_field&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;laser_likelihood_max_dist&amp;quot; value=&amp;quot;2.0&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;min_particles&amp;quot; value=&amp;quot;100&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;max_particles&amp;quot; value=&amp;quot;1000&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;kld_err&amp;quot; value=&amp;quot;0.0&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;kld_z&amp;quot; value=&amp;quot;0.0&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;update_min_d&amp;quot; value=&amp;quot;0.1&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;update_min_a&amp;quot; value=&amp;quot;0.1&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;resample_interval&amp;quot; value=&amp;quot;1&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;transform_tolerance&amp;quot; value=&amp;quot;0.2&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;recovery_alpha_slow&amp;quot; value=&amp;quot;0.001&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;recovery_alpha_fast&amp;quot; value=&amp;quot;0.1&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;odom_frame_id&amp;quot; value=&amp;quot;odom&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;odom_model_type&amp;quot; value=&amp;quot;diff&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;odom_alpha1&amp;quot; value=&amp;quot;0.2&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;odom_alpha2&amp;quot; value=&amp;quot;0.2&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;odom_alpha3&amp;quot; value=&amp;quot;0.2&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;odom_alpha4&amp;quot; value=&amp;quot;0.2&amp;quot;/&amp;gt;
-&amp;lt;param name=&amp;quot;odom_alpha5&amp;quot; value=&amp;quot;0.2&amp;quot;/&amp;gt;
-&amp;lt;/node&amp;gt;
-&amp;lt;/launch&amp;gt;
+&lt;p>RGBDカメラとは、カラーの他にデプス(深度)を取得できるカメラのことです。
+複雑な動作を行うロボットを動かす際には三次元空間の把握が重要となり、RGBDカメラはよく用いられます。
+比較的安価でよく利用されるRGBDカメラとして、Intel社製のRealSenseやMicrosoft社製のXtionなどがあります。&lt;/p>
+&lt;h3 id="realsense">RealSense&lt;/h3>
+&lt;p>今回はRGBDカメラとしてRealSenseD435を使用します。&lt;/p>
+&lt;p>ROSで用いる際には標準のラッパー(&lt;a href="https://github.com/IntelRealSense/realsense-ros">https://github.com/IntelRealSense/realsense-ros&lt;/a>)を使用します。&lt;/p>
+&lt;p>&lt;code>roslaunch realsense2_camera rs_camera.launch&lt;/code>を行うとデフォルトのトピックとして
+RGB画像の&lt;code>/camera/color/image_raw&lt;/code>、
+デプス画像の&lt;code>/camera/depth/image_raw&lt;/code>
+が利用できます。これらのトピックはいずれも&lt;code>sensor_msgs/Image&lt;/code>型です。&lt;/p>
+&lt;p>RealSenseは物理的にRGB画像モジュールとデプス画像モジュールが離れているため、これら2つのトピックはいずれも画像データではあるものの、ピクセルの位置関係が対応しておらずそのままだとうまく画像処理に用いることができません。
+そこで、起動時に&lt;code>align:=true&lt;/code>を指定することで、上記のトピックに加えてデプス画像をRGB画像のピクセルに対応するように変換する&lt;code>/camera/aligned_depth_to_color/image_raw&lt;/code>トピックを使用できるようにします。
+他にも&lt;code>pointcloud:=true&lt;/code>を指定するとデプス画像から点群を生成することができます。
+しかし、この処理は比較的重たいため今回はJetsonではなく、開発用PCでこの処理を行っていくことにします。&lt;/p>
+&lt;p>それでは、RGB画像&lt;code>/camera/color/image_raw&lt;/code>と整列されたデプス画像&lt;code>/camera/aligned_depth_to_color/image_raw&lt;/code>の2種類のトピックを用いて三次元画像処理を行っていきましょう。&lt;/p>
+&lt;h3 id="物体検出">物体検出&lt;/h3>
+&lt;p>まずはRGB画像&lt;code>/camera/color/image_raw&lt;/code>のみを用いて三次元ではない画像検出を行っていきましょう。&lt;/p>
+&lt;p>以下は&lt;code>/camera/color/image_raw&lt;/code>をSubscribeし、物体検出アルゴリズムであるYOLOv3に入力し、その結果をbounding boxとして描画し、&lt;code>/detection_result&lt;/code>としてPublishするスクリプトです。&lt;/p>
+&lt;pre>&lt;code>#!/usr/bin/env python3
+import rospy
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+from pytorchyolo import detect, models
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import cv2
+import copy
+class ObjectDetection:
+def __init__(self):
+rospy.init_node('object_detection', anonymous=True)
+# Publisher
+self.detection_result_pub = rospy.Publisher('/detection_result', Image, queue_size=10)
+# Subscriber
+rgb_sub = rospy.Subscriber('/camera/color/image_raw', Image, self.callback_rgb)
+self.bridge = CvBridge()
+self.rgb_image = None
+def callback_rgb(self, data):
+cv_array = self.bridge.imgmsg_to_cv2(data, 'bgr8')
+cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
+self.rgb_image = cv_array
+def process(self):
+path = &amp;quot;/root/roomba_hack/catkin_ws/src/three-dimensions_tutorial/yolov3/&amp;quot;
+# load category
+with open(path+&amp;quot;data/coco.names&amp;quot;) as f:
+category = f.read().splitlines()
+# prepare model
+model = models.load_model(path+&amp;quot;config/yolov3.cfg&amp;quot;, path+&amp;quot;weights/yolov3.weights&amp;quot;)
+while not rospy.is_shutdown():
+if self.rgb_image is None:
+continue
+# inference
+tmp_image = copy.copy(self.rgb_image)
+boxes = detect.detect_image(model, tmp_image)
+# [[x1, y1, x2, y2, confidence, class]]
+# plot bouding box
+for box in boxes:
+x1, y1, x2, y2 = map(int, box[:4])
+cls_pred = int(box[5])
+tmp_image = cv2.rectangle(tmp_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
+tmp_image = cv2.putText(tmp_image, category[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
+# publish image
+tmp_image = cv2.cvtColor(tmp_image, cv2.COLOR_RGB2BGR)
+detection_result = self.bridge.cv2_to_imgmsg(tmp_image, &amp;quot;bgr8&amp;quot;)
+self.detection_result_pub.publish(detection_result)
+if __name__ == '__main__':
+od = ObjectDetection()
+try:
+od.process()
+except rospy.ROSInitException:
+pass
 &lt;/code>&lt;/pre>
+&lt;p>コールバック関数で&lt;code>sensor_msgs/Image&lt;/code>型をnp.ndarray型に変換するために&lt;/p>
+&lt;pre>&lt;code>cv_array = self.bridge.imgmsg_to_cv2(data, 'bgr8')
+cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
+&lt;/code>&lt;/pre>
+&lt;p>という&lt;code>sensor_msgs/Image&lt;/code>型特有の処理を行ってますが、Subscriberを作成しコールバック関数でデータを受け取るという基本的な処理の流れは&lt;code>scan&lt;/code>などの他のセンサと同じです。&lt;/p>
+&lt;p>ここで注意してほしいのはYOLOの推論部分をコールバック関数内で行っていないことです。
+一見、新しいデータが入ってくるときのみに推論を回すことは合理的に見えますが、センサの入力に対してコールバック関数内の処理が重いとセンサの入力がどんどん遅れていってしまいます。
+コールバック関数内ではセンサデータの最低限の処理の記述にとどめ、重い処理は分けて書くことを意識しましょう。&lt;/p>
+&lt;p>ここでは既存の物体検出モジュールを使用しましたが、PyTorchなどで作成した自作のモデルも同様の枠組みで利用することができます。&lt;/p>
+&lt;p>続いて、デプス画像データも統合して物体を検出し、物体までの距離を測定してみましょう。&lt;/p>
+&lt;h3 id="外部パッケージの使用">外部パッケージの使用&lt;/h3>
+&lt;p>それではデプス画像からを作成しましょう。&lt;/p>
 &lt;h2 id="演習">演習&lt;/h2>
-&lt;!-- &lt;details class="spoiler " id="spoiler-1">
+&lt;!-- &lt;details class="spoiler " id="spoiler-0">
 &lt;summary>Dockerfileにamclを追加してBuildする&lt;/summary>
 &lt;p>&lt;/p>
 &lt;/details> -->
-&lt;details class="spoiler " id="spoiler-2">
+&lt;details class="spoiler " id="spoiler-1">
 &lt;summary>ブランチの切り替え&lt;/summary>
 &lt;p>&lt;pre>&lt;code>(jetson, 開発PC) git fetch
 (jetson, 開発PC) git checkout feature/move-base
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-3">
+&lt;details class="spoiler " id="spoiler-2">
 &lt;summary>(開発PC, jetson)起動準備&lt;/summary>
 &lt;p>&lt;pre>&lt;code>(jetson)./RUN-DOCKER-CONTAINER.sh
 (jetson)(docker) roslaunch roomba_bringup bringup.launch
@@ -322,7 +333,7 @@ launchファイル実行時に引数で指定可能なargや、トピック名�
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-4">
+&lt;details class="spoiler " id="spoiler-3">
 &lt;summary>gmappingで地図作成&lt;/summary>
 &lt;p>&lt;pre>&lt;code>(docker) roslaunch navigation_tutorial gmapping.launch
 &lt;/code>&lt;/pre>
@@ -332,7 +343,7 @@ launchファイル実行時に引数で指定可能なargや、トピック名�
 &lt;p>&lt;code>~/roomba_hack/catkin_ws/src/navigation_tutorial/map&lt;/code> の下に保存する。&lt;/p>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-5">
+&lt;details class="spoiler " id="spoiler-4">
 &lt;summary>amclをlaunchして、自己位置推定する&lt;/summary>
 &lt;p>&lt;p>localizationノードと地図サーバーを同時に起動。&lt;/p>
 &lt;pre>&lt;code>(docker) roslaunch navigation_tutorial localization.launch
@@ -346,7 +357,7 @@ launchファイル実行時に引数で指定可能なargや、トピック名�
 &lt;/ul>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-6">
+&lt;details class="spoiler " id="spoiler-5">
 &lt;summary>amclのparamをチューニングする&lt;/summary>
 &lt;p>&lt;p>launchファイルの中身を見てみて、値を変えてみる。&lt;/p>
 &lt;p>各パラメータの意味は&lt;a href="https://wiki.ros.org/amcl#Parameters">amclのページ&lt;/a>を参照。&lt;/p>

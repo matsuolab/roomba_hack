@@ -6,77 +6,96 @@
 <button class="form-control sidebar-search js-search d-none d-md-flex">
 <i class="fas fa-search pr-2"></i>
 <span class=sidebar-search-text>Search...</span>
-<span class=sidebar-search-shortcut>/</span></button></form><nav class="collapse docs-links" id=docs-nav><ul class="nav docs-sidenav"><li><a href=/roomba_hack/course/>ロボットシステム入門</a></li><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap1/><i class="fas fa-book pr-1"></i>Chapter 1</a><ul class="nav docs-sidenav"><li><a href=/roomba_hack/course/chap1/%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83/>開発環境</a></li><li><a href=/roomba_hack/course/chap1/ros/>ROSとは</a></li></ul></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap2/><i class="fas fa-book pr-1"></i>Chapter 2</a><ul class="nav docs-sidenav"><li><a href=/roomba_hack/course/chap2/sensing1/>ロボットシステムにおけるセンシング・アクチュエーション・通信①</a></li></ul></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap3/><i class="fas fa-book pr-1"></i>Chapter 3</a><ul class="nav docs-sidenav"><li><a href=/roomba_hack/course/chap3/sensing2/>ロボットシステムにおけるセンシング・アクチュエーション・通信②</a></li><li><a href=/roomba_hack/course/chap3/sensing3/>ロボットシステムにおけるセンシング・アクチュエーション・通信③</a></li></ul></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap4/><i class="fas fa-book pr-1"></i>Chapter 4</a><ul class="nav docs-sidenav"><li><a href=/roomba_hack/course/chap4/localization/>自己位置推定</a></li><li><a href=/roomba_hack/course/chap4/navigation/>ナビゲーション</a></li></ul></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap5/><i class="fas fa-book pr-1"></i>Chapter 5</a><ul class="nav docs-sidenav"><li class=active><a href=/roomba_hack/course/chap5/three-dimensions/>三次元画像処理</a></li></ul></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap6/><i class="fas fa-book pr-1"></i>Chapter 6</a></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap7/><i class="fas fa-book pr-1"></i>Chapter 7</a></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap8/><i class="fas fa-book pr-1"></i>Chapter 8</a></div></ul></nav></div><div class="d-none d-xl-block col-xl-2 docs-toc"><ul class="nav toc-top"><li><a href=# id=back_to_top class=docs-toc-title>Contents</a></li></ul><nav id=TableOfContents><ul><li><a href=#learn>Learn</a><ul><li><a href=#rgbdカメラについて>RGBDカメラについて</a></li><li><a href=#自己位置推定>自己位置推定</a></li><li><a href=#launchファイルとrosparam>launchファイルとrosparam</a></li></ul></li><li><a href=#演習>演習</a></li></ul></nav></div><main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role=main><article class=article><div class=docs-article-container><nav class="d-none d-md-flex" aria-label=breadcrumb><ol class=breadcrumb><li class=breadcrumb-item><a href=/roomba_hack/>Home</a></li><li class=breadcrumb-item><a href=/roomba_hack/course/>ロボットシステム入門</a></li><li class=breadcrumb-item><a href=/roomba_hack/course/chap5/>Chapter 5</a></li><li class="breadcrumb-item active" aria-current=page>三次元画像処理</li></ol></nav><h1>三次元画像処理</h1><div class=article-style><h2 id=learn>Learn</h2><p>今回はRealSenseD435というRGBDカメラを用いて三次元画像処理を行っていきましょう。</p><h3 id=rgbdカメラについて>RGBDカメラについて</h3><h3 id=自己位置推定>自己位置推定</h3><p>自己位置推定は、地図が事前に与えられていて、そこのどこにロボットがいるかを逐次的に外界センサ(LiDAR)と内界センサ(Odometry)を用いて推定していく手法になります。</p><p>ヒストグラムフィルタやカルマンフィルタ、パーティクルフィルタなどいくつかの手法が存在し、
-それぞれメリットデメリットがありますが、ここでは代表的なパーティクルフィルタを用いた手法を紹介します。</p><p>自己位置推定では、観測モデルと状態遷移モデルを交互に繰り返すことによって、ロボット自身がどこにいるかの確率分布を更新していくことで自己位置推定をしていきます。</p><p>パーティクルフィルタでは、この確率分布を大量の粒子を用いて表現する手法になっていて、各粒子が位置とそこにロボットがいるであろう確率(尤度)を持っています。</p><p>ロボットが動くごと(オドメトリが更新されるごと)に、状態遷移モデルを用いて各粒子の位置情報を更新します。
-この時、一般的に分布は広がります。(人間が目を閉じて歩いたらどこにいるか分かりづらくなるのと同じ)</p><p>外界の情報がわかるごと(スキャン情報が更新されるごと)に、観測モデルを用いて各粒子の尤度を更新します。
-尤度は、各粒子の位置から観測できるであろうスキャン情報と、実際のロボットで取得したスキャン情報との差から算出します。</p><figure id=figure-monte-carlo-localizationparticle-filter-dieter-fox-et-al-1999-using-sonar-httpwwwdocicacukajdroboticsroboticsresourcesmontecarlolocalizationgif><div class="d-flex justify-content-center"><div class=w-100><img src=../montecarlolocalization.gif alt="Monte Carlo Localization(Particle Filter) Dieter Fox et al. 1999, using sonar. http://www.doc.ic.ac.uk/~ajd/Robotics/RoboticsResources/montecarlolocalization.gif" loading=lazy data-zoomable></div></div><figcaption>Monte Carlo Localization(Particle Filter) Dieter Fox et al. 1999, using sonar. <a href=http://www.doc.ic.ac.uk/~ajd/Robotics/RoboticsResources/montecarlolocalization.gif>http://www.doc.ic.ac.uk/~ajd/Robotics/RoboticsResources/montecarlolocalization.gif</a></figcaption></figure><h3 id=launchファイルとrosparam>launchファイルとrosparam</h3><p>自己位置推定では、初期位置がどこか、レーザーのスペックや、パーティクルの数など数十個のパラメータを保持します。</p><p>これらをプログラム内部で記述するのではなく、launchファイル内で指定することが可能です。
-rosでは、rosparamという形でパラメータを管理することが可能です。</p><p>以下に、今回用いる<code>amcl.launch</code> を示します。
-launchファイルはxml形式で記述され、paramを指定すること以外にも、
-launchファイル実行時に引数で指定可能なargや、トピック名などのリマップをすることも可能です。</p><p>launchの詳しい書き方は、<a href=http://wiki.ros.org/ja/roslaunch/XML target=_blank rel=noopener>rosのドキュメント</a>を参照してください。</p><pre><code class=language-xml>&lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;launch&gt;
-  &lt;arg name=&quot;use_map_topic&quot; default=&quot;true&quot;/&gt;
-  &lt;arg name=&quot;odom_topic&quot; default=&quot;/odom&quot; /&gt;
-  &lt;arg name=&quot;scan_topic&quot; default=&quot;/scan&quot; /&gt;
+<span class=sidebar-search-shortcut>/</span></button></form><nav class="collapse docs-links" id=docs-nav><ul class="nav docs-sidenav"><li><a href=/roomba_hack/course/>ロボットシステム入門</a></li><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap1/><i class="fas fa-book pr-1"></i>Chapter 1</a><ul class="nav docs-sidenav"><li><a href=/roomba_hack/course/chap1/%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83/>開発環境</a></li><li><a href=/roomba_hack/course/chap1/ros/>ROSとは</a></li></ul></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap2/><i class="fas fa-book pr-1"></i>Chapter 2</a><ul class="nav docs-sidenav"><li><a href=/roomba_hack/course/chap2/sensing1/>ロボットシステムにおけるセンシング・アクチュエーション・通信①</a></li></ul></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap3/><i class="fas fa-book pr-1"></i>Chapter 3</a><ul class="nav docs-sidenav"><li><a href=/roomba_hack/course/chap3/sensing2/>ロボットシステムにおけるセンシング・アクチュエーション・通信②</a></li><li><a href=/roomba_hack/course/chap3/sensing3/>ロボットシステムにおけるセンシング・アクチュエーション・通信③</a></li></ul></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap4/><i class="fas fa-book pr-1"></i>Chapter 4</a><ul class="nav docs-sidenav"><li><a href=/roomba_hack/course/chap4/localization/>自己位置推定</a></li><li><a href=/roomba_hack/course/chap4/navigation/>ナビゲーション</a></li></ul></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap5/><i class="fas fa-book pr-1"></i>Chapter 5</a><ul class="nav docs-sidenav"><li class=active><a href=/roomba_hack/course/chap5/three-dimensions/>三次元画像処理</a></li></ul></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap6/><i class="fas fa-book pr-1"></i>Chapter 6</a></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap7/><i class="fas fa-book pr-1"></i>Chapter 7</a></div><div class=docs-toc-item><a class=docs-toc-link href=/roomba_hack/course/chap8/><i class="fas fa-book pr-1"></i>Chapter 8</a></div></ul></nav></div><div class="d-none d-xl-block col-xl-2 docs-toc"><ul class="nav toc-top"><li><a href=# id=back_to_top class=docs-toc-title>Contents</a></li></ul><nav id=TableOfContents><ul><li><a href=#learn>Learn</a><ul><li><a href=#rgbdカメラについて>RGBDカメラについて</a></li><li><a href=#realsense>RealSense</a></li><li><a href=#物体検出>物体検出</a></li><li><a href=#外部パッケージの使用>外部パッケージの使用</a></li></ul></li><li><a href=#演習>演習</a></li></ul></nav></div><main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role=main><article class=article><div class=docs-article-container><nav class="d-none d-md-flex" aria-label=breadcrumb><ol class=breadcrumb><li class=breadcrumb-item><a href=/roomba_hack/>Home</a></li><li class=breadcrumb-item><a href=/roomba_hack/course/>ロボットシステム入門</a></li><li class=breadcrumb-item><a href=/roomba_hack/course/chap5/>Chapter 5</a></li><li class="breadcrumb-item active" aria-current=page>三次元画像処理</li></ol></nav><h1>三次元画像処理</h1><div class=article-style><h2 id=learn>Learn</h2><p>今回はRealSenseD435というRGBDカメラを用いて三次元画像処理を行っていきましょう。</p><h3 id=rgbdカメラについて>RGBDカメラについて</h3><p>RGBDカメラとは、カラーの他にデプス(深度)を取得できるカメラのことです。
+複雑な動作を行うロボットを動かす際には三次元空間の把握が重要となり、RGBDカメラはよく用いられます。
+比較的安価でよく利用されるRGBDカメラとして、Intel社製のRealSenseやMicrosoft社製のXtionなどがあります。</p><h3 id=realsense>RealSense</h3><p>今回はRGBDカメラとしてRealSenseD435を使用します。</p><p>ROSで用いる際には標準のラッパー(<a href=https://github.com/IntelRealSense/realsense-ros>https://github.com/IntelRealSense/realsense-ros</a>)を使用します。</p><p><code>roslaunch realsense2_camera rs_camera.launch</code>を行うとデフォルトのトピックとして
+RGB画像の<code>/camera/color/image_raw</code>、
+デプス画像の<code>/camera/depth/image_raw</code>
+が利用できます。これらのトピックはいずれも<code>sensor_msgs/Image</code>型です。</p><p>RealSenseは物理的にRGB画像モジュールとデプス画像モジュールが離れているため、これら2つのトピックはいずれも画像データではあるものの、ピクセルの位置関係が対応しておらずそのままだとうまく画像処理に用いることができません。
+そこで、起動時に<code>align:=true</code>を指定することで、上記のトピックに加えてデプス画像をRGB画像のピクセルに対応するように変換する<code>/camera/aligned_depth_to_color/image_raw</code>トピックを使用できるようにします。
+他にも<code>pointcloud:=true</code>を指定するとデプス画像から点群を生成することができます。
+しかし、この処理は比較的重たいため今回はJetsonではなく、開発用PCでこの処理を行っていくことにします。</p><p>それでは、RGB画像<code>/camera/color/image_raw</code>と整列されたデプス画像<code>/camera/aligned_depth_to_color/image_raw</code>の2種類のトピックを用いて三次元画像処理を行っていきましょう。</p><h3 id=物体検出>物体検出</h3><p>まずはRGB画像<code>/camera/color/image_raw</code>のみを用いて三次元ではない画像検出を行っていきましょう。</p><p>以下は<code>/camera/color/image_raw</code>をSubscribeし、物体検出アルゴリズムであるYOLOv3に入力し、その結果をbounding boxとして描画し、<code>/detection_result</code>としてPublishするスクリプトです。</p><pre><code>#!/usr/bin/env python3
 
-  &lt;node pkg=&quot;amcl&quot; type=&quot;amcl&quot; name=&quot;amcl&quot; output=&quot;screen&quot;&gt;
-    &lt;remap from=&quot;scan&quot; to=&quot;$(arg scan_topic)&quot;/&gt;    
-    &lt;remap from=&quot;odom&quot; to=&quot;$(arg odom_topic)&quot;/&gt;    
-    &lt;param name=&quot;use_map_topic&quot; value=&quot;$(arg use_map_topic)&quot;/&gt;
+import rospy
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+from pytorchyolo import detect, models
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import cv2
+import copy
 
-    &lt;param name=&quot;initial_pose_x&quot; value=&quot;0.0&quot;/&gt;
-    &lt;param name=&quot;initial_pose_y&quot; value=&quot;0.0&quot;/&gt;
-    &lt;param name=&quot;initial_pose_a&quot; value=&quot;0.0&quot;/&gt;
-    &lt;param name=&quot;initial_cov_xx&quot; value=&quot;0.1*0.1&quot;/&gt;
-    &lt;param name=&quot;initial_cov_yy&quot; value=&quot;0.1*0.1&quot;/&gt;
-    &lt;param name=&quot;initial_cov_aa&quot; value=&quot;0.3*3.14&quot;/&gt;
+class ObjectDetection:
+    def __init__(self):
+        rospy.init_node('object_detection', anonymous=True)
 
-    &lt;param name=&quot;gui_publish_rate&quot; value=&quot;10.0&quot;/&gt;
+        # Publisher
+        self.detection_result_pub = rospy.Publisher('/detection_result', Image, queue_size=10)
 
-    &lt;param name=&quot;laser_max_beams&quot; value=&quot;2.0&quot;/&gt;
-    &lt;param name=&quot;laser_min_range&quot; value=&quot;0.15&quot;/&gt;
-    &lt;param name=&quot;laser_max_range&quot; value=&quot;12.0&quot;/&gt;
-    &lt;param name=&quot;laser_z_hit&quot; value=&quot;0.8&quot;/&gt;
-    &lt;param name=&quot;laser_z_short&quot; value=&quot;0.1&quot;/&gt;
-    &lt;param name=&quot;laser_z_max&quot; value=&quot;0.1&quot;/&gt;
-    &lt;param name=&quot;laser_z_rand&quot; value=&quot;0.1&quot;/&gt;
-    &lt;param name=&quot;laser_sigma_hit&quot; value=&quot;0.2&quot;/&gt;
-    &lt;param name=&quot;laser_lambda_short&quot; value=&quot;0.1&quot;/&gt;
-    &lt;param name=&quot;laser_model_type&quot; value=&quot;likelihood_field&quot;/&gt;
-    &lt;param name=&quot;laser_likelihood_max_dist&quot; value=&quot;2.0&quot;/&gt;
+        # Subscriber
+        rgb_sub = rospy.Subscriber('/camera/color/image_raw', Image, self.callback_rgb)
 
-    &lt;param name=&quot;min_particles&quot; value=&quot;100&quot;/&gt;
-    &lt;param name=&quot;max_particles&quot; value=&quot;1000&quot;/&gt;
-    &lt;param name=&quot;kld_err&quot; value=&quot;0.0&quot;/&gt;
-    &lt;param name=&quot;kld_z&quot; value=&quot;0.0&quot;/&gt;
-    &lt;param name=&quot;update_min_d&quot; value=&quot;0.1&quot;/&gt;
-    &lt;param name=&quot;update_min_a&quot; value=&quot;0.1&quot;/&gt;
-    &lt;param name=&quot;resample_interval&quot; value=&quot;1&quot;/&gt;
-    &lt;param name=&quot;transform_tolerance&quot; value=&quot;0.2&quot;/&gt;
-    &lt;param name=&quot;recovery_alpha_slow&quot; value=&quot;0.001&quot;/&gt;
-    &lt;param name=&quot;recovery_alpha_fast&quot; value=&quot;0.1&quot;/&gt;
+        self.bridge = CvBridge()
+        self.rgb_image = None
 
-    &lt;param name=&quot;odom_frame_id&quot; value=&quot;odom&quot;/&gt;
-    &lt;param name=&quot;odom_model_type&quot; value=&quot;diff&quot;/&gt;
-    &lt;param name=&quot;odom_alpha1&quot; value=&quot;0.2&quot;/&gt;
-    &lt;param name=&quot;odom_alpha2&quot; value=&quot;0.2&quot;/&gt;
-    &lt;param name=&quot;odom_alpha3&quot; value=&quot;0.2&quot;/&gt;
-    &lt;param name=&quot;odom_alpha4&quot; value=&quot;0.2&quot;/&gt;
-    &lt;param name=&quot;odom_alpha5&quot; value=&quot;0.2&quot;/&gt;
+    def callback_rgb(self, data):
+        cv_array = self.bridge.imgmsg_to_cv2(data, 'bgr8')
+        cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
+        self.rgb_image = cv_array
 
-  &lt;/node&gt;
+    def process(self):
+        path = &quot;/root/roomba_hack/catkin_ws/src/three-dimensions_tutorial/yolov3/&quot;
 
-&lt;/launch&gt;
-</code></pre><h2 id=演習>演習</h2><details class=spoiler id=spoiler-2><summary>ブランチの切り替え</summary><p><pre><code>(jetson, 開発PC) git fetch
+        # load category
+        with open(path+&quot;data/coco.names&quot;) as f:
+            category = f.read().splitlines()
+
+        # prepare model
+        model = models.load_model(path+&quot;config/yolov3.cfg&quot;, path+&quot;weights/yolov3.weights&quot;)
+
+        while not rospy.is_shutdown():
+            if self.rgb_image is None:
+                continue
+
+            # inference
+            tmp_image = copy.copy(self.rgb_image)
+            boxes = detect.detect_image(model, tmp_image)
+            # [[x1, y1, x2, y2, confidence, class]]
+
+            # plot bouding box
+            for box in boxes:
+                x1, y1, x2, y2 = map(int, box[:4])
+                cls_pred = int(box[5])
+                tmp_image = cv2.rectangle(tmp_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
+                tmp_image = cv2.putText(tmp_image, category[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
+
+            # publish image
+            tmp_image = cv2.cvtColor(tmp_image, cv2.COLOR_RGB2BGR)
+            detection_result = self.bridge.cv2_to_imgmsg(tmp_image, &quot;bgr8&quot;)
+            self.detection_result_pub.publish(detection_result)
+
+
+if __name__ == '__main__':
+    od = ObjectDetection()
+    try:
+        od.process()
+    except rospy.ROSInitException:
+        pass
+</code></pre><p>コールバック関数で<code>sensor_msgs/Image</code>型をnp.ndarray型に変換するために</p><pre><code>cv_array = self.bridge.imgmsg_to_cv2(data, 'bgr8')
+cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
+</code></pre><p>という<code>sensor_msgs/Image</code>型特有の処理を行ってますが、Subscriberを作成しコールバック関数でデータを受け取るという基本的な処理の流れは<code>scan</code>などの他のセンサと同じです。</p><p>ここで注意してほしいのはYOLOの推論部分をコールバック関数内で行っていないことです。
+一見、新しいデータが入ってくるときのみに推論を回すことは合理的に見えますが、センサの入力に対してコールバック関数内の処理が重いとセンサの入力がどんどん遅れていってしまいます。
+コールバック関数内ではセンサデータの最低限の処理の記述にとどめ、重い処理は分けて書くことを意識しましょう。</p><p>ここでは既存の物体検出モジュールを使用しましたが、PyTorchなどで作成した自作のモデルも同様の枠組みで利用することができます。</p><p>続いて、デプス画像データも統合して物体を検出し、物体までの距離を測定してみましょう。</p><h3 id=外部パッケージの使用>外部パッケージの使用</h3><p>それではデプス画像からを作成しましょう。</p><h2 id=演習>演習</h2><details class=spoiler id=spoiler-1><summary>ブランチの切り替え</summary><p><pre><code>(jetson, 開発PC) git fetch
 (jetson, 開発PC) git checkout feature/move-base
-</code></pre></p></details><details class=spoiler id=spoiler-3><summary>(開発PC, jetson)起動準備</summary><p><pre><code>(jetson)./RUN-DOCKER-CONTAINER.sh
+</code></pre></p></details><details class=spoiler id=spoiler-2><summary>(開発PC, jetson)起動準備</summary><p><pre><code>(jetson)./RUN-DOCKER-CONTAINER.sh
 (jetson)(docker) roslaunch roomba_bringup bringup.launch
 (開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
-</code></pre></p></details><details class=spoiler id=spoiler-4><summary>gmappingで地図作成</summary><p><pre><code>(docker) roslaunch navigation_tutorial gmapping.launch
+</code></pre></p></details><details class=spoiler id=spoiler-3><summary>gmappingで地図作成</summary><p><pre><code>(docker) roslaunch navigation_tutorial gmapping.launch
 </code></pre><p>地図の保存。map.pgm（画像データ）とmap.yaml(地図情報)が保存される。</p><pre><code>(docker) rosrun map_server map_saver
-</code></pre><p><code>~/roomba_hack/catkin_ws/src/navigation_tutorial/map</code> の下に保存する。</p></p></details><details class=spoiler id=spoiler-5><summary>amclをlaunchして、自己位置推定する</summary><p><p>localizationノードと地図サーバーを同時に起動。</p><pre><code>(docker) roslaunch navigation_tutorial localization.launch
+</code></pre><p><code>~/roomba_hack/catkin_ws/src/navigation_tutorial/map</code> の下に保存する。</p></p></details><details class=spoiler id=spoiler-4><summary>amclをlaunchして、自己位置推定する</summary><p><p>localizationノードと地図サーバーを同時に起動。</p><pre><code>(docker) roslaunch navigation_tutorial localization.launch
 (docker) roslaunch roomba_teleop teleop.launch
 (docker) rviz -d /root/roomba_hack/catkin_ws/src/navigation_tutorial/configs/navigation.rviz
-</code></pre><ul><li>初期位置の指定(rvizの2D Pose Estimate)</li><li>コントローラで移動させてみて自己位置を確認</li><li>rqt_tf_treeを見てみる</li></ul></p></details><details class=spoiler id=spoiler-6><summary>amclのparamをチューニングする</summary><p><p>launchファイルの中身を見てみて、値を変えてみる。</p><p>各パラメータの意味は<a href=https://wiki.ros.org/amcl#Parameters>amclのページ</a>を参照。</p><p>例えば、・・・</p><ul><li>initial_cov_**を大きくしてみて、パーティクルがちゃんと収束するかみてみる。</li><li>particleの数(min_particles、max_particles)を変えてみて挙動をみてみる。</li></ul></p></details></div><div class=article-widget><div class=post-nav></div></div></div><div class=body-footer><p>Last updated on 2022/1/22</p><p class=edit-page><a href=https://github.com/matsuolab/roomba_hack/edit/master/textbook/content/course/chap5/three-dimensions.md><i class="fas fa-pen pr-2"></i>Edit this page</a></p></div></article><footer class=site-footer><p class=powered-by>© 2022 Tokyo Robot And Intelligence Lab (TRAIL)</p><p class=powered-by>Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target=_blank rel=noopener>Wowchemy</a> — the free, <a href=https://github.com/wowchemy/wowchemy-hugo-modules target=_blank rel=noopener>open source</a> website builder that empowers creators.</p></footer></main></div></div></div><div class=page-footer></div><div id=modal class="modal fade" role=dialog><div class=modal-dialog><div class=modal-content><div class=modal-header><h5 class=modal-title>Cite</h5><button type=button class=close data-dismiss=modal aria-label=Close>
+</code></pre><ul><li>初期位置の指定(rvizの2D Pose Estimate)</li><li>コントローラで移動させてみて自己位置を確認</li><li>rqt_tf_treeを見てみる</li></ul></p></details><details class=spoiler id=spoiler-5><summary>amclのparamをチューニングする</summary><p><p>launchファイルの中身を見てみて、値を変えてみる。</p><p>各パラメータの意味は<a href=https://wiki.ros.org/amcl#Parameters>amclのページ</a>を参照。</p><p>例えば、・・・</p><ul><li>initial_cov_**を大きくしてみて、パーティクルがちゃんと収束するかみてみる。</li><li>particleの数(min_particles、max_particles)を変えてみて挙動をみてみる。</li></ul></p></details></div><div class=article-widget><div class=post-nav></div></div></div><div class=body-footer><p>Last updated on 2022/1/22</p><p class=edit-page><a href=https://github.com/matsuolab/roomba_hack/edit/master/textbook/content/course/chap5/three-dimensions.md><i class="fas fa-pen pr-2"></i>Edit this page</a></p></div></article><footer class=site-footer><p class=powered-by>© 2022 Tokyo Robot And Intelligence Lab (TRAIL)</p><p class=powered-by>Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target=_blank rel=noopener>Wowchemy</a> — the free, <a href=https://github.com/wowchemy/wowchemy-hugo-modules target=_blank rel=noopener>open source</a> website builder that empowers creators.</p></footer></main></div></div></div><div class=page-footer></div><div id=modal class="modal fade" role=dialog><div class=modal-dialog><div class=modal-content><div class=modal-header><h5 class=modal-title>Cite</h5><button type=button class=close data-dismiss=modal aria-label=Close>
 <span aria-hidden=true>&#215;</span></button></div><div class=modal-body><pre><code class="tex hljs"></code></pre></div><div class=modal-footer><a class="btn btn-outline-primary my-1 js-copy-cite" href=# target=_blank><i class="fas fa-copy"></i> Copy</a>
 <a class="btn btn-outline-primary my-1 js-download-cite" href=# target=_blank><i class="fas fa-download"></i> Download</a><div id=modal-error></div></div></div></div></div><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.8.4/mermaid.min.js integrity="sha512-as1BF4+iHZ3BVO6LLDQ7zrbvTXM+c/1iZ1qII/c3c4L8Rn5tHLpFUtpaEtBNS92f+xGsCzsD7b62XP3XYap6oA==" crossorigin=anonymous title=mermaid></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/shell.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/bash.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/python.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/cpp.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/makefile.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin=anonymous></script><script>anchors.add()</script><script id=search-hit-fuse-template type=text/x-template>
         <div class="search-hit" id="summary-{{key}}">
