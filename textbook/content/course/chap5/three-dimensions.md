@@ -322,6 +322,7 @@ rvizで`/detection_result`を表示し結果を確認してみよう。
 (開発PC)(docker) cd ~/external_catkin_ws/src 
 (開発PC)(docker) git clone https://github.com/ros-perception/image_pipeline
 (開発PC)(docker) cd ../; catkin build; source devel/setup.bash
+(開発PC)(docker) cd ~/roomba_hack/catkin_ws; source devel/setup.bash
 (開発PC)(docker) roslaunch three-dimensions_tutorial depth2pc.launch
 (開発PC)(docker) roslaunch navigation_tutorial navigation.launch
 ```
