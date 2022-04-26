@@ -14,98 +14,126 @@ weight: 20
 
 ### RGBDカメラについて
 
+RGBDカメラとは、カラーの他にデプス(深度)を取得できるカメラのことです。
+複雑な動作を行うロボットを動かす際には三次元空間の把握が重要となり、RGBDカメラはよく用いられます。
+比較的安価でよく利用されるRGBDカメラとして、Intel社製のRealSenseやMicrosoft社製のXtionなどがあります。
 
-### 自己位置推定
+### RealSense
 
-自己位置推定は、地図が事前に与えられていて、そこのどこにロボットがいるかを逐次的に外界センサ(LiDAR)と内界センサ(Odometry)を用いて推定していく手法になります。
+今回はRGBDカメラとしてRealSenseD435を使用します。
 
-ヒストグラムフィルタやカルマンフィルタ、パーティクルフィルタなどいくつかの手法が存在し、
-それぞれメリットデメリットがありますが、ここでは代表的なパーティクルフィルタを用いた手法を紹介します。
+ROSで用いる際には標準のラッパー(https://github.com/IntelRealSense/realsense-ros)を使用します。
 
-自己位置推定では、観測モデルと状態遷移モデルを交互に繰り返すことによって、ロボット自身がどこにいるかの確率分布を更新していくことで自己位置推定をしていきます。
+`roslaunch realsense2_camera rs_camera.launch`を行うとデフォルトのトピックとして
+RGB画像の`/camera/color/image_raw`、
+デプス画像の`/camera/depth/image_raw`
+が利用できます。これらのトピックはいずれも`sensor_msgs/Image`型です。
 
-パーティクルフィルタでは、この確率分布を大量の粒子を用いて表現する手法になっていて、各粒子が位置とそこにロボットがいるであろう確率(尤度)を持っています。
+RealSenseは物理的にRGB画像モジュールとデプス画像モジュールが離れているため、これら2つのトピックはいずれも画像データではあるものの、ピクセルの位置関係が対応しておらずそのままだとうまく画像処理に用いることができません。
+そこで、起動時に`align:=true`を指定することで、上記のトピックに加えてデプス画像をRGB画像のピクセルに対応するように変換する`/camera/aligned_depth_to_color/image_raw`トピックを使用できるようにします。
+他にも`pointcloud:=true`を指定するとデプス画像から点群を生成することができます。
+しかし、この処理は比較的重たいため今回はJetsonではなく、開発用PCでこの処理を行っていくことにします。
 
-ロボットが動くごと(オドメトリが更新されるごと)に、状態遷移モデルを用いて各粒子の位置情報を更新します。
-この時、一般的に分布は広がります。(人間が目を閉じて歩いたらどこにいるか分かりづらくなるのと同じ)
+それでは、RGB画像`/camera/color/image_raw`と整列されたデプス画像`/camera/aligned_depth_to_color/image_raw`の2種類のトピックを用いて三次元画像処理を行っていきましょう。
 
-外界の情報がわかるごと(スキャン情報が更新されるごと)に、観測モデルを用いて各粒子の尤度を更新します。
-尤度は、各粒子の位置から観測できるであろうスキャン情報と、実際のロボットで取得したスキャン情報との差から算出します。
+### 物体検出
 
-{{< figure src="../montecarlolocalization.gif" caption="Monte Carlo Localization(Particle Filter) Dieter Fox et al. 1999, using sonar. http://www.doc.ic.ac.uk/~ajd/Robotics/RoboticsResources/montecarlolocalization.gif" >}}
+まずはRGB画像`/camera/color/image_raw`のみを用いて三次元ではない画像検出を行っていきましょう。
 
-<!-- リサンプリング -->
+以下は`/camera/color/image_raw`をSubscribeし、物体検出アルゴリズムであるYOLOv3に入力し、その結果をbounding boxとして描画し、`/detection_result`としてPublishするスクリプトです。
 
-### launchファイルとrosparam
-
-自己位置推定では、初期位置がどこか、レーザーのスペックや、パーティクルの数など数十個のパラメータを保持します。
-
-これらをプログラム内部で記述するのではなく、launchファイル内で指定することが可能です。
-rosでは、rosparamという形でパラメータを管理することが可能です。
-
-以下に、今回用いる`amcl.launch` を示します。
-launchファイルはxml形式で記述され、paramを指定すること以外にも、
-launchファイル実行時に引数で指定可能なargや、トピック名などのリマップをすることも可能です。
-
-launchの詳しい書き方は、[rosのドキュメント](http://wiki.ros.org/ja/roslaunch/XML)を参照してください。
-
-
-``` xml
-<?xml version="1.0"?>
-<launch>
-  <arg name="use_map_topic" default="true"/>
-  <arg name="odom_topic" default="/odom" />
-  <arg name="scan_topic" default="/scan" />
-
-  <node pkg="amcl" type="amcl" name="amcl" output="screen">
-    <remap from="scan" to="$(arg scan_topic)"/>    
-    <remap from="odom" to="$(arg odom_topic)"/>    
-    <param name="use_map_topic" value="$(arg use_map_topic)"/>
-
-    <param name="initial_pose_x" value="0.0"/>
-    <param name="initial_pose_y" value="0.0"/>
-    <param name="initial_pose_a" value="0.0"/>
-    <param name="initial_cov_xx" value="0.1*0.1"/>
-    <param name="initial_cov_yy" value="0.1*0.1"/>
-    <param name="initial_cov_aa" value="0.3*3.14"/>
-
-    <param name="gui_publish_rate" value="10.0"/>
-
-    <param name="laser_max_beams" value="2.0"/>
-    <param name="laser_min_range" value="0.15"/>
-    <param name="laser_max_range" value="12.0"/>
-    <param name="laser_z_hit" value="0.8"/>
-    <param name="laser_z_short" value="0.1"/>
-    <param name="laser_z_max" value="0.1"/>
-    <param name="laser_z_rand" value="0.1"/>
-    <param name="laser_sigma_hit" value="0.2"/>
-    <param name="laser_lambda_short" value="0.1"/>
-    <param name="laser_model_type" value="likelihood_field"/>
-    <param name="laser_likelihood_max_dist" value="2.0"/>
-
-    <param name="min_particles" value="100"/>
-    <param name="max_particles" value="1000"/>
-    <param name="kld_err" value="0.0"/>
-    <param name="kld_z" value="0.0"/>
-    <param name="update_min_d" value="0.1"/>
-    <param name="update_min_a" value="0.1"/>
-    <param name="resample_interval" value="1"/>
-    <param name="transform_tolerance" value="0.2"/>
-    <param name="recovery_alpha_slow" value="0.001"/>
-    <param name="recovery_alpha_fast" value="0.1"/>
-
-    <param name="odom_frame_id" value="odom"/>
-    <param name="odom_model_type" value="diff"/>
-    <param name="odom_alpha1" value="0.2"/>
-    <param name="odom_alpha2" value="0.2"/>
-    <param name="odom_alpha3" value="0.2"/>
-    <param name="odom_alpha4" value="0.2"/>
-    <param name="odom_alpha5" value="0.2"/>
-
-  </node>
-
-</launch>
 ```
+#!/usr/bin/env python3
+
+import rospy
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+from pytorchyolo import detect, models
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import cv2
+import copy
+
+class ObjectDetection:
+    def __init__(self):
+        rospy.init_node('object_detection', anonymous=True)
+
+        # Publisher
+        self.detection_result_pub = rospy.Publisher('/detection_result', Image, queue_size=10)
+
+        # Subscriber
+        rgb_sub = rospy.Subscriber('/camera/color/image_raw', Image, self.callback_rgb)
+
+        self.bridge = CvBridge()
+        self.rgb_image = None
+
+    def callback_rgb(self, data):
+        cv_array = self.bridge.imgmsg_to_cv2(data, 'bgr8')
+        cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
+        self.rgb_image = cv_array
+
+    def process(self):
+        path = "/root/roomba_hack/catkin_ws/src/three-dimensions_tutorial/yolov3/"
+
+        # load category
+        with open(path+"data/coco.names") as f:
+            category = f.read().splitlines()
+
+        # prepare model
+        model = models.load_model(path+"config/yolov3.cfg", path+"weights/yolov3.weights")
+
+        while not rospy.is_shutdown():
+            if self.rgb_image is None:
+                continue
+
+            # inference
+            tmp_image = copy.copy(self.rgb_image)
+            boxes = detect.detect_image(model, tmp_image)
+            # [[x1, y1, x2, y2, confidence, class]]
+
+            # plot bouding box
+            for box in boxes:
+                x1, y1, x2, y2 = map(int, box[:4])
+                cls_pred = int(box[5])
+                tmp_image = cv2.rectangle(tmp_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
+                tmp_image = cv2.putText(tmp_image, category[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
+
+            # publish image
+            tmp_image = cv2.cvtColor(tmp_image, cv2.COLOR_RGB2BGR)
+            detection_result = self.bridge.cv2_to_imgmsg(tmp_image, "bgr8")
+            self.detection_result_pub.publish(detection_result)
+
+
+if __name__ == '__main__':
+    od = ObjectDetection()
+    try:
+        od.process()
+    except rospy.ROSInitException:
+        pass
+```
+
+コールバック関数で`sensor_msgs/Image`型をnp.ndarray型に変換するために
+```
+cv_array = self.bridge.imgmsg_to_cv2(data, 'bgr8')
+cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
+```
+という`sensor_msgs/Image`型特有の処理を行ってますが、Subscriberを作成しコールバック関数でデータを受け取るという基本的な処理の流れは`scan`などの他のセンサと同じです。
+
+ここで注意してほしいのはYOLOの推論部分をコールバック関数内で行っていないことです。
+一見、新しいデータが入ってくるときのみに推論を回すことは合理的に見えますが、センサの入力に対してコールバック関数内の処理が重いとセンサの入力がどんどん遅れていってしまいます。
+コールバック関数内ではセンサデータの最低限の処理の記述にとどめ、重い処理は分けて書くことを意識しましょう。
+
+ここでは既存の物体検出モジュールを使用しましたが、PyTorchなどで作成した自作のモデルも同様の枠組みで利用することができます。
+
+
+続いて、デプス画像データも統合して物体を検出し、物体までの距離を測定してみましょう。
+
+
+### 外部パッケージの使用
+
+それではデプス画像からを作成しましょう。
+
+
 
 ## 演習
 <!-- {{< spoiler text="Dockerfileにamclを追加してBuildする" >}}
