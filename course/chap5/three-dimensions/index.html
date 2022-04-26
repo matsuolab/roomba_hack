@@ -193,7 +193,7 @@ print(category[cls_pred], self.depth_image[cy][cx]/1000, &quot;m&quot;)
 (開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
 </code></pre><p><code>roslaunch roomba_bringup bringup.launch</code>でRealSenseも同時に起動するようになりました。</p></p></details><details class=spoiler id=spoiler-3><summary>(開発PC)RealSenseのトピックの可視化</summary><p><pre><code>(開発PC)(docker) rviz
 </code></pre><p><code>/camera/color/image_raw</code>と<code>/camera/depth/image_raw</code>と<code>/camera/aligned_depth_to_color/image_raw</code>を可視化して違いを確認してみよう。</p></p></details><details class=spoiler id=spoiler-4><summary>(開発PC)物体検出を行う</summary><p><pre><code>(開発PC)(docker) cd catkin_ws; catkin_make; source devel/setup.bash
-(開発PC)(docker) roscd dimensions_tutorial; cd yolov3/weights; ./download_weights.sh
+(開発PC)(docker) roscd three-dimensions_tutorial; cd yolov3/weights; ./download_weights.sh
 (開発PC)(docker) rosrun three-dimensions_tutorial object_detection.py
 rvizで`/detection_result`を表示し結果を確認してみよう。
 (開発PC)(docker) rosrun three-dimensions_tutorial detection_distance.py
