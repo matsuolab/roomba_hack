@@ -64,7 +64,6 @@ WORKDIR /root
 RUN mkdir -p external_catkin_ws/src && \
     cd external_catkin_ws/src && \
     git clone https://github.com/autonomylab/create_robot.git -b melodic && \
-    git clone https://github.com/ros-perception/image_pipeline && \
     cd /root/external_catkin_ws && \
     rm -r src/create_robot/create_bringup && \
     rm -r src/create_robot/create_driver && \
