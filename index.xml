@@ -467,9 +467,17 @@ rvizで`/detection_result`を表示し結果を確認してみよう。
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-6">
 &lt;summary>余裕がある人向け&lt;/summary>
-&lt;p>PyTorchを使用した自作の分類器やネット上の分類器をシステムに組み込んでみましょう。
-物体を検出し、その前までナビゲーションするシステムを作りましょう。
-Lidarに映らない物体も画像ベースで検出しコストマップに追加することでナビゲーション時にぶつからないようにしましょう。&lt;/p>
+&lt;p>&lt;p>物体を検出し、特定の物体の手前まで移動するスクリプトを作りましょう。&lt;/p>
+&lt;p>ヒント&lt;/p>
+&lt;ul>
+&lt;li>物体検出結果に基づいて物体部分以外をマスクしたデプス画像をpublishする&lt;/li>
+&lt;li>depth2pc.launchでそれをsubscribeし、point(cloud)に変換する&lt;/li>
+&lt;li>変換されたpointからmap座標系での位置を取得する&lt;/li>
+&lt;li>navigation_tutorial/scripts/set_goal.py (map座標系で指定した位置・姿勢までナビゲーションするスクリプト)などを参考に、その位置へとナビゲーションする&lt;/li>
+&lt;/ul>
+&lt;p>PyTorchを使用した自作の分類器やネット上の分類器をシステムに組み込んでみましょう。&lt;/p>
+&lt;p>Lidarに映らない物体も画像ベースで検出しコストマップに追加することでナビゲーション時にぶつからないようにしましょう。&lt;/p>
+&lt;/p>
 &lt;/details></description></item><item><title>自己位置推定</title><link>https://matsuolab.github.io/roomba_hack/course/chap4/localization/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap4/localization/</guid><description>&lt;h2 id="learn">Learn&lt;/h2>
 &lt;p>前回の演習では、オドメトリを用いてロボットを制御しました。&lt;/p>
 &lt;p>1m進むや、90度右回転などある程度正確に動いたかと思います。
