@@ -123,17 +123,157 @@ cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
 一見、新しいデータが入ってくるときのみに推論を回すことは合理的に見えますが、センサの入力に対してコールバック関数内の処理が重いとセンサの入力がどんどん遅れていってしまいます。
 コールバック関数内ではセンサデータの最低限の処理の記述にとどめ、重い処理は分けて書くことを意識しましょう。
 
-ここでは既存の物体検出モジュールを使用しましたが、PyTorchなどで作成した自作のモデルも同様の枠組みで利用することができます。
+また、ここでは既存の物体検出モジュールを使用しましたが、PyTorchなどで作成した自作のモデルも同様の枠組みで利用することができます。
 
 
-続いて、デプス画像データも統合して物体を検出し、物体までの距離を測定してみましょう。
+続いて、整列されたデプス画像データも統合して物体を検出し、物体までの距離を測定してみましょう。
+
+RGB画像`/camera/color/image_raw`と整列されたデプス画像`/camera/aligned_depth_to_color/image_raw`はそれぞれ独立したトピックであるため、同期を取る必要があります。
+
+画像の同期にはmessage_filters(http://wiki.ros.org/message_filters)がよく使われます。
+
+message_filters.ApproximateTimeSynchronizerを使い以下のようにSubscriberを作成します。
+```
+rgb_sub = message_filters.Subscriber('/camera/color/image_raw', Image)
+depth_sub = message_filters.Subscriber('/camera/aligned_depth_to_color/image_raw', Image)
+message_filters.ApproximateTimeSynchronizer([rgb_sub, depth_sub], 10, 1.0).registerCallback(callback_rgbd)
+
+def callback_rgbd(data1, data2):
+    bridge = CvBridge()
+    cv_array = bridge.imgmsg_to_cv2(data1, 'bgr8')
+    cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
+    self.rgb_image = cv_array
+
+    cv_array = bridge.imgmsg_to_cv2(data2, 'passthrough')
+    self.depth_image = cv_array
+```
+この例では、1.0秒の許容で'/camera/color/image_raw'と'/camera/aligned_depth_to_color/image_raw'のトピックの同期を取ることができれば、コールバック関数callback_rgbdが呼ばれセンサデータが受けとられます。
+
+それでは、物体を検出し、物体までの距離を測定するスクリプトを見てみましょう。
+
+```
+#!/usr/bin/env python3
+
+import rospy
+import message_filters
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+from pytorchyolo import detect, models
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import cv2
+import copy
+
+class DetectionDistance:
+    def __init__(self):
+        rospy.init_node('detection_distance', anonymous=True)
+
+        # Publisher
+        self.detection_result_pub = rospy.Publisher('/detection_result', Image, queue_size=10)
+
+        # Subscriber
+        rgb_sub = message_filters.Subscriber('/camera/color/image_raw', Image)
+        depth_sub = message_filters.Subscriber('/camera/aligned_depth_to_color/image_raw', Image)
+        message_filters.ApproximateTimeSynchronizer([rgb_sub, depth_sub], 10, 1.0).registerCallback(self.callback_rgbd)
+
+        self.bridge = CvBridge()
+        self.rgb_image, self.depth_image = None, None
+
+    def callback_rgbd(self, data1, data2):
+        cv_array = self.bridge.imgmsg_to_cv2(data1, 'bgr8')
+        cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
+        self.rgb_image = cv_array
+
+        cv_array = self.bridge.imgmsg_to_cv2(data2, 'passthrough')
+        self.depth_image = cv_array
+
+    def process(self):
+        path = "/root/roomba_hack/catkin_ws/src/three-dimensions_tutorial/yolov3/"
+
+        # load category
+        with open(path+"data/coco.names") as f:
+            category = f.read().splitlines()
+
+        # prepare model
+        model = models.load_model(path+"config/yolov3.cfg", path+"weights/yolov3.weights")
+
+        while not rospy.is_shutdown():
+            if self.rgb_image is None:
+                continue
+
+            # inference
+            tmp_image = copy.copy(self.rgb_image)
+            boxes = detect.detect_image(model, tmp_image)
+            # [[x1, y1, x2, y2, confidence, class]]
+
+            # plot bouding box
+            for box in boxes:
+                x1, y1, x2, y2 = map(int, box[:4])
+                cls_pred = int(box[5])
+                tmp_image = cv2.rectangle(tmp_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
+                tmp_image = cv2.putText(tmp_image, category[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
+                cx, cy = (x1+x2)//2, (y1+y2)//2
+                print(category[cls_pred], self.depth_image[cy][cx]/1000, "m")
+            
+            # publish image
+            tmp_image = cv2.cvtColor(tmp_image, cv2.COLOR_RGB2BGR)
+            detection_result = self.bridge.cv2_to_imgmsg(tmp_image, "bgr8")
+            self.detection_result_pub.publish(detection_result)
 
 
-### 外部パッケージの使用
+if __name__ == '__main__':
+    dd = DetectionDistance()
+    try:
+        dd.process()
+    except rospy.ROSInitException:
+```
 
-それではデプス画像からを作成しましょう。
+基本的には物体検出のスクリプトと同じですが、
+```
+cx, cy = (x1+x2)//2, (y1+y2)//2
+print(category[cls_pred], self.depth_image[cy][cx]/1000, "m")
+```
+でbounding boxの中心座標を変換し、対応する距離をメートル単位で表示しています。
+
+整列されたデプス画像を用いているため、RGB画像に基づき算出した座標をそのまま指定できます。
 
 
+### 点群の作成
+
+上の例ではRGB画像とデプス画像を用いた三次元画像処理を行うことができました。
+
+しかし、ロボットの自立移動などより複雑な動作をさせることを考えたとき、深度データを三次元空間にマッピングできたほうが位置関係を統一的に扱うことができ便利なこともあります。
+
+それでデプス画像から点群と呼ばれるデータを作成することを考えます。
+
+点群とは三次元座標値(X,Y,Z)で構成された点の集まりのことです。各点の情報として、三次元座標値に加え色の情報(R,G,B)が加わることもあります。
+デプス画像はカメラの内部パラメータを用いることによって点群データに変換することができます。(https://medium.com/yodayoda/from-depth-map-to-point-cloud-7473721d3f)
+
+今回はdepth_image_procと呼ばれる、デプス画像を点群データに変換するROSの外部パッケージ(http://wiki.ros.org/depth_image_proc) を使用して点群の変換を行います。
+
+外部パッケージは`~/catkin_ws/src`等のワークスペースに配置し、ビルドしパスを通すことで簡単に使用できます。
+
+depth_image_procのwikiを参考に以下のようなlaunchファイルを作成しました。
+
+```
+<?xml version="1.0"?>
+<launch>
+  <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" />
+
+  <node pkg="nodelet" type="nodelet" name="nodelet1"
+        args="load depth_image_proc/point_cloud_xyz nodelet_manager">
+    <remap from="camera_info" to="/camera/color/camera_info"/>
+    <remap from="image_rect" to="/camera/aligned_depth_to_color/image_raw"/>
+    <remap from="points" to="/camera/depth/points"/>
+  </node>
+</launch>
+```
+このlaunchファイルを実行すると`/camera/color/camera_info`と`/camera/aligned_depth_to_color/image_raw`をSubscribeし、`/camera/depth/points`をPublishします。
+
+`/camera/color/camera_info`は`sensor_msgs/CameraInfo`型のトピックであり、カメラパラメータやフレームid、タイムスタンプなどを保持しており、点群の変換に利用されます。
+`/camera/aligned_depth_to_color/image_raw`はRGB画像に整列されたデプス画像であるため、`/camera/depth/camera_info`ではなく`/camera/color/camera_info`を指定することに注意してください。
+
+`roslaunch three-dimensions_tutorial depth2pc.launch`を行い`/camera/depth/points`トピックをrvizで可視化をすると三次元空間に点群データが表示されているのが確認できます。
 
 ## 演習
 <!-- {{< spoiler text="Dockerfileにamclを追加してBuildする" >}}
