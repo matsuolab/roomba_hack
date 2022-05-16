@@ -31,7 +31,7 @@
   </link>
 
   <joint name="lidar_base_to_base_link" type="fixed">
-    <origin xyz="-0.08 0 0.09" rpy="0 0 0"/>
+    <origin xyz="0.08 0 0.09" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="lidar_base"/>
   </joint>
@@ -82,10 +82,11 @@
   </joint>
   <link name="laser"/>
   <joint name="laser_to_rplidar" type="fixed">
-    <origin xyz="-0.035 0.0 0.045" rpy="0 0 3.14159"/>
+    <origin xyz="-0.035 0.03 0.03" rpy="0 0 0"/>
     <parent link="rplidar"/>
     <child link="laser"/>
   </joint>
+
 
   <!--
   <link name="mobile_battery">

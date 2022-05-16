@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>
   <arg name="odom_topic" default="/odom" />
   <arg name="cmd_vel_topic" default="/planner/cmd_vel" />
@@ -10,18 +11,18 @@
 
     <!-- <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/> -->
 
-	<rosparam file="$(find navigation_tutorial)/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find navigation_tutorial)/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find navigation_tutorial)/params/local_costmap_params.yaml" command="load" />
 
-	<rosparam file="$(find navigation_tutorial)/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find navigation_tutorial)/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
     <rosparam file="$(find navigation_tutorial)/params/global_costmap_params.yaml" command="load" />
 
-	<rosparam file="$(find navigation_tutorial)/params/move_base_params.yaml" command="load"/>
+    <rosparam file="$(find navigation_tutorial)/params/move_base_params.yaml" command="load"/>
+    <!-- <rosparam file="$(find navigation_tutorial)/params/base_local_planner_params.yaml" command="load" /> -->
+    <rosparam file="$(find navigation_tutorial)/params/dwa_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find navigation_tutorial)/params/base_global_planner_params.yaml" command="load" />
 
-	<!-- <rosparam file="$(find navigation_tutorial)/params/dwa_local_planner_params.yaml" command="load" /> -->
-	<rosparam file="$(find navigation_tutorial)/params/base_local_planner_params.yaml" command="load" />
-	<rosparam file="$(find navigation_tutorial)/params/base_global_planner_params.yaml" command="load" />
 
-	</node>
+  </node>
 
 </launch>

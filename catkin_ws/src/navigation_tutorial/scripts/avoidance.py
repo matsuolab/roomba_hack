@@ -49,7 +49,7 @@ class Avoidance:
                     elif self.direction == "LEFT":
                         vel.angular.z = -0.5
             self.cmd_vel_pub.publish(vel)
-            rospy.sleep(0.1)
+            r.sleep()
 
 if __name__=='__main__':
     avoidance = Avoidance()

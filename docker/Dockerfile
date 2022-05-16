@@ -54,9 +54,8 @@ RUN rosdep init && \
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         ros-${ROS_DISTRO}-navigation \
-        ros-${ROS_DISTRO}-usb-cam \
         ros-${ROS_DISTRO}-joy \
-        ros-${ROS_DISTRO}-rplidar-ros && \
+        ros-${ROS_DISTRO}-gmapping && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -74,6 +73,12 @@ RUN mkdir -p external_catkin_ws/src && \
     rosdep install --from-paths src -i -r -y && \
     cd ~/external_catkin_ws && \
     bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash; catkin build"
+
+# install PyTorch
+RUN pip install torch==1.10.1+cu111 torchvision==0.11.2+cu111 torchaudio==0.10.1 -f https://download.pytorch.org/whl/torch_stable.html 
+
+# install YOLOv3
+RUN pip install pytorchyolo
 
 WORKDIR /root/
 
