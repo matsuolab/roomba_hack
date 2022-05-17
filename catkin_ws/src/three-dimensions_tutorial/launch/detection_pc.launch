@@ -6,7 +6,7 @@
         args="load depth_image_proc/point_cloud_xyz nodelet_manager">
     <remap from="camera_info" to="/masked_depth/camera_info"/>
     <remap from="image_rect" to="/masked_depth/image"/>
-    <remap from="points" to="/camera/depth/points"/>
+    <remap from="points" to="/obstacle_cloud"/>
   </node>
   <node pkg="three-dimensions_tutorial" type="detection_mask.py" name="detection_mask" output="screen" />
 </launch>
