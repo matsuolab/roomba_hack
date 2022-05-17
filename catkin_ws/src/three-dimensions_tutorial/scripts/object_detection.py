@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import cv2
 import copy
+import torchvision
 
 class ObjectDetection:
     def __init__(self):
@@ -26,6 +27,7 @@ class ObjectDetection:
         cv_array = self.bridge.imgmsg_to_cv2(data, 'bgr8')
         cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
         self.rgb_image = cv_array
+        self.w, self.h, _ = cv_array.shape    
 
     def process(self):
         path = "/root/roomba_hack/catkin_ws/src/three-dimensions_tutorial/yolov3/"
@@ -35,15 +37,27 @@ class ObjectDetection:
             category = f.read().splitlines()
 
         # prepare model
-        model = models.load_model(path+"config/yolov3.cfg", path+"weights/yolov3.weights")
-
+        model = torchvision.models.segmentation.deeplabv3_resnet101(pretrained=True).cuda()
+        model.eval()
+        preprocess = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
         while not rospy.is_shutdown():
             if self.rgb_image is None:
                 continue
 
             # inference
             tmp_image = copy.copy(self.rgb_image)
-            boxes = detect.detect_image(model, tmp_image)
+            preprocessed_image = preprocess(tmp_imagei).unsqueeze(0)
+            with torch.no_grad():
+                output = model(preprocessed_image)['out']
+            output = output[0].argmax(0)
+            mask = output.byte().cpu().numpy()
+            mask = cv2.resize(mask, (self.w, self.h))
+            mask[mask!=0] = 255
+
+
             # [[x1, y1, x2, y2, confidence, class]]
 
             # plot bouding box

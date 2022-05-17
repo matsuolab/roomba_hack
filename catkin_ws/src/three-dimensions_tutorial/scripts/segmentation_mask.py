@@ -11,6 +11,10 @@ import numpy as np
 import cv2
 import copy
 
+import torch
+import torchvision
+from torchvision import transforms
+
 class DetectionMask:
     def __init__(self):
         rospy.init_node('detection_mask', anonymous=True)
@@ -33,6 +37,7 @@ class DetectionMask:
         cv_array = self.bridge.imgmsg_to_cv2(data1, 'bgr8')
         cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
         self.rgb_image = cv_array
+        self.h, self.w, _ = cv_array.shape
 
         cv_array = self.bridge.imgmsg_to_cv2(data2, 'passthrough')
         self.depth_image = cv_array
@@ -40,14 +45,13 @@ class DetectionMask:
         self.camera_info = data3
 
     def process(self):
-        path = "/root/roomba_hack/catkin_ws/src/three-dimensions_tutorial/yolov3/"
 
-        # load category
-        with open(path+"data/coco.names") as f:
-            category = f.read().splitlines()
-
-        # prepare model
-        model = models.load_model(path+"config/yolov3.cfg", path+"weights/yolov3.weights")
+        model = torchvision.models.segmentation.deeplabv3_resnet101(pretrained=True).cuda()
+        model.eval()
+        preprocess = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
 
         while not rospy.is_shutdown():
             if self.rgb_image is None:
@@ -58,18 +62,16 @@ class DetectionMask:
             tmp_depth_image = copy.copy(self.depth_image)
             tmp_camera_info = copy.copy(self.camera_info)
 
-            boxes = detect.detect_image(model, tmp_rgb_image)
             # [[x1, y1, x2, y2, confidence, class]]
-
-            depth_mask = np.zeros_like(tmp_depth_image)
-
-            # plot bouding box
-            for box in boxes:
-                x1, y1, x2, y2 = map(int, box[:4])
-                cls_pred = int(box[5])
-                tmp_rgb_image = cv2.rectangle(tmp_rgb_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
-                tmp_rgb_image = cv2.putText(tmp_rgb_image, category[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
-                depth_mask[y1:y2, x1:x2] = 1
+            print(self.rgb_image.shape)
+            print(type(self.rgb_image))
+            preprocessed_image = preprocess(self.rgb_image).unsqueeze(0).cuda()
+            with torch.no_grad():
+                output = model(preprocessed_image)['out']
+            output = output[0].argmax(0)
+            mask = output.byte().cpu().numpy()
+            depth_mask = cv2.resize(mask, (self.w, self.h))
+            depth_mask[mask!=0] = 1
             
             tmp_rgb_image = cv2.cvtColor(tmp_rgb_image, cv2.COLOR_RGB2BGR)
             detection_result = self.bridge.cv2_to_imgmsg(tmp_rgb_image, "bgr8")
@@ -80,7 +82,6 @@ class DetectionMask:
             masked_depth.header = tmp_camera_info.header
             self.masked_depth_pub.publish(masked_depth)
             self.camera_info_pub.publish(tmp_camera_info)
-
 
 if __name__ == '__main__':
     dd = DetectionMask()

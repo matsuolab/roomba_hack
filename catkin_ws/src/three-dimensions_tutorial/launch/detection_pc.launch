@@ -8,5 +8,5 @@
     <remap from="image_rect" to="/masked_depth/image"/>
     <remap from="points" to="/obstacle_cloud"/>
   </node>
-  <node pkg="three-dimensions_tutorial" type="detection_mask.py" name="detection_mask" output="screen" />
+  <node pkg="three-dimensions_tutorial" type="segmentation_mask.py" name="segmentation_mask" output="screen" />
 </launch>
