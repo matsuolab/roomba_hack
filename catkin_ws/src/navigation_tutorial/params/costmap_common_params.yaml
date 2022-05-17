@@ -13,7 +13,7 @@ laser_scan_sensor:
   clearing: true
 
 detection_cloud:
-  sensor_frame: map
+  sensor_frame: camera_color_optical_frame
   data_type: PointCloud2
   topic: /obstacle_cloud
   marking: true
