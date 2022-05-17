@@ -17,6 +17,6 @@
     </include>
 
     <!-- rviz -->
-    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find navigation_tutorial)/configs/navigation.rviz"/>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find navigation_tutorial)/configs/detection.rviz"/>
 
 </launch>
