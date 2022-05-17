@@ -60,11 +60,35 @@ action_client.send_goal(goal) # ゴールを命令
 &lt;pre>&lt;code class="language-python">action_client.wait_for_result(rospy.Duration(30))
 &lt;/code>&lt;/pre>
 &lt;p>とすると，結果が返ってくるまで（この場合30秒間），クライアントの処理をブロックできますし，&lt;/p>
-&lt;pre>&lt;code class="language-python">result = action_client.get_result)
+&lt;pre>&lt;code class="language-python">result = action_client.wait_for_result(rospy.Duration(30))
 &lt;/code>&lt;/pre>
 &lt;p>とすることで，&lt;code>result&lt;/code>変数に処理の結果が格納され，確認できます．&lt;/p>
 &lt;h2 id="演習">演習&lt;/h2>
 &lt;details class="spoiler " id="spoiler-0">
+&lt;summary>【jetson・開発マシン】起動準備&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-shell">cd roomba_hack
+git fetch
+git checkout feature/integrate
+(jetson) ./RUN-DOCKER-CONTAINER.sh
+(開発マシン) ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-1">
+&lt;summary>【開発マシン】scriptベースのnavigationを実行してみる&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-shell">(開発マシン)(docker) roslaunch navigation_turtorial navigation.launch
+(開発マシン)(docker) rosrun navigation_turtorial topic_goal.py
+(開発マシン)(docker) rosrun navigation_turtorial action_goal.py
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-2">
+&lt;summary>【開発マシン】RealSenseで検出した障害物をコストマップに追加してみよう&lt;/summary>
+&lt;p>&lt;pre>&lt;code class="language-shell">(開発マシン)(docker) roslaunch three-dimensions_tutorial detection_pc.launch
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-3">
 &lt;summary>（総合課題）障害物を避けながらnavigationする&lt;/summary>
 &lt;p>&lt;p>Lidarに映らない物体も画像ベースで検出しコストマップに追加することでナビゲーション時にぶつからないようにしましょう。&lt;/p>
 &lt;p>ヒント&lt;/p>
