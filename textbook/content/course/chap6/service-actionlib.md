@@ -98,12 +98,38 @@ action_client.wait_for_result(rospy.Duration(30))
 ```
 とすると，結果が返ってくるまで（この場合30秒間），クライアントの処理をブロックできますし，
 ```python
-result = action_client.get_result)
+result = action_client.wait_for_result(rospy.Duration(30))
 ```
 とすることで，`result`変数に処理の結果が格納され，確認できます．
 
 
 ## 演習
+
+{{< spoiler text="【jetson・開発マシン】起動準備" >}}
+```shell
+cd roomba_hack
+git fetch
+git checkout feature/integrate
+(jetson) ./RUN-DOCKER-CONTAINER.sh
+(開発マシン) ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+```
+{{< /spoiler >}}
+
+
+{{< spoiler text="【開発マシン】scriptベースのnavigationを実行してみる" >}}
+```shell
+(開発マシン)(docker) roslaunch navigation_turtorial navigation.launch
+
+(開発マシン)(docker) rosrun navigation_turtorial topic_goal.py
+(開発マシン)(docker) rosrun navigation_turtorial action_goal.py
+```
+{{< /spoiler >}}
+
+{{< spoiler text="【開発マシン】RealSenseで検出した障害物をコストマップに追加してみよう" >}}
+```shell
+(開発マシン)(docker) roslaunch three-dimensions_tutorial detection_pc.launch
+```
+{{< /spoiler >}}
 
 {{< spoiler text="（総合課題）障害物を避けながらnavigationする" >}}
 
