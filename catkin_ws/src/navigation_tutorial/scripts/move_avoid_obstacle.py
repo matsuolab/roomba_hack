@@ -24,8 +24,14 @@ class ActionGoal():
 
     def send_action(self, duration=30.0):
         self.action_client.send_goal(self.goal)  # ゴールを命令
-        result = self.action_client.wait_for_result(rospy.Duration(duration))
-        return result
+        while not rospy.is_shutdown():
+            result = self.action_client.get_result()
+            if result is not None:
+                return result
+            #result = self.action_client.wait_for_result(rospy.Duration(duration))
+        print("out while")
+        self.action_client.cancel_goal()
+        return False
 
 if __name__ == '__main__':
     ag = ActionGoal()

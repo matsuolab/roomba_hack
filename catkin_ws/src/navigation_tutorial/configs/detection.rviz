@@ -28,7 +28,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: LaserScan
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -209,8 +209,6 @@ Visualization Manager:
           Value: false
         lidar_base:
           Value: false
-        map:
-          Value: true
         odom:
           Value: true
         realsense:
@@ -232,42 +230,7 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          odom:
-            base_footprint:
-              base_link:
-                front_wheel_link:
-                  {}
-                gyro_link:
-                  {}
-                left_cliff_sensor_link:
-                  {}
-                left_wheel_link:
-                  {}
-                leftfront_cliff_sensor_link:
-                  {}
-                lidar_base:
-                  realsense:
-                    camera_link:
-                      camera_aligned_depth_to_color_frame:
-                        camera_color_optical_frame:
-                          {}
-                      camera_color_frame:
-                        {}
-                      camera_depth_frame:
-                        camera_depth_optical_frame:
-                          {}
-                  rplidar:
-                    laser:
-                      {}
-                right_cliff_sensor_link:
-                  {}
-                right_wheel_link:
-                  {}
-                rightfront_cliff_sensor_link:
-                  {}
-                wall_sensor_link:
-                  {}
+        {}
       Update Interval: 0
       Value: true
     - Class: rviz/Image
