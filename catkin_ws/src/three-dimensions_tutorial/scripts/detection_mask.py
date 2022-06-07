@@ -69,7 +69,10 @@ class DetectionMask:
                 cls_pred = int(box[5])
                 tmp_rgb_image = cv2.rectangle(tmp_rgb_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
                 tmp_rgb_image = cv2.putText(tmp_rgb_image, category[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
-                depth_mask[y1:y2, x1:x2] = 1
+                for x in range(x1, x2):
+                    for y in range(y1, y2):
+                        if (x+y) % 2 == 1:
+                            depth_mask[y, x] = 1
             
             tmp_rgb_image = cv2.cvtColor(tmp_rgb_image, cv2.COLOR_RGB2BGR)
             detection_result = self.bridge.cv2_to_imgmsg(tmp_rgb_image, "bgr8")
