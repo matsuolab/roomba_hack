@@ -210,7 +210,10 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
 - コントローラーを起動
   コントローラーが開発PCに刺さってることを確認してください。
     ``` sh
-    (開発PC)(docker):~/roomba_hack# roslaunch roomba_teleop roomaba_teleop.launch
+    (開発PC)(docker):~/roomba_hack# cd catkin_ws
+    (開発PC)(docker):~/roomba_hack/catkin_ws# catkin_make
+    (開発PC)(docker):~/roomba_hack/catkin_ws# source devel/setup.bash
+    (開発PC)(docker):~/roomba_hack/catkin_ws#roslaunch roomba_teleop roomaba_teleop.launch
     ```
 
 - コントローラのモード
