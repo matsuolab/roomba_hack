@@ -393,7 +393,7 @@ rqt window
 &lt;summary>roomba driverを起動し、動作していることを確認する&lt;/summary>
 &lt;p>&lt;ul>
 &lt;li>
-&lt;p>roombaにアクセスする&lt;/p>
+&lt;p>jetsonにアクセスする&lt;/p>
 &lt;pre>&lt;code class="language-sh">(開発PC):~$ ssh roomba_dev1
 (jetson):~$
 &lt;/code>&lt;/pre>
@@ -403,12 +403,17 @@ rqt window
 余裕があれば&lt;code>RUN-DOCKER-CONTAINER.sh&lt;/code>ファイルの中身を確認してみましょう。&lt;/p>
 &lt;pre>&lt;code class="language-sh">(jetson):~$ cd ~/team_a/roomba_hack
 (jetson):~$ ./RUN-DOCKER-CONTAINER.sh
+root@roomba-dev-jetson:~/roomba_hack#
 &lt;/code>&lt;/pre>
+&lt;p>&lt;code>root@roomba-dev-jetson:~/roomba_hack#&lt;/code>などと表示されればdocker内部に入れています。&lt;/p>
+&lt;p>今後docker内部であることは(docker)と表記します。&lt;/p>
 &lt;/li>
 &lt;li>
 &lt;p>roomba driverなどを起動するlaunchファイルを起動する
 このタイミングでルンバの電源が入っているかを確認しておきましょう。&lt;/p>
-&lt;pre>&lt;code class="language-sh">roslaunch roomma_bringup roomba_bringup.launch
+&lt;p>roombaの起動にはroslaunchコマンドを使います。&lt;/p>
+&lt;p>roslaunchコマンドについては今後説明します。&lt;/p>
+&lt;pre>&lt;code class="language-sh">(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup roomba_bringup.launch
 &lt;/code>&lt;/pre>
 &lt;p>起動に成功すればルンバからピッと短い音が鳴り、ターミナルには赤い文字が出続けるはずです。&lt;/p>
 &lt;/li>
@@ -419,8 +424,13 @@ rqt window
 &lt;summary>コントローラーを使って、ロボットを動かす&lt;/summary>
 &lt;p>&lt;ul>
 &lt;li>
+&lt;p>開発PCでdocker containerを起動する&lt;/p>
+&lt;pre>&lt;code class="language-sh">(開発PC):~$ roslaunch roomba_teleop roomaba_teleop.launch
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
 &lt;p>コントローラーを起動&lt;/p>
-&lt;pre>&lt;code class="language-sh">roslauunch roomba_teleop roomaba_teleop.launch
+&lt;pre>&lt;code class="language-sh">roslaunch roomba_teleop roomaba_teleop.launch
 &lt;/code>&lt;/pre>
 &lt;/li>
 &lt;li>
