@@ -173,28 +173,23 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
 
 - roombaにアクセスする
     ``` sh
-    ssh roommba
+    (開発PC):~$ ssh roomba_dev1
+    (jetson):~$
     ```
 
 - docker containerを起動する
+  余裕があれば`RUN-DOCKER-CONTAINER.sh`ファイルの中身を確認してみましょう。
     ``` sh
-    cd ~/workspace/roomba_hack
-    ./RUN-DOCKER-CONTAINER.sh
+    (jetson):~$ cd ~/team_a/roomba_hack
+    (jetson):~$ ./RUN-DOCKER-CONTAINER.sh
     ```
 
 - roomba driverなどを起動するlaunchファイルを起動する
-
+  このタイミングでルンバの電源が入っているかを確認しておきましょう。
     ``` sh
     roslaunch roomma_bringup roomba_bringup.launch
     ```
-
-- 正常に起動できているかを確認
-    ``` sh
-    rosnode list
-    rostopic list
-    rostopic echo /odom
-    rqt_graph
-    ```
+  起動に成功すればルンバからピッと短い音が鳴り、ターミナルには赤い文字が出続けるはずです。
 
 {{< /spoiler >}}
 
