@@ -411,7 +411,7 @@ root@roomba-dev-jetson:~/roomba_hack#
 &lt;li>
 &lt;p>roomba driverなどを起動するlaunchファイルを起動する
 このタイミングでルンバの電源が入っているかを確認しておきましょう。&lt;/p>
-&lt;pre>&lt;code class="language-sh">(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup roomba_bringup.launch
+&lt;pre>&lt;code class="language-sh">(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup bringup.launch
 &lt;/code>&lt;/pre>
 &lt;p>起動に成功すればルンバからピッと短い音が鳴り、ターミナルには赤い文字が出続けるはずです。&lt;/p>
 &lt;/li>
@@ -434,7 +434,7 @@ root@roomba-dev-jetson:~/roomba_hack#
 &lt;pre>&lt;code class="language-sh">(開発PC)(docker):~/roomba_hack# cd catkin_ws
 (開発PC)(docker):~/roomba_hack/catkin_ws# catkin_make
 (開発PC)(docker):~/roomba_hack/catkin_ws# source devel/setup.bash
-(開発PC)(docker):~/roomba_hack/catkin_ws#roslaunch roomba_teleop roomaba_teleop.launch
+(開発PC)(docker):~/roomba_hack/catkin_ws#roslaunch roomba_teleop teleop.launch
 &lt;/code>&lt;/pre>
 &lt;/li>
 &lt;li>

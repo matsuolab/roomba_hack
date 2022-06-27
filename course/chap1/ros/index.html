@@ -47,7 +47,7 @@ ROSマスタを起動するには「roscore」というコマンドを実行し�
 (jetson):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
 root@roomba-dev-jetson:~/roomba_hack#
 </code></pre><p><code>root@roomba-dev-jetson:~/roomba_hack#</code>などと表示されればdocker内部に入れています。</p><p>今後docker内部であることは(docker)と表記します。</p></li><li><p>roomba driverなどを起動するlaunchファイルを起動する
-このタイミングでルンバの電源が入っているかを確認しておきましょう。</p><pre><code class=language-sh>(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup roomba_bringup.launch
+このタイミングでルンバの電源が入っているかを確認しておきましょう。</p><pre><code class=language-sh>(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup bringup.launch
 </code></pre><p>起動に成功すればルンバからピッと短い音が鳴り、ターミナルには赤い文字が出続けるはずです。</p></li></ul></p></details><details class=spoiler id=spoiler-4><summary>コントローラーを使って、ロボットを動かす</summary><p><ul><li><p>開発PCでdocker containerを起動する
 　　xにはroomba_devの後につく数字を入れてください。</p><pre><code class=language-sh>(開発PC):~$ cd ~/team_a/roomba_hack
 (開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
@@ -55,7 +55,7 @@ root@roomba-dev-jetson:~/roomba_hack#
 コントローラーが開発PCに刺さってることを確認してください。</p><pre><code class=language-sh>(開発PC)(docker):~/roomba_hack# cd catkin_ws
 (開発PC)(docker):~/roomba_hack/catkin_ws# catkin_make
 (開発PC)(docker):~/roomba_hack/catkin_ws# source devel/setup.bash
-(開発PC)(docker):~/roomba_hack/catkin_ws#roslaunch roomba_teleop roomaba_teleop.launch
+(開発PC)(docker):~/roomba_hack/catkin_ws#roslaunch roomba_teleop teleop.launch
 </code></pre></li><li><p>コントローラのモード</p><ul><li>移動・停止</li><li>自動・マニュアル</li><li>ドッキング・アンドッキング</li></ul></li><li><p>コントローラによる操縦</p><ul><li>移動ロック解除
 L2を押している時のみ移動コマンドが動作します。</li><li>左ジョイスティック
 縦方向で前進速度(手前に倒すとバック)、横方向は回転速度に対応しています。</li><li>左矢印
