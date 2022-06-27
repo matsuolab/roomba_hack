@@ -201,6 +201,7 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
 {{< spoiler text="コントローラーを使って、ロボットを動かす" >}}
 
 - 開発PCでdocker containerを起動する
+　　xにはroomba_devの後につく数字を入れてください。
     ``` sh
     (開発PC):~$ cd ~/team_a/roomba_hack
     (開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
