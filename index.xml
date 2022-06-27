@@ -964,6 +964,7 @@ docker exec -it &amp;lt;container_name&amp;gt; bash
 roomba_dev2@roomba-dev-jetson2:~$
 &lt;/code>&lt;/pre>
 &lt;p>先頭の表記が&lt;code>roomba_dev2@roomba-dev-jetson2&lt;/code>と変わり、jetsonへ接続されたことがわかります。&lt;/p>
+&lt;p>jetsonでも同様にグループのディレクトリを作成し、移動し、roomba_hackリポジトリをcloneしてみましょう。&lt;/p>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-6">
