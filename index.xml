@@ -1520,7 +1520,8 @@ root@roomba-dev-jetson:~/roomba_hack#
 &lt;summary>コントローラーを使って、ロボットを動かす&lt;/summary>
 &lt;p>&lt;ul>
 &lt;li>
-&lt;p>開発PCでdocker containerを起動する&lt;/p>
+&lt;p>開発PCでdocker containerを起動する
+　　xにはroomba_devの後につく数字を入れてください。&lt;/p>
 &lt;pre>&lt;code class="language-sh">(開発PC):~$ cd ~/team_a/roomba_hack
 (開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
 &lt;/code>&lt;/pre>
