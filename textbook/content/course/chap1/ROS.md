@@ -171,7 +171,7 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
 ## 演習
 {{< spoiler text="roomba driverを起動し、動作していることを確認する" >}}
 
-- roombaにアクセスする
+- jetsonにアクセスする
     ``` sh
     (開発PC):~$ ssh roomba_dev1
     (jetson):~$
@@ -182,12 +182,20 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
     ``` sh
     (jetson):~$ cd ~/team_a/roomba_hack
     (jetson):~$ ./RUN-DOCKER-CONTAINER.sh
+    root@roomba-dev-jetson:~/roomba_hack#
     ```
+  `root@roomba-dev-jetson:~/roomba_hack#`などと表示されればdocker内部に入れています。
+  
+  今後docker内部であることは(docker)と表記します。
 
 - roomba driverなどを起動するlaunchファイルを起動する
   このタイミングでルンバの電源が入っているかを確認しておきましょう。
+  
+  roombaの起動にはroslaunchコマンドを使います。
+  
+  roslaunchコマンドについては今後説明します。
     ``` sh
-    roslaunch roomma_bringup roomba_bringup.launch
+    (jetson)(docker):~/roomba_hack# roslaunch roomba_bringup roomba_bringup.launch
     ```
   起動に成功すればルンバからピッと短い音が鳴り、ターミナルには赤い文字が出続けるはずです。
 
@@ -196,9 +204,14 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
 
 {{< spoiler text="コントローラーを使って、ロボットを動かす" >}}
 
+- 開発PCでdocker containerを起動する
+    ``` sh
+    (開発PC):~$ roslaunch roomba_teleop roomaba_teleop.launch
+    ```
+    
 - コントローラーを起動
     ``` sh
-    roslauunch roomba_teleop roomaba_teleop.launch
+    roslaunch roomba_teleop roomaba_teleop.launch
     ```
 
 - コントローラのモード
