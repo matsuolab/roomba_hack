@@ -57,7 +57,7 @@ root@roomba-dev-jetson:~/roomba_hack#
 (開発PC)(docker):~/roomba_hack/catkin_ws# source devel/setup.bash
 (開発PC)(docker):~/roomba_hack/catkin_ws#roslaunch roomba_teleop teleop.launch
 </code></pre></li><li><p>コントローラのモード</p><ul><li>移動・停止</li><li>自動・マニュアル</li><li>ドッキング・アンドッキング</li></ul></li><li><p>コントローラによる操縦</p><ul><li>移動ロック解除
-L2を押している時のみ移動コマンドが動作します。</li><li>左ジョイスティック
+L1を押している時のみ移動コマンドが動作します。</li><li>左ジョイスティック
 縦方向で前進速度(手前に倒すとバック)、横方向は回転速度に対応しています。</li><li>左矢印
 それぞれ、一定に低速度で前進・後退・回転します。</li></ul></li><li><p>正常に起動できているかを確認
 開発PCで新しくターミナルを開いてdockerの中に入ります。</p><p>すでに開発PCで起動されているdockerコンテナに入る場合は、</p><pre><code class=language-sh>(開発PC):~/team_a/roomba_hack$ docker exec -it roomba_hack bash
