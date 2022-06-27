@@ -52,7 +52,10 @@ root@roomba-dev-jetson:~/roomba_hack#
 　　xにはroomba_devの後につく数字を入れてください。</p><pre><code class=language-sh>(開発PC):~$ cd ~/team_a/roomba_hack
 (開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
 </code></pre></li><li><p>コントローラーを起動
-コントローラーが開発PCに刺さってることを確認してください。</p><pre><code class=language-sh>(開発PC)(docker):~/roomba_hack# roslaunch roomba_teleop roomaba_teleop.launch
+コントローラーが開発PCに刺さってることを確認してください。</p><pre><code class=language-sh>(開発PC)(docker):~/roomba_hack# cd catkin_ws
+(開発PC)(docker):~/roomba_hack/catkin_ws# catkin_make
+(開発PC)(docker):~/roomba_hack/catkin_ws# source devel/setup.bash
+(開発PC)(docker):~/roomba_hack/catkin_ws#roslaunch roomba_teleop roomaba_teleop.launch
 </code></pre></li><li><p>コントローラのモード</p><ul><li>移動・停止</li><li>自動・マニュアル</li><li>ドッキング・アンドッキング</li></ul></li><li><p>コントローラによる操縦</p><ul><li>移動ロック解除
 L2を押している時のみ移動コマンドが動作します。</li><li>左ジョイスティック
 縦方向で前進速度(手前に倒すとバック)、横方向は回転速度に対応しています。</li><li>左矢印

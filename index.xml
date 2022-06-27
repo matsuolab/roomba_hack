@@ -1529,7 +1529,10 @@ root@roomba-dev-jetson:~/roomba_hack#
 &lt;li>
 &lt;p>コントローラーを起動
 コントローラーが開発PCに刺さってることを確認してください。&lt;/p>
-&lt;pre>&lt;code class="language-sh">(開発PC)(docker):~/roomba_hack# roslaunch roomba_teleop roomaba_teleop.launch
+&lt;pre>&lt;code class="language-sh">(開発PC)(docker):~/roomba_hack# cd catkin_ws
+(開発PC)(docker):~/roomba_hack/catkin_ws# catkin_make
+(開発PC)(docker):~/roomba_hack/catkin_ws# source devel/setup.bash
+(開発PC)(docker):~/roomba_hack/catkin_ws#roslaunch roomba_teleop roomaba_teleop.launch
 &lt;/code>&lt;/pre>
 &lt;/li>
 &lt;li>
