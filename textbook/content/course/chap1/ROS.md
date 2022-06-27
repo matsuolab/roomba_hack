@@ -181,7 +181,7 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
   余裕があれば`RUN-DOCKER-CONTAINER.sh`ファイルの中身を確認してみましょう。
     ``` sh
     (jetson):~$ cd ~/team_a/roomba_hack
-    (jetson):~$ ./RUN-DOCKER-CONTAINER.sh
+    (jetson):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
     root@roomba-dev-jetson:~/roomba_hack#
     ```
   `root@roomba-dev-jetson:~/roomba_hack#`などと表示されればdocker内部に入れています。
@@ -190,10 +190,6 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
 
 - roomba driverなどを起動するlaunchファイルを起動する
   このタイミングでルンバの電源が入っているかを確認しておきましょう。
-  
-  roombaの起動にはroslaunchコマンドを使います。
-  
-  roslaunchコマンドについては今後説明します。
     ``` sh
     (jetson)(docker):~/roomba_hack# roslaunch roomba_bringup roomba_bringup.launch
     ```
@@ -206,12 +202,14 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
 
 - 開発PCでdocker containerを起動する
     ``` sh
-    (開発PC):~$ roslaunch roomba_teleop roomaba_teleop.launch
+    (開発PC):~$ cd ~/team_a/roomba_hack
+    (開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
     ```
     
 - コントローラーを起動
+  コントローラーが開発PCに刺さってることを確認してください。
     ``` sh
-    roslaunch roomba_teleop roomaba_teleop.launch
+    (開発PC)(docker):~/roomba_hack# roslaunch roomba_teleop roomaba_teleop.launch
     ```
 
 - コントローラのモード
@@ -221,7 +219,6 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
 
 - コントローラによる操縦
     - 移動ロック解除
-        
         L2を押している時のみ移動コマンドが動作します。
     - 左ジョイスティック
         縦方向で前進速度(手前に倒すとバック)、横方向は回転速度に対応しています。
@@ -229,12 +226,26 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
         それぞれ、一定に低速度で前進・後退・回転します。
 
 - 正常に起動できているかを確認
+  開発PCで新しくターミナルを開いてdockerの中に入ります。
+  
+  すでに開発PCで起動されているdockerコンテナに入る場合は、
+  
+  ``` sh
+  (開発PC):~/team_a/roomba_hack$ docker exec -it roomba_hack bash
+  ```
+  または
+  ``` sh
+  (開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
+  ```
+  のいずれかの方法で入ることができます。
+   
+  さまざまなコマンドを使ってroombaの情報を取得してみましょう。
     ``` sh
-    rosnode list
-    rostopic list
-    rostopic echo /cmd_vel
-    rqt_graph
-    rviz
+    (開発PC)(docker):~/roomba_hack# rosnode list
+    (開発PC)(docker):~/roomba_hack# rostopic list
+    (開発PC)(docker):~/roomba_hack# rostopic echo /cmd_vel
+    (開発PC)(docker):~/roomba_hack# rqt_graph
+    (開発PC)(docker):~/roomba_hack# rviz
     ```
 
 {{< /spoiler >}}
