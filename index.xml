@@ -1500,7 +1500,7 @@ rqt window
 &lt;p>docker containerを起動する
 余裕があれば&lt;code>RUN-DOCKER-CONTAINER.sh&lt;/code>ファイルの中身を確認してみましょう。&lt;/p>
 &lt;pre>&lt;code class="language-sh">(jetson):~$ cd ~/team_a/roomba_hack
-(jetson):~$ ./RUN-DOCKER-CONTAINER.sh
+(jetson):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
 root@roomba-dev-jetson:~/roomba_hack#
 &lt;/code>&lt;/pre>
 &lt;p>&lt;code>root@roomba-dev-jetson:~/roomba_hack#&lt;/code>などと表示されればdocker内部に入れています。&lt;/p>
@@ -1509,8 +1509,6 @@ root@roomba-dev-jetson:~/roomba_hack#
 &lt;li>
 &lt;p>roomba driverなどを起動するlaunchファイルを起動する
 このタイミングでルンバの電源が入っているかを確認しておきましょう。&lt;/p>
-&lt;p>roombaの起動にはroslaunchコマンドを使います。&lt;/p>
-&lt;p>roslaunchコマンドについては今後説明します。&lt;/p>
 &lt;pre>&lt;code class="language-sh">(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup roomba_bringup.launch
 &lt;/code>&lt;/pre>
 &lt;p>起動に成功すればルンバからピッと短い音が鳴り、ターミナルには赤い文字が出続けるはずです。&lt;/p>
@@ -1523,12 +1521,14 @@ root@roomba-dev-jetson:~/roomba_hack#
 &lt;p>&lt;ul>
 &lt;li>
 &lt;p>開発PCでdocker containerを起動する&lt;/p>
-&lt;pre>&lt;code class="language-sh">(開発PC):~$ roslaunch roomba_teleop roomaba_teleop.launch
+&lt;pre>&lt;code class="language-sh">(開発PC):~$ cd ~/team_a/roomba_hack
+(開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
 &lt;/code>&lt;/pre>
 &lt;/li>
 &lt;li>
-&lt;p>コントローラーを起動&lt;/p>
-&lt;pre>&lt;code class="language-sh">roslaunch roomba_teleop roomaba_teleop.launch
+&lt;p>コントローラーを起動
+コントローラーが開発PCに刺さってることを確認してください。&lt;/p>
+&lt;pre>&lt;code class="language-sh">(開発PC)(docker):~/roomba_hack# roslaunch roomba_teleop roomaba_teleop.launch
 &lt;/code>&lt;/pre>
 &lt;/li>
 &lt;li>
@@ -1542,27 +1542,30 @@ root@roomba-dev-jetson:~/roomba_hack#
 &lt;li>
 &lt;p>コントローラによる操縦&lt;/p>
 &lt;ul>
-&lt;li>
-&lt;p>移動ロック解除&lt;/p>
-&lt;p>L2を押している時のみ移動コマンドが動作します。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>左ジョイスティック
-縦方向で前進速度(手前に倒すとバック)、横方向は回転速度に対応しています。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>左矢印
-それぞれ、一定に低速度で前進・後退・回転します。&lt;/p>
-&lt;/li>
+&lt;li>移動ロック解除
+L2を押している時のみ移動コマンドが動作します。&lt;/li>
+&lt;li>左ジョイスティック
+縦方向で前進速度(手前に倒すとバック)、横方向は回転速度に対応しています。&lt;/li>
+&lt;li>左矢印
+それぞれ、一定に低速度で前進・後退・回転します。&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
-&lt;p>正常に起動できているかを確認&lt;/p>
-&lt;pre>&lt;code class="language-sh">rosnode list
-rostopic list
-rostopic echo /cmd_vel
-rqt_graph
-rviz
+&lt;p>正常に起動できているかを確認
+開発PCで新しくターミナルを開いてdockerの中に入ります。&lt;/p>
+&lt;p>すでに開発PCで起動されているdockerコンテナに入る場合は、&lt;/p>
+&lt;pre>&lt;code class="language-sh">(開発PC):~/team_a/roomba_hack$ docker exec -it roomba_hack bash
+&lt;/code>&lt;/pre>
+&lt;p>または&lt;/p>
+&lt;pre>&lt;code class="language-sh">(開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
+&lt;/code>&lt;/pre>
+&lt;p>のいずれかの方法で入ることができます。&lt;/p>
+&lt;p>さまざまなコマンドを使ってroombaの情報を取得してみましょう。&lt;/p>
+&lt;pre>&lt;code class="language-sh">(開発PC)(docker):~/roomba_hack# rosnode list
+(開発PC)(docker):~/roomba_hack# rostopic list
+(開発PC)(docker):~/roomba_hack# rostopic echo /cmd_vel
+(開発PC)(docker):~/roomba_hack# rqt_graph
+(開発PC)(docker):~/roomba_hack# rviz
 &lt;/code>&lt;/pre>
 &lt;/li>
 &lt;/ul>

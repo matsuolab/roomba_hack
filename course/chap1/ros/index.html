@@ -44,19 +44,25 @@ ROSマスタを起動するには「roscore」というコマンドを実行し�
 (jetson):~$
 </code></pre></li><li><p>docker containerを起動する
 余裕があれば<code>RUN-DOCKER-CONTAINER.sh</code>ファイルの中身を確認してみましょう。</p><pre><code class=language-sh>(jetson):~$ cd ~/team_a/roomba_hack
-(jetson):~$ ./RUN-DOCKER-CONTAINER.sh
+(jetson):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
 root@roomba-dev-jetson:~/roomba_hack#
 </code></pre><p><code>root@roomba-dev-jetson:~/roomba_hack#</code>などと表示されればdocker内部に入れています。</p><p>今後docker内部であることは(docker)と表記します。</p></li><li><p>roomba driverなどを起動するlaunchファイルを起動する
-このタイミングでルンバの電源が入っているかを確認しておきましょう。</p><p>roombaの起動にはroslaunchコマンドを使います。</p><p>roslaunchコマンドについては今後説明します。</p><pre><code class=language-sh>(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup roomba_bringup.launch
-</code></pre><p>起動に成功すればルンバからピッと短い音が鳴り、ターミナルには赤い文字が出続けるはずです。</p></li></ul></p></details><details class=spoiler id=spoiler-4><summary>コントローラーを使って、ロボットを動かす</summary><p><ul><li><p>開発PCでdocker containerを起動する</p><pre><code class=language-sh>(開発PC):~$ roslaunch roomba_teleop roomaba_teleop.launch
-</code></pre></li><li><p>コントローラーを起動</p><pre><code class=language-sh>roslaunch roomba_teleop roomaba_teleop.launch
-</code></pre></li><li><p>コントローラのモード</p><ul><li>移動・停止</li><li>自動・マニュアル</li><li>ドッキング・アンドッキング</li></ul></li><li><p>コントローラによる操縦</p><ul><li><p>移動ロック解除</p><p>L2を押している時のみ移動コマンドが動作します。</p></li><li><p>左ジョイスティック
-縦方向で前進速度(手前に倒すとバック)、横方向は回転速度に対応しています。</p></li><li><p>左矢印
-それぞれ、一定に低速度で前進・後退・回転します。</p></li></ul></li><li><p>正常に起動できているかを確認</p><pre><code class=language-sh>rosnode list
-rostopic list
-rostopic echo /cmd_vel
-rqt_graph
-rviz
+このタイミングでルンバの電源が入っているかを確認しておきましょう。</p><pre><code class=language-sh>(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup roomba_bringup.launch
+</code></pre><p>起動に成功すればルンバからピッと短い音が鳴り、ターミナルには赤い文字が出続けるはずです。</p></li></ul></p></details><details class=spoiler id=spoiler-4><summary>コントローラーを使って、ロボットを動かす</summary><p><ul><li><p>開発PCでdocker containerを起動する</p><pre><code class=language-sh>(開発PC):~$ cd ~/team_a/roomba_hack
+(開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+</code></pre></li><li><p>コントローラーを起動
+コントローラーが開発PCに刺さってることを確認してください。</p><pre><code class=language-sh>(開発PC)(docker):~/roomba_hack# roslaunch roomba_teleop roomaba_teleop.launch
+</code></pre></li><li><p>コントローラのモード</p><ul><li>移動・停止</li><li>自動・マニュアル</li><li>ドッキング・アンドッキング</li></ul></li><li><p>コントローラによる操縦</p><ul><li>移動ロック解除
+L2を押している時のみ移動コマンドが動作します。</li><li>左ジョイスティック
+縦方向で前進速度(手前に倒すとバック)、横方向は回転速度に対応しています。</li><li>左矢印
+それぞれ、一定に低速度で前進・後退・回転します。</li></ul></li><li><p>正常に起動できているかを確認
+開発PCで新しくターミナルを開いてdockerの中に入ります。</p><p>すでに開発PCで起動されているdockerコンテナに入る場合は、</p><pre><code class=language-sh>(開発PC):~/team_a/roomba_hack$ docker exec -it roomba_hack bash
+</code></pre><p>または</p><pre><code class=language-sh>(開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
+</code></pre><p>のいずれかの方法で入ることができます。</p><p>さまざまなコマンドを使ってroombaの情報を取得してみましょう。</p><pre><code class=language-sh>(開発PC)(docker):~/roomba_hack# rosnode list
+(開発PC)(docker):~/roomba_hack# rostopic list
+(開発PC)(docker):~/roomba_hack# rostopic echo /cmd_vel
+(開発PC)(docker):~/roomba_hack# rqt_graph
+(開発PC)(docker):~/roomba_hack# rviz
 </code></pre></li></ul></p></details></div><div class=article-widget><div class=post-nav><div class=post-nav-item><div class=meta-nav>Previous</div><a href=/roomba_hack/course/chap1/%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83/ rel=next>開発環境</a></div></div></div></div><div class=body-footer><p>Last updated on 2022/1/22</p><p class=edit-page><a href=https://github.com/matsuolab/roomba_hack/edit/master/textbook/content/course/chap1/ROS.md><i class="fas fa-pen pr-2"></i>Edit this page</a></p></div></article><footer class=site-footer><p class=powered-by>© 2022 Tokyo Robot And Intelligence Lab (TRAIL)</p><p class=powered-by>Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target=_blank rel=noopener>Wowchemy</a> — the free, <a href=https://github.com/wowchemy/wowchemy-hugo-modules target=_blank rel=noopener>open source</a> website builder that empowers creators.</p></footer></main></div></div></div><div class=page-footer></div><div id=modal class="modal fade" role=dialog><div class=modal-dialog><div class=modal-content><div class=modal-header><h5 class=modal-title>Cite</h5><button type=button class=close data-dismiss=modal aria-label=Close>
 <span aria-hidden=true>&#215;</span></button></div><div class=modal-body><pre><code class="tex hljs"></code></pre></div><div class=modal-footer><a class="btn btn-outline-primary my-1 js-copy-cite" href=# target=_blank><i class="fas fa-copy"></i> Copy</a>
 <a class="btn btn-outline-primary my-1 js-download-cite" href=# target=_blank><i class="fas fa-download"></i> Download</a><div id=modal-error></div></div></div></div></div><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.8.4/mermaid.min.js integrity="sha512-as1BF4+iHZ3BVO6LLDQ7zrbvTXM+c/1iZ1qII/c3c4L8Rn5tHLpFUtpaEtBNS92f+xGsCzsD7b62XP3XYap6oA==" crossorigin=anonymous title=mermaid></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin=anonymous></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/shell.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/bash.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/python.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/cpp.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/makefile.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin=anonymous></script><script>anchors.add()</script><script id=search-hit-fuse-template type=text/x-template>
