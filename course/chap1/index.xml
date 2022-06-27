@@ -394,27 +394,23 @@ rqt window
 &lt;p>&lt;ul>
 &lt;li>
 &lt;p>roombaにアクセスする&lt;/p>
-&lt;pre>&lt;code class="language-sh">ssh roommba
+&lt;pre>&lt;code class="language-sh">(開発PC):~$ ssh roomba_dev1
+(jetson):~$
 &lt;/code>&lt;/pre>
 &lt;/li>
 &lt;li>
-&lt;p>docker containerを起動する&lt;/p>
-&lt;pre>&lt;code class="language-sh">cd ~/workspace/roomba_hack
-./RUN-DOCKER-CONTAINER.sh
+&lt;p>docker containerを起動する
+余裕があれば&lt;code>RUN-DOCKER-CONTAINER.sh&lt;/code>ファイルの中身を確認してみましょう。&lt;/p>
+&lt;pre>&lt;code class="language-sh">(jetson):~$ cd ~/team_a/roomba_hack
+(jetson):~$ ./RUN-DOCKER-CONTAINER.sh
 &lt;/code>&lt;/pre>
 &lt;/li>
 &lt;li>
-&lt;p>roomba driverなどを起動するlaunchファイルを起動する&lt;/p>
+&lt;p>roomba driverなどを起動するlaunchファイルを起動する
+このタイミングでルンバの電源が入っているかを確認しておきましょう。&lt;/p>
 &lt;pre>&lt;code class="language-sh">roslaunch roomma_bringup roomba_bringup.launch
 &lt;/code>&lt;/pre>
-&lt;/li>
-&lt;li>
-&lt;p>正常に起動できているかを確認&lt;/p>
-&lt;pre>&lt;code class="language-sh">rosnode list
-rostopic list
-rostopic echo /odom
-rqt_graph
-&lt;/code>&lt;/pre>
+&lt;p>起動に成功すればルンバからピッと短い音が鳴り、ターミナルには赤い文字が出続けるはずです。&lt;/p>
 &lt;/li>
 &lt;/ul>
 &lt;/p>
