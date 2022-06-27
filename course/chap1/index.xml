@@ -210,6 +210,8 @@ robot_dev2@robot-dev2:~/group_a$ cd roomba_hack
 &lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~/group_a/roomba_hack$ ssh roomba_dev2
 roomba_dev2@roomba-dev-jetson2:~$
 &lt;/code>&lt;/pre>
+&lt;p>先頭の表記が&lt;code>roomba_dev2@roomba-dev-jetson2&lt;/code>と変わり、jetsonへ接続されたことがわかります。&lt;/p>
+&lt;p>今後先頭の&lt;code>roomba_dev2@roomba-dev-jetson2&lt;/code>はjetsonであることを意味します。&lt;/p>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-6">
