@@ -160,43 +160,51 @@ docker exec -it &amp;lt;container_name&amp;gt; bash
 &lt;/li>
 &lt;/ul>
 &lt;h2 id="演習">演習&lt;/h2>
+&lt;p>演習には個人PC, 開発PC, ルンバに搭載されているjetsonの3種類のコンピュータを用います。&lt;/p>
+&lt;p>開発PC : robot_dev系, hsr_dev系&lt;/p>
+&lt;p>jetson : roomba_dev系&lt;/p>
 &lt;details class="spoiler " id="spoiler-0">
 &lt;summary>【ssh】開発用PCにsshする&lt;/summary>
 &lt;p>&lt;p>個人PCから開発PCにsshする&lt;/p>
-&lt;pre>&lt;code class="language-shell">vim ~/.ssh/config
-ssh robot_dev2
+&lt;pre>&lt;code class="language-shell">(個人PC):~$ vim ~/.ssh/config
+(個人PC):~$ ssh robot_dev2
 &lt;/code>&lt;/pre>
+&lt;p>sshに成功すると&lt;/p>
+&lt;pre>&lt;code>robot_dev2@robot-dev2:~$
+&lt;/code>&lt;/pre>
+&lt;p>などと表記が変わり、開発PCに接続できたことが確認できます。&lt;/p>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-1">
 &lt;summary>【Linuxコマンド】グループのディレクトリを作成し移動する&lt;/summary>
-&lt;p>&lt;p>先頭の&lt;code>robot_dev2@robot-dev2:~$&lt;/code>は今後開発PCであることを意味します。&lt;/p>
-&lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~$ mkdir group_a
-robot_dev2@robot-dev2:~$ cd group_a
+&lt;p>&lt;pre>&lt;code class="language-shell">(開発PC):~$ mkdir group_a
+(開発PC):~$ cd group_a
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-2">
 &lt;summary>【git】roomba_hackリポジトリをcloneし移動する&lt;/summary>
-&lt;p>&lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~/group_a$ git clone https://github.com/matsuolab/roomba_hack.git
-robot_dev2@robot-dev2:~/group_a$ cd roomba_hack
+&lt;p>&lt;pre>&lt;code class="language-shell">(開発PC):~/group_a$ git clone https://github.com/matsuolab/roomba_hack.git
+(開発PC):~/group_a$ cd roomba_hack
+(開発PC):~/group_a$ ls
 &lt;/code>&lt;/pre>
+&lt;p>&lt;a href="https://github.com/matsuolab/roomba_hack">https://github.com/matsuolab/roomba_hack&lt;/a> をそのままダウンロードできたことが確認できると思います。&lt;/p>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-3">
 &lt;summary>【git】ブランチを確認する&lt;/summary>
 &lt;p>&lt;p>git branchコマンドを使ってみましょう。&lt;/p>
-&lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~/group_a/roomba_hack$ git branch
+&lt;pre>&lt;code class="language-shell">(開発PC):~/group_a/roomba_hack$ git branch
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-4">
 &lt;summary>【docker】roomba_hackの開発環境のdocker imageをビルドする&lt;/summary>
 &lt;p>&lt;p>shellファイルを実行してビルドを行います。&lt;/p>
-&lt;pre>&lt;code>robot_dev2@robot-dev2:~/group_a/roomba_hack$ ./BUILD-DOCKER-IMAGE.sh
+&lt;pre>&lt;code>(開発PC):~/group_a/roomba_hack$ ./BUILD-DOCKER-IMAGE.sh
 &lt;/code>&lt;/pre>
 &lt;p>shellファイルの中身をcatコマンドで確認してみましょう。&lt;/p>
-&lt;pre>&lt;code>robot_dev2@robot-dev2:~/group_a/roomba_hack$ cat BUILD-DOCKER-IMAGE.sh
+&lt;pre>&lt;code>(開発PC)2:~/group_a/roomba_hack$ cat BUILD-DOCKER-IMAGE.sh
 &lt;/code>&lt;/pre>
 &lt;p>細かいところは気にしなくていいですが、ファイルの最後の&lt;/p>
 &lt;pre>&lt;code>docker build . -f docker/${DOCKERFILE_NAME} -t ${IMAGE_NAME}:${TAG_NAME} --build-arg BASE_IMAGE=${BASE_IMAGE}
@@ -207,17 +215,16 @@ robot_dev2@robot-dev2:~/group_a$ cd roomba_hack
 &lt;details class="spoiler " id="spoiler-5">
 &lt;summary>【ssh】jetsonにsshする&lt;/summary>
 &lt;p>&lt;p>開発用PCからルンバに載っているjetson nanoへsshします。&lt;/p>
-&lt;pre>&lt;code class="language-shell">robot_dev2@robot-dev2:~/group_a/roomba_hack$ ssh roomba_dev2
+&lt;pre>&lt;code class="language-shell">(開発PC):~/group_a/roomba_hack$ ssh roomba_dev2
 roomba_dev2@roomba-dev-jetson2:~$
 &lt;/code>&lt;/pre>
 &lt;p>先頭の表記が&lt;code>roomba_dev2@roomba-dev-jetson2&lt;/code>と変わり、jetsonへ接続されたことがわかります。&lt;/p>
-&lt;p>今後先頭の&lt;code>roomba_dev2@roomba-dev-jetson2&lt;/code>はjetsonであることを意味します。&lt;/p>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-6">
 &lt;summary>【ssh】VNCを使う&lt;/summary>
 &lt;p>&lt;p>個人PCから開発PCにsshで接続&lt;/p>
-&lt;pre>&lt;code class="language-shell">ssh robot_dev2 -L 5900:localhost:5900
+&lt;pre>&lt;code class="language-shell">(個人PC):~$ ssh robot_dev2 -L 5900:localhost:5900
 &lt;/code>&lt;/pre>
 &lt;p>手元のVNC viewerでlocalhost:5900を開く&lt;/p>
 &lt;/p>
