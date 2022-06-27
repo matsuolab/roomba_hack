@@ -191,7 +191,7 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
 - roomba driverなどを起動するlaunchファイルを起動する
   このタイミングでルンバの電源が入っているかを確認しておきましょう。
     ``` sh
-    (jetson)(docker):~/roomba_hack# roslaunch roomba_bringup roomba_bringup.launch
+    (jetson)(docker):~/roomba_hack# roslaunch roomba_bringup bringup.launch
     ```
   起動に成功すればルンバからピッと短い音が鳴り、ターミナルには赤い文字が出続けるはずです。
 
@@ -213,7 +213,7 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
     (開発PC)(docker):~/roomba_hack# cd catkin_ws
     (開発PC)(docker):~/roomba_hack/catkin_ws# catkin_make
     (開発PC)(docker):~/roomba_hack/catkin_ws# source devel/setup.bash
-    (開発PC)(docker):~/roomba_hack/catkin_ws#roslaunch roomba_teleop roomaba_teleop.launch
+    (開発PC)(docker):~/roomba_hack/catkin_ws#roslaunch roomba_teleop teleop.launch
     ```
 
 - コントローラのモード
