@@ -235,11 +235,11 @@ ROSは以下のソフトウェアと連動して使うためのパッケージ�
   すでに開発PCで起動されているdockerコンテナに入る場合は、
   
   ``` sh
-  (開発PC):~/team_a/roomba_hack$ docker exec -it roomba_hack bash
+  (開発PC):~/group_a/roomba_hack$ docker exec -it roomba_hack bash
   ```
   または
   ``` sh
-  (開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
+  (開発PC):~/group_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
   ```
   のいずれかの方法で入ることができます。
    
