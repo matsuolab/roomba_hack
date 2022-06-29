@@ -1558,10 +1558,10 @@ L1を押している時のみ移動コマンドが動作します。&lt;/li>
 &lt;p>正常に起動できているかを確認
 開発PCで新しくターミナルを開いてdockerの中に入ります。&lt;/p>
 &lt;p>すでに開発PCで起動されているdockerコンテナに入る場合は、&lt;/p>
-&lt;pre>&lt;code class="language-sh">(開発PC):~/team_a/roomba_hack$ docker exec -it roomba_hack bash
+&lt;pre>&lt;code class="language-sh">(開発PC):~/group_a/roomba_hack$ docker exec -it roomba_hack bash
 &lt;/code>&lt;/pre>
 &lt;p>または&lt;/p>
-&lt;pre>&lt;code class="language-sh">(開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
+&lt;pre>&lt;code class="language-sh">(開発PC):~/group_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
 &lt;/code>&lt;/pre>
 &lt;p>のいずれかの方法で入ることができます。&lt;/p>
 &lt;p>さまざまなコマンドを使ってroombaの情報を取得してみましょう。&lt;/p>

@@ -60,8 +60,8 @@ root@roomba-dev-jetson:~/roomba_hack#
 L1を押している時のみ移動コマンドが動作します。</li><li>左ジョイスティック
 縦方向で前進速度(手前に倒すとバック)、横方向は回転速度に対応しています。</li><li>左矢印
 それぞれ、一定に低速度で前進・後退・回転します。</li></ul></li><li><p>正常に起動できているかを確認
-開発PCで新しくターミナルを開いてdockerの中に入ります。</p><p>すでに開発PCで起動されているdockerコンテナに入る場合は、</p><pre><code class=language-sh>(開発PC):~/team_a/roomba_hack$ docker exec -it roomba_hack bash
-</code></pre><p>または</p><pre><code class=language-sh>(開発PC):~/team_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
+開発PCで新しくターミナルを開いてdockerの中に入ります。</p><p>すでに開発PCで起動されているdockerコンテナに入る場合は、</p><pre><code class=language-sh>(開発PC):~/group_a/roomba_hack$ docker exec -it roomba_hack bash
+</code></pre><p>または</p><pre><code class=language-sh>(開発PC):~/group_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
 </code></pre><p>のいずれかの方法で入ることができます。</p><p>さまざまなコマンドを使ってroombaの情報を取得してみましょう。</p><pre><code class=language-sh>(開発PC)(docker):~/roomba_hack# rosnode list
 (開発PC)(docker):~/roomba_hack# rostopic list
 (開発PC)(docker):~/roomba_hack# rostopic echo /cmd_vel
