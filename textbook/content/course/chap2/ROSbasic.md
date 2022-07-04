@@ -14,7 +14,7 @@ ROSのパッケージ管理について理解しよう
 
 ROSでは、特定の目的のためのプログラム群をまとめてパッケージとして管理する。
 
-例として、navigation_tutorailパッケージのファイル構成を示す。
+例として、navigation_tutorialパッケージのファイル構成を示す。
 
 ```
 navigation_tutorial
@@ -52,8 +52,8 @@ navigation_tutorial
 作成したプログラムは`rosrun`コマンドで実行することができる。
 
 ```shell
-(Python) rosrun navigation_tutorail simple_control2.py
-(C++) rosrun navigation_tutorail go_straight
+(Python) rosrun navigation_tutorial simple_control2.py
+(C++) rosrun navigation_tutorial go_straight
 ```
 
 `launch`ディレクトリに入っているlaunchファイルは複数のプログラムを同時に実行できるための仕組みである。
