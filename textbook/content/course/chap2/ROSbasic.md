@@ -148,6 +148,56 @@ rospack list             packageの一覧を表示する
 roscd <package name>     指定したpackage内に移動する
 ```
 
+### ROSのプログラムの書き方
+
+それでは実際にプログラム例を見てみましょう。
+
+```python:simple_control.py
+#!/usr/bin/env python3
+
+import rospy
+from geometry_msgs.msg import Twist
+
+def time_control(pub, velocity, yawrate, time):
+    vel = Twist()
+    start_time = rospy.get_rostime().secs
+    while(rospy.get_rostime().secs-start_time<time):
+        vel.linear.x = velocity
+        vel.angular.z = yawrate
+        pub.publish(vel)
+        rospy.sleep(0.1)
+
+def simple_controller():
+    rospy.init_node('simple_controller', anonymous=True)
+    pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+
+    time_control(pub,  0.0,  0.0, 0.5)
+    time_control(pub,  0.3,  0.0, 2.0)
+
+    time_control(pub,  0.0,  0.0, 0.5)
+    time_control(pub, -0.3,  0.0, 2.0)
+
+    time_control(pub,  0.0,  0.0, 0.5)
+    time_control(pub,  0.0,  0.5, 2.0)
+
+    time_control(pub,  0.0,  0.0, 0.5)
+    time_control(pub,  0.0, -0.5, 2.0)
+
+if __name__=='__main__':
+    try:
+        simple_controller()
+    except rospy.ROSInitException:
+        pass
+```
+
+以下の部分で`simple_controller`という名前でノードを定義しています。
+
+```python
+rospy.init_node('simple_controller', anonymous=True)
+```
+
+`/cmd_vel`
+
 
 ## 演習
 
@@ -255,6 +305,11 @@ topic`/cmd_vel`をpublish
     y: 0.0
     z: 0.0"
 ```
+
+```shell
+(開発PC)(docker)# rosrun navigation_tutorial simple_control.py
+```
+
 {{< /spoiler >}}
 
 try it! `roomba_bringup`パッケージの`bringup.launch`の中身を読んでみよう
@@ -264,3 +319,14 @@ hint roscdコマンドを使うとパッケージへ簡単に移動ができま�
 try it! 開発PCで`rosnode`関連のコマンドを使ってみよう
 
 try it! 開発PCで`rosrun rqt_graph rqt_graph`を実行してnodeとtopicの関連を可視化してみよう
+
+try it! 開発PCで`simple_control.py`の中身を読んでコードを変更してみよう
+
+hint コードを編集するときはエディタを使うことがおすすめです。新しくターミナルを開いて
+
+```shell
+(開発PC):~$ cd group_a/roomba_hack
+(開発PC):~group_a/roomba_hack$ code .
+```
+
+でVScodeを起動することができます。
