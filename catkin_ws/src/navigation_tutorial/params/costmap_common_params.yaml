@@ -2,10 +2,19 @@ robot_radius: 0.20
 inflation_radius: 0.25
  
 observation_sources: laser_scan_sensor
+observation_sources: detection_cloud
+
  
 laser_scan_sensor:
   sensor_frame: laser
   data_type: LaserScan
   topic: /scan
+  marking: true
+  clearing: true
+
+detection_cloud:
+  sensor_frame: camera_color_optical_frame
+  data_type: PointCloud2
+  topic: /obstacle_cloud
   marking: true
   clearing: true

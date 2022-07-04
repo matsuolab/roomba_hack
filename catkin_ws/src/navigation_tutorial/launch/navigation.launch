@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="rviz" default="true"/>
+
     <!-- map server -->
     <include file="$(find navigation_tutorial)/launch/map_server.launch">
     </include>
@@ -8,7 +10,7 @@
     <include file="$(find navigation_tutorial)/launch/amcl.launch">
     </include>
 
-    <!-- teleop -->
+    <!-- move_base -->
     <include file="$(find navigation_tutorial)/launch/move_base.launch">
     </include>
 
@@ -17,6 +19,6 @@
     </include>
 
     <!-- rviz -->
-    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find navigation_tutorial)/configs/navigation.rviz"/>
+    <node pkg="rviz" type="rviz" name="navigation_rviz" args="-d $(find navigation_tutorial)/configs/navigation.rviz" if="$(arg rviz)"/>
 
 </launch>
