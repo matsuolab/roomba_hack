@@ -350,6 +350,9 @@ topic`/cmd_vel`をpublish
 
 {{< /spoiler >}}
 
+
+{{< spoiler text="Try it! 時間が余った人向け" >}}
+
 try it! `roomba_bringup`パッケージの`bringup.launch`の中身を読んでみよう
 
 hint roscdコマンドを使うとパッケージへ簡単に移動ができます。ファイルの中身を表示するには`cat`コマンドを使用します。
@@ -368,3 +371,6 @@ hint コードを編集するときはエディタを使うことがおすすめ
 ```
 
 でVScodeを起動することができます。
+
+{{< /spoiler >}}
+
