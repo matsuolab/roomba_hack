@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="config" default="$(find roomba_bringup)/config/default.yaml"/>
+    <arg name="csi_cam" default="false"/>
+    <arg name="realsense" default="true"/>
 
     <!-- roomba -->
-    <node pkg="create_driver" type="create_driver" name="ca_driver" output="screen">
+    <node pkg="create_driver" type="create_driver" name="ca_driver">
         <rosparam command="load" file="$(arg config)"/>
         <param name="robot_model" value="CREATE_2"/>
     </node>
@@ -22,11 +24,11 @@
     </node>
 
     <!-- csi camera -->
-    <include file="$(find roomba_bringup)/launch/jetson_csi_cam.launch">
+    <include file="$(find roomba_bringup)/launch/jetson_csi_cam.launch" if="$(arg csi_cam)">
     </include>
     
     <!-- realsense camera -->
-    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch" if="$(arg realsense)">
         <arg name="align_depth" value="true"/>
     </include>
 </launch>
