@@ -974,11 +974,11 @@ roomba_dev2@roomba-dev-jetson2:~$
 &lt;/code>&lt;/pre>
 &lt;p>手元のVNC viewerでlocalhost:5900を開く&lt;/p>
 &lt;/p>
-&lt;/details></description></item><item><title>ROSのパッケージ・ワークスペース</title><link>https://matsuolab.github.io/roomba_hack/course/chap2/rosbasic/</link><pubDate>Tue, 05 Apr 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap2/rosbasic/</guid><description>&lt;p>ROSのパッケージ管理&lt;/p>
+&lt;/details></description></item><item><title>ROSのパッケージ・ワークスペース</title><link>https://matsuolab.github.io/roomba_hack/course/chap2/rosbasic/</link><pubDate>Tue, 05 Apr 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap2/rosbasic/</guid><description>&lt;p>ROSのパッケージ管理について理解しよう&lt;/p>
 &lt;h2 id="learn">Learn&lt;/h2>
 &lt;h3 id="rosのパッケージ">ROSのパッケージ&lt;/h3>
-&lt;p>ROSのプログラムはパッケージとして管理される。&lt;/p>
-&lt;p>navigation_tutorailパッケージのファイル構成を示す。&lt;/p>
+&lt;p>ROSでは、特定の目的のためのプログラム群をまとめてパッケージとして管理する。&lt;/p>
+&lt;p>例として、navigation_tutorailパッケージのファイル構成を示す。&lt;/p>
 &lt;pre>&lt;code>navigation_tutorial
    ├── CMakeLists.txt
    ├── launch
@@ -1007,14 +1007,16 @@ roomba_dev2@roomba-dev-jetson2:~$
    ├── avoidance.cpp
    └── go_straight.cpp
 &lt;/code>&lt;/pre>
+&lt;p>一般的に、&lt;code>scripts&lt;/code>ディレクトリや&lt;code>src&lt;/code>ディレクトリにそれぞれPython, C++のプログラムが配置される。&lt;/p>
 &lt;p>作成したプログラムは&lt;code>rosrun&lt;/code>コマンドで実行することができる。&lt;/p>
 &lt;pre>&lt;code class="language-shell">(Python) rosrun navigation_tutorail simple_control2.py
 (C++) rosrun navigation_tutorail go_straight
 &lt;/code>&lt;/pre>
+&lt;p>&lt;code>launch&lt;/code>ディレクトリに入っているlaunchファイルは複数のプログラムを同時に実行できるための仕組みである。&lt;/p>
 &lt;p>launchファイルについてでも同様に&lt;code>roslaunch&lt;/code>コマンドで実行することができる。&lt;/p>
 &lt;pre>&lt;code class="language-shell">(Python) roslaunch navigation_tutorial move_base.launch
 &lt;/code>&lt;/pre>
-&lt;p>実行時にパッケージを指定するので、(パスが通ってさえれば)ディレクトリに関係なく実行が可能である。&lt;/p>
+&lt;p>実行時にパッケージ名(今回だとnavigation_tutorial)を指定するので、現在どこのディレクトリにいるかに関係なく実行が可能である。&lt;/p>
 &lt;h3 id="rosのワークスペース">ROSのワークスペース&lt;/h3>
 &lt;p>ROSのパッケージはワークスペースと呼ばれる作業スペースに配置される。&lt;/p>
 &lt;p>一般的に&lt;code>catkin_ws&lt;/code>という名前が使われることが多い。&lt;/p>
@@ -1055,33 +1057,34 @@ roomba_dev2@roomba-dev-jetson2:~$
    ├── package.xml
    └── src
 &lt;/code>&lt;/pre>
-&lt;p>catkin_wsのsrc内でパッケージ作成を行い、catkin_ws直下で&lt;code>catkin_make&lt;/code>コマンドでビルドをすると、buildディレクトリとdevelディレクトリが作成される。&lt;/p>
-&lt;p>develディレクトリの中のsetup.bashをソース&lt;code>source devel/setup.bash&lt;/code>することで、ワークスペース内のパッケージのパスを通すことができる。　&lt;/p>
+&lt;p>catkin_wsのsrc内でパッケージ作成を行い、catkin_ws直下で&lt;code>catkin_make&lt;/code>コマンドを実行すると、Cプログラムのビルドが行われ、buildディレクトリとdevelディレクトリが作成される。&lt;/p>
+&lt;p>作成されたdevelディレクトリの中のsetup.bashをソース&lt;code>source devel/setup.bash&lt;/code>することで、ワークスペース内のパッケージのパスを通すことができる。　&lt;/p>
+&lt;p>パッケージのパスを通すことで、ROSのパッケージに関するコマンドや、プログラムの実行(&lt;code>rosrun&lt;/code>や&lt;code>roslaunch&lt;/code>)が行えるようになる。&lt;/p>
 &lt;h3 id="rosのコマンド">ROSのコマンド&lt;/h3>
 &lt;p>ROSのコマンドのうち、よく用いるものを紹介する。&lt;/p>
 &lt;ul>
 &lt;li>Topic関連&lt;/li>
 &lt;/ul>
-&lt;pre>&lt;code>rostopic list topicの一覧を表示する
-rostopic echo 指定されたtopicの中身を表示する
-rostopic hz topicの配信周波数を取得する
-rostopic info topicの情報を表示する
-rostopic pub topicを配信する
-rostopic type topicの型を確認する
+&lt;pre>&lt;code>rostopic list 　　　　　　 topicの一覧を表示する
+rostopic echo &amp;lt;topic name&amp;gt; 　 　　　　　 指定されたtopicの中身を表示する
+rostopic hz &amp;lt;topic name&amp;gt; 　　　　　　　 topicの配信周波数を取得する
+rostopic info &amp;lt;topic name&amp;gt; 　　　　　　　 topicの情報を表示する
+rostopic pub &amp;lt;topic name&amp;gt; &amp;lt;topic&amp;gt; 　 　topicを配信する
+rostopic type &amp;lt;topic name&amp;gt; topicの型を確認する
 &lt;/code>&lt;/pre>
 &lt;ul>
 &lt;li>Node関連&lt;/li>
 &lt;/ul>
 &lt;pre>&lt;code>rosnode list nodeの一覧を表示する
-rosnode ping nodeの接続テストを行う
-rosnode info nodeの情報を表示する
-rosnode kill nodeをシャットダウンする
+rosnode ping &amp;lt;node name&amp;gt; nodeの接続テストを行う
+rosnode info &amp;lt;node name&amp;gt; nodeの情報を表示する
+rosnode kill &amp;lt;node name&amp;gt; nodeをシャットダウンする
 &lt;/code>&lt;/pre>
 &lt;ul>
 &lt;li>Package関連&lt;/li>
 &lt;/ul>
 &lt;pre>&lt;code>rospack list packageの一覧を表示する
-roscd 指定したpackage内に移動する
+roscd &amp;lt;package name&amp;gt; 指定したpackage内に移動する
 &lt;/code>&lt;/pre>
 &lt;h2 id="演習">演習&lt;/h2>
 &lt;details class="spoiler " id="spoiler-0">
