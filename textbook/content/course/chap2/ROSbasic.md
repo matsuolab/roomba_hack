@@ -151,85 +151,79 @@ roscd <package name>     指定したpackage内に移動する
 
 ## 演習
 
-{{< spoiler text="【jetson・開発マシン】ブランチ切り替え" >}}
-```shell
-cd roomba_hack
-git fetch
-git checkout lec_0405 
-```
-{{< /spoiler >}}
-
 {{< spoiler text="【jetson・開発マシン】それぞれdockerコンテナを起動" >}}
 
-try it! roomba_modeの前後で`echo $ROS_MASTER_URI`をしてみよう
-
-参考(ROS_MASTER_URIについて)
-- https://qiita.com/srs/items/7d4aeb5e44138f97c770
+jetsonでdockerコンテナを起動
 
 ```shell
-cd roomba_hack
-./RUN-DOCKER-CONTAINER.sh
-(docker) roomba_mode
+(開発PC):~$ ssh roomba_dev1
+(jetson):~$ cd ~/group_a/roomba_hack
+(jetson):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh
+(jetson)(docker):~/roomba_hack#  
+```
+開発PCでdockerコンテナを起動
+
+```shell
+(開発PC):~$ cd ~/group_a/roomba_hack
+(開発PC):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+(開発PC)(docker):~/roomba_hack#  
 ```
 {{< /spoiler >}}
 
 {{< spoiler text="【jetson・開発マシン】ビルドをしてパスを通す" >}}
 
-try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧`rospack list`に追加されているかを確認してみよう
+catkin_make後に`devel`と`build`ディレクトリが作成されることを確認しましょう。
 
 ```shell
-(docker) cd catkin_ws
-(docker) catkin_make
-(docker) source ./devel/setup.bash
+(開発PC)(docker):~/roomba_hack# cd catkin_ws
+(開発PC)(docker):~/roomba_hack/catkin_ws# rm -rf devel build
+(開発PC)(docker):~/roomba_hack/catkin_ws# ls
+(開発PC)(docker):~/roomba_hack/catkin_ws# catkin_make
+(開発PC)(docker):~/roomba_hack/catkin_ws# ls
+(開発PC)(docker):~/roomba_hack/catkin_ws# source ./devel/setup.bash
 ```
 {{< /spoiler >}}
 
 {{< spoiler text="【jetson】ROSマスタ、各種ノードを起動" >}}
 
-try it! `bringup.launch`の中身を読んでみよう
-
-hint `roscd <パッケージ名>`とするとパッケージへ簡単に移動ができる
-
 ```shell
-(docker) roslaunch roomba_bringup bringup.launch
-```
-{{< /spoiler >}}
-
-{{< spoiler text="【jetson】RealSenseを起動" >}}
-```shell
- cd realsense_docker
- ./launch_realsense.sh
+(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup bringup.launch
 ```
 {{< /spoiler >}}
 
 ### ROSメッセージの可視化
 {{< spoiler text="【開発PC】topicの確認" >}}
 
-topic一覧を表示
+Topic関連のコマンドのところの`rostopic list`コマンドを使用してtopic一覧を表示してみましょう
 
 ```shell
-(docker) rostopic list
+(開発PC)(docker):~/roomba_hack# rostopic list
 ```
 
 特定のtopicの型を確認
 
 ```shell
-(docker) rostopic type /camera/color/image_raw
-(docker) rostopic type /scan
+(開発PC)(docker)# rostopic type /camera/color/image_raw
+(開発PC)(docker)# rostopic type /scan
 ```
 
+その型が実際にどのような構成をしているのかは`rosmsg info <topic type>`で調べられます。
+
+参考
+
 sensor_msgs/LaserScan型 http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/LaserScan.html
+
 sensor_msgs/Image型 http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Image.html
 
 特定のtopicの中身を確認
 ```shell
-(docker) rostopic echo /camera/color/image_raw
-(docker) rostopic echo /scan
+(開発PC)(docker)# rostopic echo /camera/color/image_raw
+(開発PC)(docker)# rostopic echo /scan
 ```
 
 rvizを用いて可視化
 ```shell
-(docker) rviz
+(開発PC)(docker)# rviz
 ```
 {{< /spoiler >}}
 
@@ -238,13 +232,13 @@ rvizを用いて可視化
 topic`/cmd_vel`の情報を確認
 
 ```shell
-(docker) rostopic info /cmd_vel
+(開発PC)(docker)# rostopic info /cmd_vel
 ```
 
 topic`/cmd_vel`の型を確認
 
 ```shell
-(docker) rostopic type /cmd_vel
+(開発PC)(docker)# rostopic type /cmd_vel
 ```
 
 geometry_msgs/Twist型 http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Twist.html
@@ -252,7 +246,7 @@ geometry_msgs/Twist型 http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/
 topic`/cmd_vel`をpublish
 
 ```shell
-(docker) rostopic pub /cmd_vel geometry_msgs/Twist "linear:
+(開発PC)(docker)# rostopic pub /cmd_vel geometry_msgs/Twist "linear:
     x: 1.0
     y: 0.0
     z: 0.0
@@ -265,9 +259,17 @@ topic`/cmd_vel`をpublish
 topicをスクリプトからpublish
 
 ```shell
-(docker) rosrun navigation_tutorial simple_control.py
+(開発PC)(docker)# rosrun navigation_tutorial simple_control.py
 ```
 
-try it! `simple_control.py`の中身を読んでコードを変更してみよう
-
 {{< /spoiler >}}
+
+try it! `roomba_bringup`パッケージの`bringup.launch`の中身を読んでみよう
+
+hint roscdコマンドを使うとパッケージへ簡単に移動ができる
+
+try it! 開発PCで`rosnode`関連のコマンドを使ってみよう
+
+try it! 開発PCで`rosrun rqt_graph rqt_graph`を実行してnodeとtopicの関連を可視化してみよう
+
+try it! 開発PCで`simple_control.py`の中身を読んでコードを変更してみよう
