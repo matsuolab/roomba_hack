@@ -5,16 +5,16 @@ type: book
 weight: 21
 ---
 
-ROSのパッケージ管理
+ROSのパッケージ管理について理解しよう
 <!--more-->
 
 ## Learn
 
 ### ROSのパッケージ
 
-ROSのプログラムはパッケージとして管理される。
+ROSでは、特定の目的のためのプログラム群をまとめてパッケージとして管理する。
 
-navigation_tutorailパッケージのファイル構成を示す。
+例として、navigation_tutorailパッケージのファイル構成を示す。
 
 ```
 navigation_tutorial
@@ -47,6 +47,8 @@ navigation_tutorial
 
 ```
 
+一般的に、`scripts`ディレクトリや`src`ディレクトリにそれぞれPython, C++のプログラムが配置される。
+
 作成したプログラムは`rosrun`コマンドで実行することができる。
 
 ```shell
@@ -54,13 +56,15 @@ navigation_tutorial
 (C++) rosrun navigation_tutorail go_straight
 ```
 
+`launch`ディレクトリに入っているlaunchファイルは複数のプログラムを同時に実行できるための仕組みである。
+
 launchファイルについてでも同様に`roslaunch`コマンドで実行することができる。
 
 ```shell
 (Python) roslaunch navigation_tutorial move_base.launch
 ```
 
-実行時にパッケージを指定するので、(パスが通ってさえれば)ディレクトリに関係なく実行が可能である。
+実行時にパッケージ名(今回だとnavigation_tutorial)を指定するので、現在どこのディレクトリにいるかに関係なく実行が可能である。
 
 ### ROSのワークスペース
 
@@ -108,9 +112,11 @@ catkin_ws
                └── src
 ```
 
-catkin_wsのsrc内でパッケージ作成を行い、catkin_ws直下で`catkin_make`コマンドでビルドをすると、buildディレクトリとdevelディレクトリが作成される。
+catkin_wsのsrc内でパッケージ作成を行い、catkin_ws直下で`catkin_make`コマンドを実行すると、Cプログラムのビルドが行われ、buildディレクトリとdevelディレクトリが作成される。
 
-develディレクトリの中のsetup.bashをソース`source devel/setup.bash`することで、ワークスペース内のパッケージのパスを通すことができる。　
+作成されたdevelディレクトリの中のsetup.bashをソース`source devel/setup.bash`することで、ワークスペース内のパッケージのパスを通すことができる。　
+
+パッケージのパスを通すことで、ROSのパッケージに関するコマンドや、プログラムの実行(`rosrun`や`roslaunch`)が行えるようになる。
  
 ### ROSのコマンド
 
@@ -119,27 +125,27 @@ ROSのコマンドのうち、よく用いるものを紹介する。
 - Topic関連
 
 ```
-rostopic list            topicの一覧を表示する
-rostopic echo            指定されたtopicの中身を表示する
-rostopic hz              topicの配信周波数を取得する
-rostopic info            topicの情報を表示する
-rostopic pub             topicを配信する
-rostopic type            topicの型を確認する  
+rostopic list                 　　　　　　   topicの一覧を表示する
+rostopic echo <topic name>   　 　　　　　   指定されたtopicの中身を表示する
+rostopic hz <topic name>      　　　　　　　  topicの配信周波数を取得する
+rostopic info <topic name>    　　　　　　　  topicの情報を表示する
+rostopic pub <topic name> <topic> 　 　topicを配信する
+rostopic type <topic name>          topicの型を確認する  
 ```
 
 - Node関連
 
 ```
-rosnode list             nodeの一覧を表示する
-rosnode ping             nodeの接続テストを行う
-rosnode info             nodeの情報を表示する
-rosnode kill             nodeをシャットダウンする
+rosnode list                nodeの一覧を表示する
+rosnode ping <node name>    nodeの接続テストを行う
+rosnode info <node name>    nodeの情報を表示する
+rosnode kill <node name>    nodeをシャットダウンする
 ```
 
 - Package関連
 ```
 rospack list             packageの一覧を表示する
-roscd                    指定したpackage内に移動する
+roscd <package name>     指定したpackage内に移動する
 ```
 
 
