@@ -2,7 +2,7 @@
 
 IMAGE_NAME=roomba_hack
 TAG_NAME=latest
-BASE_IMAGE=nvidia/cudagl:11.1.1-devel-ubuntu20.04
+BASE_IMAGE=nvidia/cudagl:11.3.0-devel-ubuntu20.04
 DOCKERFILE_NAME=Dockerfile
 
 dpkg -s nvidia-container-runtime > /dev/null 2>&1
