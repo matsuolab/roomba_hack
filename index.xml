@@ -978,7 +978,7 @@ roomba_dev2@roomba-dev-jetson2:~$
 &lt;h2 id="learn">Learn&lt;/h2>
 &lt;h3 id="rosのパッケージ">ROSのパッケージ&lt;/h3>
 &lt;p>ROSでは、特定の目的のためのプログラム群をまとめてパッケージとして管理する。&lt;/p>
-&lt;p>例として、navigation_tutorailパッケージのファイル構成を示す。&lt;/p>
+&lt;p>例として、navigation_tutorialパッケージのファイル構成を示す。&lt;/p>
 &lt;pre>&lt;code>navigation_tutorial
    ├── CMakeLists.txt
    ├── launch
@@ -1009,8 +1009,8 @@ roomba_dev2@roomba-dev-jetson2:~$
 &lt;/code>&lt;/pre>
 &lt;p>一般的に、&lt;code>scripts&lt;/code>ディレクトリや&lt;code>src&lt;/code>ディレクトリにそれぞれPython, C++のプログラムが配置される。&lt;/p>
 &lt;p>作成したプログラムは&lt;code>rosrun&lt;/code>コマンドで実行することができる。&lt;/p>
-&lt;pre>&lt;code class="language-shell">(Python) rosrun navigation_tutorail simple_control2.py
-(C++) rosrun navigation_tutorail go_straight
+&lt;pre>&lt;code class="language-shell">(Python) rosrun navigation_tutorial simple_control2.py
+(C++) rosrun navigation_tutorial go_straight
 &lt;/code>&lt;/pre>
 &lt;p>&lt;code>launch&lt;/code>ディレクトリに入っているlaunchファイルは複数のプログラムを同時に実行できるための仕組みである。&lt;/p>
 &lt;p>launchファイルについてでも同様に&lt;code>roslaunch&lt;/code>コマンドで実行することができる。&lt;/p>
