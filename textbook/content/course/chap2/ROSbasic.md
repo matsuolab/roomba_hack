@@ -255,13 +255,6 @@ topic`/cmd_vel`をpublish
     y: 0.0
     z: 0.0"
 ```
-
-topicをスクリプトからpublish
-
-```shell
-(開発PC)(docker)# rosrun navigation_tutorial simple_control.py
-```
-
 {{< /spoiler >}}
 
 try it! `roomba_bringup`パッケージの`bringup.launch`の中身を読んでみよう
@@ -271,14 +264,3 @@ hint roscdコマンドを使うとパッケージへ簡単に移動ができま�
 try it! 開発PCで`rosnode`関連のコマンドを使ってみよう
 
 try it! 開発PCで`rosrun rqt_graph rqt_graph`を実行してnodeとtopicの関連を可視化してみよう
-
-try it! 開発PCで`simple_control.py`の中身を読んでコードを変更してみよう
-
-hint コードを編集するときはエディタを使うことがおすすめです。新しくターミナルを開いて
-
-```shell
-(開発PC):~$ cd group_a/roomba_hack
-(開発PC):~group_a/roomba_hack$ code .
-```
-
-でVScodeを起動することができます。
