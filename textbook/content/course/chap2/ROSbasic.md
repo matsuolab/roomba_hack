@@ -190,14 +190,52 @@ if __name__=='__main__':
         pass
 ```
 
+まずsimple_controller関数内をみていきましょう。
+
 以下の部分で`simple_controller`という名前でノードを定義しています。
 
 ```python
 rospy.init_node('simple_controller', anonymous=True)
 ```
 
-`/cmd_vel`
+以下の部分でPublisher(トピックのpublish)を宣言しています。
 
+今回の場合は、`/cmd_vel`トピックを`Twist`型で送信するPublisherを宣言しています。
+
+```python
+pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+```
+
+続いて、time_control関数です。
+
+この関数はpublisher、速度、角速度、時間を受け取り、速度指令をpublishします。
+
+```python
+def time_control(pub, velocity, yawrate, time):
+    vel = Twist()
+    start_time = rospy.get_rostime().secs
+    while(rospy.get_rostime().secs-start_time<time):
+        vel.linear.x = velocity
+        vel.angular.z = yawrate
+        pub.publish(vel)
+        rospy.sleep(0.1)
+```
+
+ここでTwist型のインスタンスを作成しています。
+
+```python
+  vel = Twist()
+```
+
+while文で受け取った時間が過ぎるまでの間、受け取った速度と各速度をvelに格納し、`pub.publish(vel)`でpublishを行なっています。
+
+```python
+    while(rospy.get_rostime().secs-start_time<time):
+        vel.linear.x = velocity
+        vel.angular.z = yawrate
+        pub.publish(vel)
+        rospy.sleep(0.1)
+```
 
 ## 演習
 
