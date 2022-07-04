@@ -36,7 +36,7 @@
 
 </code></pre><p>一般的に、<code>scripts</code>ディレクトリや<code>src</code>ディレクトリにそれぞれPython, C++のプログラムが配置される。</p><p>作成したプログラムは<code>rosrun</code>コマンドで実行することができる。</p><pre><code class=language-shell>(Python) rosrun navigation_tutorial simple_control2.py
 (C++) rosrun navigation_tutorial go_straight
-</code></pre><p><code>launch</code>ディレクトリに入っているlaunchファイルは複数のプログラムを同時に実行できるための仕組みである。</p><p>launchファイルについてでも同様に<code>roslaunch</code>コマンドで実行することができる。</p><pre><code class=language-shell>(Python) roslaunch navigation_tutorial move_base.launch
+</code></pre><p><code>launch</code>ディレクトリに入っているlaunchファイルは複数のプログラムを同時に実行できるための仕組みである。</p><p>launchファイルについてでも同様に<code>roslaunch</code>コマンドで実行することができる。</p><pre><code class=language-shell>roslaunch navigation_tutorial move_base.launch
 </code></pre><p>実行時にパッケージ名(今回だとnavigation_tutorial)を指定するので、現在どこのディレクトリにいるかに関係なく実行が可能である。</p><h3 id=rosのワークスペース>ROSのワークスペース</h3><p>ROSのパッケージはワークスペースと呼ばれる作業スペースに配置される。</p><p>一般的に<code>catkin_ws</code>という名前が使われることが多い。</p><p>catkin_wsのファイル構成を示す。</p><pre><code>catkin_ws
    ├── build
    ├── devel

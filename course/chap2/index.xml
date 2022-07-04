@@ -38,7 +38,7 @@
 &lt;/code>&lt;/pre>
 &lt;p>&lt;code>launch&lt;/code>ディレクトリに入っているlaunchファイルは複数のプログラムを同時に実行できるための仕組みである。&lt;/p>
 &lt;p>launchファイルについてでも同様に&lt;code>roslaunch&lt;/code>コマンドで実行することができる。&lt;/p>
-&lt;pre>&lt;code class="language-shell">(Python) roslaunch navigation_tutorial move_base.launch
+&lt;pre>&lt;code class="language-shell">roslaunch navigation_tutorial move_base.launch
 &lt;/code>&lt;/pre>
 &lt;p>実行時にパッケージ名(今回だとnavigation_tutorial)を指定するので、現在どこのディレクトリにいるかに関係なく実行が可能である。&lt;/p>
 &lt;h3 id="rosのワークスペース">ROSのワークスペース&lt;/h3>
