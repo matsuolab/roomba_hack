@@ -266,10 +266,19 @@ topicをスクリプトからpublish
 
 try it! `roomba_bringup`パッケージの`bringup.launch`の中身を読んでみよう
 
-hint roscdコマンドを使うとパッケージへ簡単に移動ができる
+hint roscdコマンドを使うとパッケージへ簡単に移動ができます。ファイルの中身を表示するには`cat`コマンドを使用します。
 
 try it! 開発PCで`rosnode`関連のコマンドを使ってみよう
 
 try it! 開発PCで`rosrun rqt_graph rqt_graph`を実行してnodeとtopicの関連を可視化してみよう
 
 try it! 開発PCで`simple_control.py`の中身を読んでコードを変更してみよう
+
+hint コードを編集するときはエディタを使うことがおすすめです。新しくターミナルを開いて
+
+```shell
+(開発PC):~$ cd group_a/roomba_hack
+(開発PC):~group_a/roomba_hack$ code .
+```
+
+でVScodeを起動することができます。
