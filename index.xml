@@ -1088,82 +1088,72 @@ roscd &amp;lt;package name&amp;gt; 指定したpackage内に移動する
 &lt;/code>&lt;/pre>
 &lt;h2 id="演習">演習&lt;/h2>
 &lt;details class="spoiler " id="spoiler-0">
-&lt;summary>【jetson・開発マシン】ブランチ切り替え&lt;/summary>
-&lt;p>&lt;pre>&lt;code class="language-shell">cd roomba_hack
-git fetch
-git checkout lec_0405
+&lt;summary>【jetson・開発マシン】それぞれdockerコンテナを起動&lt;/summary>
+&lt;p>&lt;p>jetsonでdockerコンテナを起動&lt;/p>
+&lt;pre>&lt;code class="language-shell">(開発PC):~$ ssh roomba_dev1
+(jetson):~$ cd ~/group_a/roomba_hack
+(jetson):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh
+(jetson)(docker):~/roomba_hack#
+&lt;/code>&lt;/pre>
+&lt;p>開発PCでdockerコンテナを起動&lt;/p>
+&lt;pre>&lt;code class="language-shell">(開発PC):~$ cd ~/group_a/roomba_hack
+(開発PC):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+(開発PC)(docker):~/roomba_hack#
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-1">
-&lt;summary>【jetson・開発マシン】それぞれdockerコンテナを起動&lt;/summary>
-&lt;p>&lt;p>try it! roomba_modeの前後で&lt;code>echo $ROS_MASTER_URI&lt;/code>をしてみよう&lt;/p>
-&lt;p>参考(ROS_MASTER_URIについて)&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://qiita.com/srs/items/7d4aeb5e44138f97c770">https://qiita.com/srs/items/7d4aeb5e44138f97c770&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;pre>&lt;code class="language-shell">cd roomba_hack
-./RUN-DOCKER-CONTAINER.sh
-(docker) roomba_mode
+&lt;summary>【jetson・開発マシン】ビルドをしてパスを通す&lt;/summary>
+&lt;p>&lt;p>catkin_make後に&lt;code>devel&lt;/code>と&lt;code>build&lt;/code>ディレクトリが作成されることを確認しましょう。&lt;/p>
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker):~/roomba_hack# cd catkin_ws
+(開発PC)(docker):~/roomba_hack/catkin_ws# rm -rf devel build
+(開発PC)(docker):~/roomba_hack/catkin_ws# ls
+(開発PC)(docker):~/roomba_hack/catkin_ws# catkin_make
+(開発PC)(docker):~/roomba_hack/catkin_ws# ls
+(開発PC)(docker):~/roomba_hack/catkin_ws# source ./devel/setup.bash
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-2">
-&lt;summary>【jetson・開発マシン】ビルドをしてパスを通す&lt;/summary>
-&lt;p>&lt;p>try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧&lt;code>rospack list&lt;/code>に追加されているかを確認してみよう&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) cd catkin_ws
-(docker) catkin_make
-(docker) source ./devel/setup.bash
-&lt;/code>&lt;/pre>
-&lt;/p>
-&lt;/details>
-&lt;details class="spoiler " id="spoiler-3">
 &lt;summary>【jetson】ROSマスタ、各種ノードを起動&lt;/summary>
-&lt;p>&lt;p>try it! &lt;code>bringup.launch&lt;/code>の中身を読んでみよう&lt;/p>
-&lt;p>hint &lt;code>roscd &amp;lt;パッケージ名&amp;gt;&lt;/code>とするとパッケージへ簡単に移動ができる&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) roslaunch roomba_bringup bringup.launch
-&lt;/code>&lt;/pre>
-&lt;/p>
-&lt;/details>
-&lt;details class="spoiler " id="spoiler-4">
-&lt;summary>【jetson】RealSenseを起動&lt;/summary>
-&lt;p>&lt;pre>&lt;code class="language-shell"> cd realsense_docker
-./launch_realsense.sh
+&lt;p>&lt;pre>&lt;code class="language-shell">(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup bringup.launch
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
 &lt;h3 id="rosメッセージの可視化">ROSメッセージの可視化&lt;/h3>
-&lt;details class="spoiler " id="spoiler-5">
+&lt;details class="spoiler " id="spoiler-3">
 &lt;summary>【開発PC】topicの確認&lt;/summary>
-&lt;p>&lt;p>topic一覧を表示&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) rostopic list
+&lt;p>&lt;p>Topic関連のコマンドのところの&lt;code>rostopic list&lt;/code>コマンドを使用してtopic一覧を表示してみましょう&lt;/p>
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker):~/roomba_hack# rostopic list
 &lt;/code>&lt;/pre>
 &lt;p>特定のtopicの型を確認&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) rostopic type /camera/color/image_raw
-(docker) rostopic type /scan
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker)# rostopic type /camera/color/image_raw
+(開発PC)(docker)# rostopic type /scan
 &lt;/code>&lt;/pre>
-&lt;p>sensor_msgs/LaserScan型 &lt;a href="http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/LaserScan.html">http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/LaserScan.html&lt;/a>
-sensor_msgs/Image型 &lt;a href="http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Image.html">http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Image.html&lt;/a>&lt;/p>
+&lt;p>その型が実際にどのような構成をしているのかは&lt;code>rosmsg info &amp;lt;topic type&amp;gt;&lt;/code>で調べられます。&lt;/p>
+&lt;p>参考&lt;/p>
+&lt;p>sensor_msgs/LaserScan型 &lt;a href="http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/LaserScan.html">http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/LaserScan.html&lt;/a>&lt;/p>
+&lt;p>sensor_msgs/Image型 &lt;a href="http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Image.html">http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Image.html&lt;/a>&lt;/p>
 &lt;p>特定のtopicの中身を確認&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) rostopic echo /camera/color/image_raw
-(docker) rostopic echo /scan
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker)# rostopic echo /camera/color/image_raw
+(開発PC)(docker)# rostopic echo /scan
 &lt;/code>&lt;/pre>
 &lt;p>rvizを用いて可視化&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) rviz
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker)# rviz
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-6">
+&lt;details class="spoiler " id="spoiler-4">
 &lt;summary>【開発PC】topicのpublish(配信)&lt;/summary>
 &lt;p>&lt;p>topic&lt;code>/cmd_vel&lt;/code>の情報を確認&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) rostopic info /cmd_vel
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker)# rostopic info /cmd_vel
 &lt;/code>&lt;/pre>
 &lt;p>topic&lt;code>/cmd_vel&lt;/code>の型を確認&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) rostopic type /cmd_vel
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker)# rostopic type /cmd_vel
 &lt;/code>&lt;/pre>
 &lt;p>geometry_msgs/Twist型 &lt;a href="http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Twist.html">http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Twist.html&lt;/a>&lt;/p>
 &lt;p>topic&lt;code>/cmd_vel&lt;/code>をpublish&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) rostopic pub /cmd_vel geometry_msgs/Twist &amp;quot;linear:
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker)# rostopic pub /cmd_vel geometry_msgs/Twist &amp;quot;linear:
 x: 1.0
 y: 0.0
 z: 0.0
@@ -1173,11 +1163,15 @@ y: 0.0
 z: 0.0&amp;quot;
 &lt;/code>&lt;/pre>
 &lt;p>topicをスクリプトからpublish&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) rosrun navigation_tutorial simple_control.py
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker)# rosrun navigation_tutorial simple_control.py
 &lt;/code>&lt;/pre>
-&lt;p>try it! &lt;code>simple_control.py&lt;/code>の中身を読んでコードを変更してみよう&lt;/p>
 &lt;/p>
-&lt;/details></description></item><item><title>ロボットシステムにおけるセンシング・アクチュエーション・通信①</title><link>https://matsuolab.github.io/roomba_hack/course/chap2/sensing1/</link><pubDate>Tue, 05 Apr 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap2/sensing1/</guid><description>&lt;p>センサの値を読み取りロボットを動かしてみよう&lt;/p>
+&lt;/details>
+&lt;p>try it! &lt;code>roomba_bringup&lt;/code>パッケージの&lt;code>bringup.launch&lt;/code>の中身を読んでみよう&lt;/p>
+&lt;p>hint roscdコマンドを使うとパッケージへ簡単に移動ができる&lt;/p>
+&lt;p>try it! 開発PCで&lt;code>rosnode&lt;/code>関連のコマンドを使ってみよう&lt;/p>
+&lt;p>try it! 開発PCで&lt;code>rosrun rqt_graph rqt_graph&lt;/code>を実行してnodeとtopicの関連を可視化してみよう&lt;/p>
+&lt;p>try it! 開発PCで&lt;code>simple_control.py&lt;/code>の中身を読んでコードを変更してみよう&lt;/p></description></item><item><title>ロボットシステムにおけるセンシング・アクチュエーション・通信①</title><link>https://matsuolab.github.io/roomba_hack/course/chap2/sensing1/</link><pubDate>Tue, 05 Apr 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap2/sensing1/</guid><description>&lt;p>センサの値を読み取りロボットを動かしてみよう&lt;/p>
 &lt;h2 id="learn">Learn&lt;/h2>
 &lt;h3 id="ロボットセンサの基礎知識">ロボットセンサの基礎知識&lt;/h3>
 &lt;p>ロボットが動作するために必要なセンサは大きく2種類に分けられる。&lt;/p>
