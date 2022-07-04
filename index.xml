@@ -1225,7 +1225,9 @@ z: 0.0&amp;quot;
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;p>try it! &lt;code>roomba_bringup&lt;/code>パッケージの&lt;code>bringup.launch&lt;/code>の中身を読んでみよう&lt;/p>
+&lt;details class="spoiler " id="spoiler-5">
+&lt;summary>Try it! 時間が余った人向け&lt;/summary>
+&lt;p>&lt;p>try it! &lt;code>roomba_bringup&lt;/code>パッケージの&lt;code>bringup.launch&lt;/code>の中身を読んでみよう&lt;/p>
 &lt;p>hint roscdコマンドを使うとパッケージへ簡単に移動ができます。ファイルの中身を表示するには&lt;code>cat&lt;/code>コマンドを使用します。&lt;/p>
 &lt;p>try it! 開発PCで&lt;code>rosnode&lt;/code>関連のコマンドを使ってみよう&lt;/p>
 &lt;p>try it! 開発PCで&lt;code>rosrun rqt_graph rqt_graph&lt;/code>を実行してnodeとtopicの関連を可視化してみよう&lt;/p>
@@ -1234,7 +1236,9 @@ z: 0.0&amp;quot;
 &lt;pre>&lt;code class="language-shell">(開発PC):~$ cd group_a/roomba_hack
 (開発PC):~group_a/roomba_hack$ code .
 &lt;/code>&lt;/pre>
-&lt;p>でVScodeを起動することができます。&lt;/p></description></item><item><title>ロボットシステムにおけるセンシング・アクチュエーション・通信①</title><link>https://matsuolab.github.io/roomba_hack/course/chap2/sensing1/</link><pubDate>Tue, 05 Apr 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap2/sensing1/</guid><description>&lt;p>センサの値を読み取りロボットを動かしてみよう&lt;/p>
+&lt;p>でVScodeを起動することができます。&lt;/p>
+&lt;/p>
+&lt;/details></description></item><item><title>ロボットシステムにおけるセンシング・アクチュエーション・通信①</title><link>https://matsuolab.github.io/roomba_hack/course/chap2/sensing1/</link><pubDate>Tue, 05 Apr 2022 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap2/sensing1/</guid><description>&lt;p>センサの値を読み取りロボットを動かしてみよう&lt;/p>
 &lt;h2 id="learn">Learn&lt;/h2>
 &lt;h3 id="ロボットセンサの基礎知識">ロボットセンサの基礎知識&lt;/h3>
 &lt;p>ロボットが動作するために必要なセンサは大きく2種類に分けられる。&lt;/p>
