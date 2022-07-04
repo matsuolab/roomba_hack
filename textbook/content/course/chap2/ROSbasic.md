@@ -61,7 +61,7 @@ navigation_tutorial
 launchファイルについてでも同様に`roslaunch`コマンドで実行することができる。
 
 ```shell
-(Python) roslaunch navigation_tutorial move_base.launch
+roslaunch navigation_tutorial move_base.launch
 ```
 
 実行時にパッケージ名(今回だとnavigation_tutorial)を指定するので、現在どこのディレクトリにいるかに関係なく実行が可能である。
