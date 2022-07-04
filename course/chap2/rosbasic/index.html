@@ -119,8 +119,23 @@ if __name__=='__main__':
         simple_controller()
     except rospy.ROSInitException:
         pass
-</code></pre><p>以下の部分で<code>simple_controller</code>という名前でノードを定義しています。</p><pre><code class=language-python>rospy.init_node('simple_controller', anonymous=True)
-</code></pre><p><code>/cmd_vel</code></p><h2 id=演習>演習</h2><details class=spoiler id=spoiler-0><summary>【jetson・開発マシン】それぞれdockerコンテナを起動</summary><p><p>jetsonでdockerコンテナを起動</p><pre><code class=language-shell>(開発PC):~$ ssh roomba_dev1
+</code></pre><p>まずsimple_controller関数内をみていきましょう。</p><p>以下の部分で<code>simple_controller</code>という名前でノードを定義しています。</p><pre><code class=language-python>rospy.init_node('simple_controller', anonymous=True)
+</code></pre><p>以下の部分でPublisher(トピックのpublish)を宣言しています。</p><p>今回の場合は、<code>/cmd_vel</code>トピックを<code>Twist</code>型で送信するPublisherを宣言しています。</p><pre><code class=language-python>pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+</code></pre><p>続いて、time_control関数です。</p><p>この関数はpublisher、速度、角速度、時間を受け取り、速度指令をpublishします。</p><pre><code class=language-python>def time_control(pub, velocity, yawrate, time):
+    vel = Twist()
+    start_time = rospy.get_rostime().secs
+    while(rospy.get_rostime().secs-start_time&lt;time):
+        vel.linear.x = velocity
+        vel.angular.z = yawrate
+        pub.publish(vel)
+        rospy.sleep(0.1)
+</code></pre><p>ここでTwist型のインスタンスを作成しています。</p><pre><code class=language-python>  vel = Twist()
+</code></pre><p>while文で受け取った時間が過ぎるまでの間、受け取った速度と各速度をvelに格納し、<code>pub.publish(vel)</code>でpublishを行なっています。</p><pre><code class=language-python>    while(rospy.get_rostime().secs-start_time&lt;time):
+        vel.linear.x = velocity
+        vel.angular.z = yawrate
+        pub.publish(vel)
+        rospy.sleep(0.1)
+</code></pre><h2 id=演習>演習</h2><details class=spoiler id=spoiler-0><summary>【jetson・開発マシン】それぞれdockerコンテナを起動</summary><p><p>jetsonでdockerコンテナを起動</p><pre><code class=language-shell>(開発PC):~$ ssh roomba_dev1
 (jetson):~$ cd ~/group_a/roomba_hack
 (jetson):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh
 (jetson)(docker):~/roomba_hack#  

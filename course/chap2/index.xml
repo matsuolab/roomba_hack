@@ -140,10 +140,35 @@ simple_controller()
 except rospy.ROSInitException:
 pass
 &lt;/code>&lt;/pre>
+&lt;p>まずsimple_controller関数内をみていきましょう。&lt;/p>
 &lt;p>以下の部分で&lt;code>simple_controller&lt;/code>という名前でノードを定義しています。&lt;/p>
 &lt;pre>&lt;code class="language-python">rospy.init_node('simple_controller', anonymous=True)
 &lt;/code>&lt;/pre>
-&lt;p>&lt;code>/cmd_vel&lt;/code>&lt;/p>
+&lt;p>以下の部分でPublisher(トピックのpublish)を宣言しています。&lt;/p>
+&lt;p>今回の場合は、&lt;code>/cmd_vel&lt;/code>トピックを&lt;code>Twist&lt;/code>型で送信するPublisherを宣言しています。&lt;/p>
+&lt;pre>&lt;code class="language-python">pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+&lt;/code>&lt;/pre>
+&lt;p>続いて、time_control関数です。&lt;/p>
+&lt;p>この関数はpublisher、速度、角速度、時間を受け取り、速度指令をpublishします。&lt;/p>
+&lt;pre>&lt;code class="language-python">def time_control(pub, velocity, yawrate, time):
+vel = Twist()
+start_time = rospy.get_rostime().secs
+while(rospy.get_rostime().secs-start_time&amp;lt;time):
+vel.linear.x = velocity
+vel.angular.z = yawrate
+pub.publish(vel)
+rospy.sleep(0.1)
+&lt;/code>&lt;/pre>
+&lt;p>ここでTwist型のインスタンスを作成しています。&lt;/p>
+&lt;pre>&lt;code class="language-python"> vel = Twist()
+&lt;/code>&lt;/pre>
+&lt;p>while文で受け取った時間が過ぎるまでの間、受け取った速度と各速度をvelに格納し、&lt;code>pub.publish(vel)&lt;/code>でpublishを行なっています。&lt;/p>
+&lt;pre>&lt;code class="language-python"> while(rospy.get_rostime().secs-start_time&amp;lt;time):
+vel.linear.x = velocity
+vel.angular.z = yawrate
+pub.publish(vel)
+rospy.sleep(0.1)
+&lt;/code>&lt;/pre>
 &lt;h2 id="演習">演習&lt;/h2>
 &lt;details class="spoiler " id="spoiler-0">
 &lt;summary>【jetson・開発マシン】それぞれdockerコンテナを起動&lt;/summary>
