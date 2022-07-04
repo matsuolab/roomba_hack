@@ -33,4 +33,3 @@ weight: 21
 
 参考
 - https://www.jsme.or.jp/jsme-medwiki/14:1013897#:~:text=robot%20sensor
-
