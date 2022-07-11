@@ -68,7 +68,7 @@ weight: 21
 {{< spoiler text="navigationをlaunchして、rviz上で指定した位置までナビゲーションさせてみる" >}}
 
 ```
-(docker) roslaunch navigation_tutorial navigation.launch
+(開発PC)(docker) roslaunch navigation_tutorial navigation.launch
 ```
  
 {{< /spoiler >}}
