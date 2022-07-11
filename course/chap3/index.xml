@@ -182,48 +182,46 @@ git pull origin master
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-8">
 &lt;summary>【jetson・開発マシン】それぞれdockerコンテナを起動&lt;/summary>
-&lt;p>&lt;p>注：前回との間に仕様が変わりました（簡単になりました）．
-以下のコマンドの&lt;code>&amp;lt;&amp;lt;IP ADDRESS&amp;gt;&amp;gt;&lt;/code>の部分を自分のroomba（jetson）のIPアドレスに変更して起動してください（例：192.168.10.70）．&lt;/p>
-&lt;pre>&lt;code class="language-shell">cd roomba_hack
-./RUN-DOCKER-CONTAINER.sh &amp;lt;&amp;lt;IP ADDRESS&amp;gt;&amp;gt;
+&lt;p>&lt;p>．
+jetsonでdockerコンテナを起動&lt;/p>
+&lt;pre>&lt;code class="language-shell">(開発PC):~$ ssh roomba_dev1
+(jetson):~$ cd ~/group_a/roomba_hack
+(jetson):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh
+(jetson)(docker):~/roomba_hack#
+&lt;/code>&lt;/pre>
+&lt;p>開発PCでdockerコンテナを起動&lt;/p>
+&lt;pre>&lt;code class="language-shell">(開発PC):~$ cd ~/group_a/roomba_hack
+(開発PC):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+(開発PC)(docker):~/roomba_hack#
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
 &lt;details class="spoiler " id="spoiler-9">
-&lt;summary>【jetson・開発マシン】ビルドをしてパスを通す&lt;/summary>
-&lt;p>&lt;p>try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧&lt;code>rospack list&lt;/code>に追加されているかを確認してみよう&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) cd catkin_ws
-(docker) catkin_make
-(docker) source ./devel/setup.bash
-&lt;/code>&lt;/pre>
-&lt;/p>
-&lt;/details>
-&lt;details class="spoiler " id="spoiler-10">
 &lt;summary>【jetson】ROSマスタ、各種ノードを起動&lt;/summary>
-&lt;p>&lt;pre>&lt;code class="language-shell">(docker) roslaunch roomba_bringup bringup.launch
+&lt;p>&lt;pre>&lt;code class="language-shell">(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup bringup.launch
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
 &lt;h3 id="rosメッセージの可視化">ROSメッセージの可視化&lt;/h3>
-&lt;details class="spoiler " id="spoiler-11">
+&lt;details class="spoiler " id="spoiler-10">
 &lt;summary>【開発PC】topicの確認&lt;/summary>
 &lt;p>&lt;p>&lt;code>/odom&lt;/code>の型を確認&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) rostopic type /odom
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker):~/roomba_hack# rostopic type /odom
 &lt;/code>&lt;/pre>
 &lt;p>&lt;code>/odom&lt;/code>の中身を確認&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) rostopic echo /odom
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker):~/roomba_hack# rostopic echo /odom
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-12">
+&lt;details class="spoiler " id="spoiler-11">
 &lt;summary>オドメトリを使ったフィードバック制御&lt;/summary>
 &lt;p>&lt;p>&lt;code>simple_control2.py&lt;/code>を実行してみよう．&lt;/p>
 &lt;p>開発PCでteleopのコードを実行しましょう&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) roslaunch roomba_teleop teleop.launch
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker):~/roomba_hack# roslaunch roomba_teleop teleop.launch
 &lt;/code>&lt;/pre>
 &lt;p>このプログラムを動かすときには，コントローラの&lt;code>Y&lt;/code>ボタンを押してから&lt;code>B&lt;/code>ボタンを押して&lt;code>auto&lt;/code>モードにしておきましょう．&lt;/p>
 &lt;p>1メートルほど前に進んだあと，左に90度程度旋回し，右に90度程度旋回したら成功です．&lt;/p>
-&lt;pre>&lt;code class="language-shell">(docker) rosrun navigation_tutorial simple_control2.py
+&lt;pre>&lt;code class="language-shell">(開発PC)(docker):~/roomba_hack# rosrun navigation_tutorial simple_control2.py
 &lt;/code>&lt;/pre>
 &lt;p>try it! &lt;code>simple_control2.py&lt;/code>の中身を読んでコードを変更してみよう&lt;/p>
 &lt;/p>
