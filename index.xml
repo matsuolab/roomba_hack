@@ -171,16 +171,6 @@ self.stop()
 &lt;p>それでは，オドメトリを使って実際にロボットを制御してみましょう．&lt;/p>
 &lt;h2 id="演習">演習&lt;/h2>
 &lt;details class="spoiler " id="spoiler-7">
-&lt;summary>【jetson・開発マシン】ブランチをmaster切り替えて最新の状態にする&lt;/summary>
-&lt;p>&lt;pre>&lt;code class="language-shell">cd roomba_hack
-git fetch
-git checkout master
-git pull origin master
-./BUILD-DOCKER-IMAGE.sh
-&lt;/code>&lt;/pre>
-&lt;/p>
-&lt;/details>
-&lt;details class="spoiler " id="spoiler-8">
 &lt;summary>【jetson・開発マシン】それぞれdockerコンテナを起動&lt;/summary>
 &lt;p>&lt;p>．
 jetsonでdockerコンテナを起動&lt;/p>
@@ -196,14 +186,14 @@ jetsonでdockerコンテナを起動&lt;/p>
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-9">
+&lt;details class="spoiler " id="spoiler-8">
 &lt;summary>【jetson】ROSマスタ、各種ノードを起動&lt;/summary>
 &lt;p>&lt;pre>&lt;code class="language-shell">(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup bringup.launch
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
 &lt;h3 id="rosメッセージの可視化">ROSメッセージの可視化&lt;/h3>
-&lt;details class="spoiler " id="spoiler-10">
+&lt;details class="spoiler " id="spoiler-9">
 &lt;summary>【開発PC】topicの確認&lt;/summary>
 &lt;p>&lt;p>&lt;code>/odom&lt;/code>の型を確認&lt;/p>
 &lt;pre>&lt;code class="language-shell">(開発PC)(docker):~/roomba_hack# rostopic type /odom
@@ -213,7 +203,7 @@ jetsonでdockerコンテナを起動&lt;/p>
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-11">
+&lt;details class="spoiler " id="spoiler-10">
 &lt;summary>オドメトリを使ったフィードバック制御&lt;/summary>
 &lt;p>&lt;p>&lt;code>simple_control2.py&lt;/code>を実行してみよう．&lt;/p>
 &lt;p>開発PCでteleopのコードを実行しましょう&lt;/p>
