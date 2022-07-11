@@ -241,32 +241,29 @@ git pull origin master
 ```
 {{< /spoiler >}}
 
-{{< spoiler text="【jetson・開発マシン】それぞれdockerコンテナを起動" >}}
-
-注：前回との間に仕様が変わりました（簡単になりました）．
-以下のコマンドの`<<IP ADDRESS>>`の部分を自分のroomba（jetson）のIPアドレスに変更して起動してください（例：192.168.10.70）．
+{{< spoiler text="【jetson・開発マシン】それぞれdockerコンテナを起動" >}}．
+jetsonでdockerコンテナを起動
 
 ```shell
-cd roomba_hack
-./RUN-DOCKER-CONTAINER.sh <<IP ADDRESS>>
+(開発PC):~$ ssh roomba_dev1
+(jetson):~$ cd ~/group_a/roomba_hack
+(jetson):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh
+(jetson)(docker):~/roomba_hack#  
 ```
-{{< /spoiler >}}
 
-{{< spoiler text="【jetson・開発マシン】ビルドをしてパスを通す" >}}
-
-try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧`rospack list`に追加されているかを確認してみよう
+開発PCでdockerコンテナを起動
 
 ```shell
-(docker) cd catkin_ws
-(docker) catkin_make
-(docker) source ./devel/setup.bash
+(開発PC):~$ cd ~/group_a/roomba_hack
+(開発PC):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+(開発PC)(docker):~/roomba_hack#
 ```
 {{< /spoiler >}}
 
 {{< spoiler text="【jetson】ROSマスタ、各種ノードを起動" >}}
 
 ```shell
-(docker) roslaunch roomba_bringup bringup.launch
+(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup bringup.launch
 ```
 {{< /spoiler >}}
 
@@ -276,12 +273,12 @@ try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧
 `/odom`の型を確認
 
 ```shell
-(docker) rostopic type /odom
+(開発PC)(docker):~/roomba_hack# rostopic type /odom
 ```
 
 `/odom`の中身を確認
 ```shell
-(docker) rostopic echo /odom
+(開発PC)(docker):~/roomba_hack# rostopic echo /odom
 ```
 {{< /spoiler >}}
 
@@ -292,7 +289,7 @@ try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧
 
 開発PCでteleopのコードを実行しましょう
 ```shell
-(docker) roslaunch roomba_teleop teleop.launch
+(開発PC)(docker):~/roomba_hack# roslaunch roomba_teleop teleop.launch
 ```
 
 このプログラムを動かすときには，コントローラの`Y`ボタンを押してから`B`ボタンを押して`auto`モードにしておきましょう．
@@ -302,7 +299,7 @@ try it! パスを通した後にcatkin_wsの中にあるパッケージが一覧
 
 
 ```shell
-(docker) rosrun navigation_tutorial simple_control2.py
+(開発PC)(docker):~/roomba_hack# rosrun navigation_tutorial simple_control2.py
 ```
 
 try it! `simple_control2.py`の中身を読んでコードを変更してみよう
