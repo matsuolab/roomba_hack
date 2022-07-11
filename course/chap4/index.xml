@@ -213,7 +213,7 @@ Navigationシステム概要(from &lt;a href="https://wiki.ros.org/move_base">RO
 &lt;/details> -->
 &lt;details class="spoiler " id="spoiler-5">
 &lt;summary>navigationをlaunchして、rviz上で指定した位置までナビゲーションさせてみる&lt;/summary>
-&lt;p>&lt;pre>&lt;code>(docker) roslaunch navigation_tutorial navigation.launch
+&lt;p>&lt;pre>&lt;code>(開発PC)(docker) roslaunch navigation_tutorial navigation.launch
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
