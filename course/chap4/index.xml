@@ -25,7 +25,7 @@ tfは、各座標系をツリー上で繋げます。従って、親の座標系
 &lt;/div>&lt;figcaption>
 tfツリーをrqtで可視化
 &lt;/figcaption>&lt;/figure>
-&lt;p>ここで、odom座標系は、おどめ鳥の算出を始めた位置(起動した位置)を原点とした座標系で、ホイールオドメトリの値から、ロボットの基準となるbase_footprint座標系を繋げています。
+&lt;p>ここで、odom座標系は、オドメトリの算出を始めた位置(起動した位置)を原点とした座標系で、ホイールオドメトリの値から、ロボットの基準となるbase_footprint座標系を繋げています。
 base_footprint座標系の下には、ルンバロボットの構成要素である、センサ類やホイールなどの座標系が子として繋がっています。&lt;/p>
 &lt;p>一番親にいるmap座標系は、地図の原点を基準とした座標系ですが、この座標系におけるロボットの座標系(base_footprint)を繋げることが、自己位置推定の目的になります。
 しかし、base_footprintの親には既にodomがいるため、map座標系とodom座標系を繋げることで、全体をひとつのツリーとして管理することができます。&lt;/p>
@@ -102,41 +102,35 @@ launchファイル実行時に引数で指定可能なargや、トピック名�
 &amp;lt;/launch&amp;gt;
 &lt;/code>&lt;/pre>
 &lt;h2 id="演習">演習&lt;/h2>
-&lt;!-- &lt;details class="spoiler " id="spoiler-2">
-&lt;summary>Dockerfileにamclを追加してBuildする&lt;/summary>
-&lt;p>&lt;/p>
-&lt;/details> -->
+&lt;details class="spoiler " id="spoiler-2">
+&lt;summary>【jetson・開発マシン】それぞれdockerコンテナを起動&lt;/summary>
+&lt;p>&lt;p>jetsonでdockerコンテナを起動&lt;/p>
+&lt;pre>&lt;code class="language-shell">(開発PC):~$ ssh roomba_dev1
+(jetson):~$ cd ~/group_a/roomba_hack
+(jetson):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh
+(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup bringup.launch
+&lt;/code>&lt;/pre>
+&lt;p>開発PCでdockerコンテナを起動&lt;/p>
+&lt;pre>&lt;code class="language-shell">(開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+&lt;/code>&lt;/pre>
+&lt;/p>
+&lt;/details>
 &lt;details class="spoiler " id="spoiler-3">
-&lt;summary>ブランチの切り替え&lt;/summary>
-&lt;p>&lt;pre>&lt;code>(jetson, 開発PC) git fetch
-(jetson, 開発PC) git checkout feature/move-base
-&lt;/code>&lt;/pre>
-&lt;/p>
-&lt;/details>
-&lt;details class="spoiler " id="spoiler-4">
-&lt;summary>(開発PC, jetson)起動準備&lt;/summary>
-&lt;p>&lt;pre>&lt;code>(jetson)./RUN-DOCKER-CONTAINER.sh
-(jetson)(docker) roslaunch roomba_bringup bringup.launch
-(開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
-&lt;/code>&lt;/pre>
-&lt;/p>
-&lt;/details>
-&lt;details class="spoiler " id="spoiler-5">
 &lt;summary>gmappingで地図作成&lt;/summary>
-&lt;p>&lt;pre>&lt;code>(docker) roslaunch navigation_tutorial gmapping.launch
+&lt;p>&lt;pre>&lt;code>(開発PC)(docker) roslaunch navigation_tutorial gmapping.launch
 &lt;/code>&lt;/pre>
 &lt;p>地図の保存。map.pgm（画像データ）とmap.yaml(地図情報)が保存される。&lt;/p>
-&lt;pre>&lt;code>(docker) rosrun map_server map_saver
+&lt;pre>&lt;code>(開発PC)(docker) rosrun map_server map_saver
 &lt;/code>&lt;/pre>
 &lt;p>&lt;code>~/roomba_hack/catkin_ws/src/navigation_tutorial/map&lt;/code> の下に保存する。&lt;/p>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-6">
+&lt;details class="spoiler " id="spoiler-4">
 &lt;summary>amclをlaunchして、自己位置推定する&lt;/summary>
 &lt;p>&lt;p>localizationノードと地図サーバーを同時に起動。&lt;/p>
-&lt;pre>&lt;code>(docker) roslaunch navigation_tutorial localization.launch
-(docker) roslaunch roomba_teleop teleop.launch
-(docker) rviz -d /root/roomba_hack/catkin_ws/src/navigation_tutorial/configs/navigation.rviz
+&lt;pre>&lt;code>(開発PC)(docker) roslaunch navigation_tutorial localization.launch
+(開発PC)(docker) roslaunch roomba_teleop teleop.launch
+(開発PC)(docker) rviz -d /root/roomba_hack/catkin_ws/src/navigation_tutorial/configs/navigation.rviz
 &lt;/code>&lt;/pre>
 &lt;ul>
 &lt;li>初期位置の指定(rvizの2D Pose Estimate)&lt;/li>
@@ -145,13 +139,13 @@ launchファイル実行時に引数で指定可能なargや、トピック名�
 &lt;/ul>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-7">
+&lt;details class="spoiler " id="spoiler-5">
 &lt;summary>amclのparamをチューニングする&lt;/summary>
 &lt;p>&lt;p>launchファイルの中身を見てみて、値を変えてみる。&lt;/p>
 &lt;p>各パラメータの意味は&lt;a href="https://wiki.ros.org/amcl#Parameters">amclのページ&lt;/a>を参照。&lt;/p>
 &lt;p>例えば、・・・&lt;/p>
 &lt;ul>
-&lt;li>initial_cov_**を大きくしてみて、パーティクルがちゃんと収束するかみてみる。&lt;/li>
+&lt;li>initial_cov_** を大きくしてみて、パーティクルがちゃんと収束するかみてみる。&lt;/li>
 &lt;li>particleの数(min_particles、max_particles)を変えてみて挙動をみてみる。&lt;/li>
 &lt;/ul>
 &lt;/p>
