@@ -70,7 +70,7 @@ float32[] intensities
                     elif self.direction == &quot;LEFT&quot;:
                         vel.angular.z = -0.5
             self.cmd_vel_pub.publish(vel)
-            rospy.sleep(0.1)
+            r.sleep()
 </code></pre><p><code>process</code>メソッド内部では，格納された<code>self.min_range</code>が0.4（メートル）より大きい場合は，ロボットの前に何もないと判断して直進，小さい場合は，<code>self.direction</code>の値を見て，<code>RIGHT</code>であれば右に障害物があると判断して左回転，<code>LEFT</code>であれば左に障害物があると判断して右回転するようなプログラムになっています．</p><p>それでは，実際にLiDARを使って障害物を回避するプログラムを実行してみましょう．</p><h2 id=演習>演習</h2><h3 id=rosメッセージの可視化>ROSメッセージの可視化</h3><details class=spoiler id=spoiler-3><summary>【開発PC】topicの確認</summary><p><p><code>/scan</code>の型を確認</p><pre><code class=language-shell>(開発PC)(docker):~/roomba_hack# rostopic type /scan
 </code></pre><p><code>/scan</code>の中身を確認</p><pre><code class=language-shell>(開発PC)(docker):~/roomba_hack# rostopic echo /scan
 </code></pre></p></details><details class=spoiler id=spoiler-4><summary>LiDARスキャンを使ったフィードバック制御</summary><p><p><code>avoidance.py</code>を実行してみよう．</p><p>このプログラムを動かすときには，コントローラの<code>Y</code>ボタンを押してから<code>B</code>ボタンを押して<code>auto</code>モードにしておきましょう．</p><p>今回はせっかくなので，launchfileから起動してみましょう．

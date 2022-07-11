@@ -319,7 +319,7 @@ vel.angular.z = 0.5
 elif self.direction == &amp;quot;LEFT&amp;quot;:
 vel.angular.z = -0.5
 self.cmd_vel_pub.publish(vel)
-rospy.sleep(0.1)
+r.sleep()
 &lt;/code>&lt;/pre>
 &lt;p>&lt;code>process&lt;/code>メソッド内部では，格納された&lt;code>self.min_range&lt;/code>が0.4（メートル）より大きい場合は，ロボットの前に何もないと判断して直進，小さい場合は，&lt;code>self.direction&lt;/code>の値を見て，&lt;code>RIGHT&lt;/code>であれば右に障害物があると判断して左回転，&lt;code>LEFT&lt;/code>であれば左に障害物があると判断して右回転するようなプログラムになっています．&lt;/p>
 &lt;p>それでは，実際にLiDARを使って障害物を回避するプログラムを実行してみましょう．&lt;/p>
