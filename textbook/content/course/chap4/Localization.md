@@ -38,7 +38,7 @@ tfは、各座標系をツリー上で繋げます。従って、親の座標系
 
 {{< figure src="../rqt_tf_tree.png" caption="tfツリーをrqtで可視化" >}}
 
-ここで、odom座標系は、おどめ鳥の算出を始めた位置(起動した位置)を原点とした座標系で、ホイールオドメトリの値から、ロボットの基準となるbase_footprint座標系を繋げています。
+ここで、odom座標系は、オドメトリの算出を始めた位置(起動した位置)を原点とした座標系で、ホイールオドメトリの値から、ロボットの基準となるbase_footprint座標系を繋げています。
 base_footprint座標系の下には、ルンバロボットの構成要素である、センサ類やホイールなどの座標系が子として繋がっています。
 
 一番親にいるmap座標系は、地図の原点を基準とした座標系ですが、この座標系におけるロボットの座標系(base_footprint)を繋げることが、自己位置推定の目的になります。
@@ -138,24 +138,19 @@ launchの詳しい書き方は、[rosのドキュメント](http://wiki.ros.org/
 ```
 
 ## 演習
-<!-- {{< spoiler text="Dockerfileにamclを追加してBuildする" >}}
-{{< /spoiler >}} -->
 
-{{< spoiler text="ブランチの切り替え" >}}
+{{< spoiler text="【jetson・開発マシン】それぞれdockerコンテナを起動" >}}
 
+jetsonでdockerコンテナを起動
+```shell
+(開発PC):~$ ssh roomba_dev1
+(jetson):~$ cd ~/group_a/roomba_hack
+(jetson):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh
+(jetson)(docker):~/roomba_hack# roslaunch roomba_bringup bringup.launch
 ```
-(jetson, 開発PC) git fetch
-(jetson, 開発PC) git checkout feature/move-base
-```
 
-{{< /spoiler >}}
-
-
-{{< spoiler text="(開発PC, jetson)起動準備" >}}
-
-```
-(jetson)./RUN-DOCKER-CONTAINER.sh
-(jetson)(docker) roslaunch roomba_bringup bringup.launch
+開発PCでdockerコンテナを起動
+```shell
 (開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
 ```
 
@@ -164,12 +159,12 @@ launchの詳しい書き方は、[rosのドキュメント](http://wiki.ros.org/
 {{< spoiler text="gmappingで地図作成" >}}
 
 ```
-(docker) roslaunch navigation_tutorial gmapping.launch
+(開発PC)(docker) roslaunch navigation_tutorial gmapping.launch
 ```
 
 地図の保存。map.pgm（画像データ）とmap.yaml(地図情報)が保存される。
 ```
-(docker) rosrun map_server map_saver
+(開発PC)(docker) rosrun map_server map_saver
 ```
 `~/roomba_hack/catkin_ws/src/navigation_tutorial/map` の下に保存する。
 
@@ -179,9 +174,9 @@ launchの詳しい書き方は、[rosのドキュメント](http://wiki.ros.org/
 
 localizationノードと地図サーバーを同時に起動。
 ```
-(docker) roslaunch navigation_tutorial localization.launch
-(docker) roslaunch roomba_teleop teleop.launch
-(docker) rviz -d /root/roomba_hack/catkin_ws/src/navigation_tutorial/configs/navigation.rviz
+(開発PC)(docker) roslaunch navigation_tutorial localization.launch
+(開発PC)(docker) roslaunch roomba_teleop teleop.launch
+(開発PC)(docker) rviz -d /root/roomba_hack/catkin_ws/src/navigation_tutorial/configs/navigation.rviz
 ```
 - 初期位置の指定(rvizの2D Pose Estimate)
 - コントローラで移動させてみて自己位置を確認
@@ -195,7 +190,7 @@ launchファイルの中身を見てみて、値を変えてみる。
 各パラメータの意味は[amclのページ](https://wiki.ros.org/amcl#Parameters)を参照。
 
 例えば、・・・
-- initial_cov_**を大きくしてみて、パーティクルがちゃんと収束するかみてみる。
+- initial_cov_** を大きくしてみて、パーティクルがちゃんと収束するかみてみる。
 - particleの数(min_particles、max_particles)を変えてみて挙動をみてみる。
 
 {{< /spoiler >}}
