@@ -134,7 +134,7 @@ class Avoidance:
                     elif self.direction == "LEFT":
                         vel.angular.z = -0.5
             self.cmd_vel_pub.publish(vel)
-            rospy.sleep(0.1)
+            r.sleep()
 ```
 
 `process`メソッド内部では，格納された`self.min_range`が0.4（メートル）より大きい場合は，ロボットの前に何もないと判断して直進，小さい場合は，`self.direction`の値を見て，`RIGHT`であれば右に障害物があると判断して左回転，`LEFT`であれば左に障害物があると判断して右回転するようなプログラムになっています．
