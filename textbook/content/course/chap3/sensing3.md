@@ -149,12 +149,12 @@ class Avoidance:
 `/scan`の型を確認
 
 ```shell
-(docker) rostopic type /scan
+(開発PC)(docker):~/roomba_hack# rostopic type /scan
 ```
 
 `/scan`の中身を確認
 ```shell
-(docker) rostopic echo /scan
+(開発PC)(docker):~/roomba_hack# rostopic echo /scan
 ```
 {{< /spoiler >}}
 
@@ -165,12 +165,12 @@ class Avoidance:
 
 このプログラムを動かすときには，コントローラの`Y`ボタンを押してから`B`ボタンを押して`auto`モードにしておきましょう．
 
-今回はせっかくなので，launchfileから起動してみましょう．s
+今回はせっかくなので，launchfileから起動してみましょう．
 このlaunchfileは，`navigation_tutorial`パッケージの中の`launch`フォルダの中にある`avoidance.launch`に記述されています（[github](https://github.com/matsuolab/roomba_hack/blob/master/catkin_ws/src/navigation_tutorial/launch/avoidance.launch)）．
 
 
 ```shell
-(docker) roslaunch navigation_tutorial avoidance.launch
+(開発PC)(docker):~/roomba_hack# roslaunch navigation_tutorial avoidance.launch
 ```
 
 ロボットの進行方向に障害物があるときに，それを避けるように方向転換したら成功です．
