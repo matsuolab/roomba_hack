@@ -231,16 +231,6 @@ class SimpleController:
 
 ## 演習
 
-{{< spoiler text="【jetson・開発マシン】ブランチをmaster切り替えて最新の状態にする" >}}
-```shell
-cd roomba_hack
-git fetch
-git checkout master
-git pull origin master
-./BUILD-DOCKER-IMAGE.sh
-```
-{{< /spoiler >}}
-
 {{< spoiler text="【jetson・開発マシン】それぞれdockerコンテナを起動" >}}．
 jetsonでdockerコンテナを起動
 
