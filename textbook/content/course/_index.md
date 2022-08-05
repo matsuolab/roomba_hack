@@ -10,11 +10,11 @@ type: book
 
 {{< toc hide_on="xl" >}}
 
-## What you will learn
+<!-- ## What you will learn
 
 - Fundamental {{<hl>}}Python programming skills{{</hl>}}
 - {{<hl>}}Statistical concepts{{</hl>}} and how to apply them in practice
-- Gain experience with the {{<hl>}}Scikit{{</hl>}}, including data visualization with {{<hl>}}Plotly{{</hl>}} and data wrangling with {{<hl>}}Pandas{{</hl>}}
+- Gain experience with the {{<hl>}}Scikit{{</hl>}}, including data visualization with {{<hl>}}Plotly{{</hl>}} and data wrangling with {{<hl>}}Pandas{{</hl>}} -->
 
 ## Program overview
 実ロボット(roomba)を利用した演習を通じて、ロボットシステムの仕組みから、センシング・認識・行動について研究開発に必要な最低限の知識や実装スキルを習得する。
@@ -27,11 +27,11 @@ type: book
 
 {{< mention "admin" >}}
 
-## FAQs
+<!-- ## FAQs
 
 {{< spoiler text="Are there prerequisites?" >}}
 There are no prerequisites for the first course.
-{{< /spoiler >}}
+{{< /spoiler >}} -->
 
 
 {{< cta cta_text="Begin the course" cta_link="course" >}}
