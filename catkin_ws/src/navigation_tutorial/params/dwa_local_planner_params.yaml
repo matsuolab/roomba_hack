@@ -2,21 +2,21 @@ base_local_planner: dwa_local_planner/DWAPlannerROS
 DWAPlannerROS:
 
 # Robot Configuration Parameters
-  max_vel_x: 0.2
+  max_vel_x: 0.3
   min_vel_x: 0
   max_vel_y: 0.0
   min_vel_y: 0.0
-  max_vel_theta: 1.0
-  min_vel_theta: -1.0
+  max_vel_theta: 0.3
+  min_vel_theta: -0.3
 
 
 # The velocity when robot is moving in a straight line
-  max_vel_trans:  0.3
-  min_vel_trans:  0.15
+  max_vel_trans:  0.18
+  min_vel_trans:  -0.18
 
-  acc_lim_x: 5.0
+  acc_lim_x: 3.0
   acc_lim_y: 0.0
-  acc_lim_theta: 10.0
+  acc_lim_theta: 5.0
 
 # Goal Tolerance Parametes
   xy_goal_tolerance: 0.2
