@@ -6,9 +6,9 @@ echo "$0: IMAGE=${IMAGE_NAME}"
 echo "$0: CONTAINER=${CONTAINER_NAME}"
 
 if [ ! -z $1 ]; then
-    ROOMBA_IP=$1
+    MASTER_IP=$1
 else
-    ROOMBA_IP=`hostname -I | cut -d' ' -f1`
+    MASTER_IP=`hostname -I | cut -d' ' -f1`
 fi
 
 EXISTING_CONTAINER_ID=`docker ps -aq -f name=${CONTAINER_NAME}`
@@ -25,7 +25,7 @@ else
             --volume /tmp/argus_socket:/tmp/argus_socket \
             --name ${CONTAINER_NAME} \
             ${IMAGE_NAME}:jetson \
-            bash -c "sed -i 's/TMP_IP/localhost/' ~/scripts/initialize-bash-shell.sh;
+            bash -c "sed -i 's/TMP_IP/${MASTER_IP}/' ~/scripts/initialize-bash-shell.sh;
                      sed -i 's/noetic/melodic/' ~/.bashrc;
                      sed -i 's/noetic/melodic/' ~/scripts/initialize-bash-shell.sh;
                      source /root/.bashrc;
@@ -42,7 +42,7 @@ else
             --volume /tmp/.X11-unix:/tmp/.X11-unix \
             --name ${CONTAINER_NAME} \
             ${IMAGE_NAME} \
-            bash -c "sed -i 's/TMP_IP/${ROOMBA_IP}/' ~/scripts/initialize-bash-shell.sh;
+            bash -c "sed -i 's/TMP_IP/${MASTER_IP}/' ~/scripts/initialize-bash-shell.sh;
                      bash"
     fi
 fi
