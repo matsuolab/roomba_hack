@@ -145,13 +145,16 @@ jetsonでdockerコンテナを起動
 ```shell
 (開発PC):~$ ssh roomba_dev1
 (jetson):~$ cd ~/group_a/roomba_hack
-(jetson):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh
+(jetson)::~/group_a/roomba_hack$ git pull 
+(jetson):~/group_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
 (jetson)(docker):~/roomba_hack# roslaunch roomba_bringup bringup.launch
 ```
 
 開発PCでdockerコンテナを起動
 ```shell
-(開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+(開発PC):~$ cd ~/group_a/roomba_hack
+(開発PC):~/group_a/roomba_hack$ git pull
+(開発PC):~/group_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
 ```
 
 {{< /spoiler >}}
@@ -192,5 +195,18 @@ launchファイルの中身を見てみて、値を変えてみる。
 例えば、・・・
 - initial_cov_** を大きくしてみて、パーティクルがちゃんと収束するかみてみる。
 - particleの数(min_particles、max_particles)を変えてみて挙動をみてみる。
+
+{{< /spoiler >}}
+
+{{< spoiler text="launchファイルの拡張" >}}
+localization.launchファイルに以下を追加してteleop.launchとrvizが同時に起動するようにしてみよう。
+```
+<!-- teleop.launchを起動-->
+<include file="$(find roomba_teleop)/launch/teleop.launch">
+</include>
+
+<!-- rvizを起動-->
+<node pkg="rviz" type="rviz" name="navigation_rviz" args="-d $(find navigation_tutorial)/configs/navigation.rviz"/>
+```
 
 {{< /spoiler >}}
