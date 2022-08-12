@@ -683,11 +683,14 @@ launchファイル実行時に引数で指定可能なargや、トピック名�
 &lt;p>&lt;p>jetsonでdockerコンテナを起動&lt;/p>
 &lt;pre>&lt;code class="language-shell">(開発PC):~$ ssh roomba_dev1
 (jetson):~$ cd ~/group_a/roomba_hack
-(jetson):~/group_a/roomba_hack ./RUN-DOCKER-CONTAINER.sh
+(jetson)::~/group_a/roomba_hack$ git pull
+(jetson):~/group_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh
 (jetson)(docker):~/roomba_hack# roslaunch roomba_bringup bringup.launch
 &lt;/code>&lt;/pre>
 &lt;p>開発PCでdockerコンテナを起動&lt;/p>
-&lt;pre>&lt;code class="language-shell">(開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+&lt;pre>&lt;code class="language-shell">(開発PC):~$ cd ~/group_a/roomba_hack
+(開発PC):~/group_a/roomba_hack$ git pull
+(開発PC):~/group_a/roomba_hack$ ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
@@ -724,6 +727,17 @@ launchファイル実行時に引数で指定可能なargや、トピック名�
 &lt;li>initial_cov_** を大きくしてみて、パーティクルがちゃんと収束するかみてみる。&lt;/li>
 &lt;li>particleの数(min_particles、max_particles)を変えてみて挙動をみてみる。&lt;/li>
 &lt;/ul>
+&lt;/p>
+&lt;/details>
+&lt;details class="spoiler " id="spoiler-6">
+&lt;summary>launchファイルの拡張&lt;/summary>
+&lt;p>&lt;p>localization.launchファイルに以下を追加してteleop.launchとrvizが同時に起動するようにしてみよう。&lt;/p>
+&lt;pre>&lt;code>&amp;lt;!-- teleop.launchを起動--&amp;gt;
+&amp;lt;include file=&amp;quot;$(find roomba_teleop)/launch/teleop.launch&amp;quot;&amp;gt;
+&amp;lt;/include&amp;gt;
+&amp;lt;!-- rvizを起動--&amp;gt;
+&amp;lt;node pkg=&amp;quot;rviz&amp;quot; type=&amp;quot;rviz&amp;quot; name=&amp;quot;navigation_rviz&amp;quot; args=&amp;quot;-d $(find navigation_tutorial)/configs/navigation.rviz&amp;quot;/&amp;gt;
+&lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details></description></item><item><title>開発環境</title><link>https://matsuolab.github.io/roomba_hack/course/chap1/%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83/</link><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate><guid>https://matsuolab.github.io/roomba_hack/course/chap1/%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83/</guid><description>&lt;p>ロボットシステムの開発環境に使われている要素の概要を理解する&lt;/p>
 &lt;h2 id="スライド">スライド&lt;/h2>
