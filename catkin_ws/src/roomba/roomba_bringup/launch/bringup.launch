@@ -3,8 +3,10 @@
     <arg name="config" default="$(find roomba_bringup)/config/default.yaml"/>
     <arg name="csi_cam" default="false"/>
     <arg name="realsense" default="true"/>
+    <arg name="robot_name" default="roomba1"/>
 
     <!-- roomba -->
+    <group ns="$(arg robot_name)">
     <node pkg="create_driver" type="create_driver" name="ca_driver">
         <rosparam command="load" file="$(arg config)"/>
         <param name="robot_model" value="CREATE_2"/>
@@ -31,4 +33,5 @@
     <include file="$(find realsense2_camera)/launch/rs_camera.launch" if="$(arg realsense)">
         <arg name="align_depth" value="true"/>
     </include>
+    </group>
 </launch>
