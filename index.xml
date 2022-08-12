@@ -335,11 +335,7 @@ git checkout feature/integrate
 RGB画像の&lt;code>/camera/color/image_raw&lt;/code>、
 デプス画像の&lt;code>/camera/depth/image_raw&lt;/code>
 が利用できます。これらのトピックはいずれも&lt;code>sensor_msgs/Image&lt;/code>型です。&lt;/p>
-&lt;p>RealSenseは物理的にRGB画像モジュールとデプス画像モジュールが離れているため、これら2つのトピックはいずれも画像データではあるものの、ピクセルの位置関係が対応しておらずそのままだとうまく画像処理に用いることができません。
-そこで、起動時に&lt;code>align:=true&lt;/code>を指定することで、上記のトピックに加えてデプス画像をRGB画像のピクセルに対応するように変換する&lt;code>/camera/aligned_depth_to_color/image_raw&lt;/code>トピックを使用できるようにします。
-他にも&lt;code>pointcloud:=true&lt;/code>を指定するとデプス画像から点群を生成することができます。
-しかし、この処理は比較的重たいため今回はJetsonではなく、開発用PCでこの処理を行っていくことにします。&lt;/p>
-&lt;p>それでは、RGB画像&lt;code>/camera/color/image_raw&lt;/code>と整列されたデプス画像&lt;code>/camera/aligned_depth_to_color/image_raw&lt;/code>の2種類のトピックを用いて三次元画像処理を行っていきましょう。&lt;/p>
+&lt;p>RealSenseは物理的にRGB画像モジュールとデプス画像モジュールが離れているため、これら2つのトピックはいずれも画像データではあるものの、ピクセルの位置関係が対応しておらずそのままだとうまく画像処理に用いることができませんが、起動時に&lt;code>align:=true&lt;/code>を指定すると、デプス画像をRGB画像のピクセルに対応するように変換された&lt;code>/camera/aligned_depth_to_color/image_raw&lt;/code>トピックを使用できるようになります。&lt;/p>
 &lt;h3 id="物体検出">物体検出&lt;/h3>
 &lt;p>まずはRGB画像&lt;code>/camera/color/image_raw&lt;/code>のみを用いて三次元ではない画像検出を行っていきましょう。&lt;/p>
 &lt;p>以下は&lt;code>/camera/color/image_raw&lt;/code>をSubscribeし、物体検出アルゴリズムであるYOLOv3に入力し、その結果をbounding boxとして描画し、&lt;code>/detection_result&lt;/code>としてPublishするスクリプトです。&lt;/p>
@@ -405,7 +401,7 @@ cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
 一見、新しいデータが入ってくるときのみに推論を回すことは合理的に見えますが、センサの入力に対してコールバック関数内の処理が重いとセンサの入力がどんどん遅れていってしまいます。
 コールバック関数内ではセンサデータの最低限の処理の記述にとどめ、重い処理は分けて書くことを意識しましょう。&lt;/p>
 &lt;p>また、ここでは既存の物体検出モジュールを使用しましたが、PyTorchなどで作成した自作のモデルも同様の枠組みで利用することができます。&lt;/p>
-&lt;p>続いて、整列されたデプス画像データも統合して物体を検出し、物体までの距離を測定してみましょう。&lt;/p>
+&lt;p>続いて、RGB画像に整列されたデプス画像データを統合して物体を検出し、物体までの距離を測定してみましょう。&lt;/p>
 &lt;p>RGB画像&lt;code>/camera/color/image_raw&lt;/code>と整列されたデプス画像&lt;code>/camera/aligned_depth_to_color/image_raw&lt;/code>はそれぞれ独立したトピックであるため、同期を取る必要があります。&lt;/p>
 &lt;p>画像の同期にはmessage_filters(&lt;a href="http://wiki.ros.org/message_filters">http://wiki.ros.org/message_filters&lt;/a>)がよく使われます。&lt;/p>
 &lt;p>message_filters.ApproximateTimeSynchronizerを使い以下のようにSubscriberを作成します。&lt;/p>
@@ -512,34 +508,22 @@ args=&amp;quot;load depth_image_proc/point_cloud_xyz nodelet_manager&amp;quot;&a
 &lt;code>/camera/aligned_depth_to_color/image_raw&lt;/code>はRGB画像に整列されたデプス画像であるため、&lt;code>/camera/depth/camera_info&lt;/code>ではなく&lt;code>/camera/color/camera_info&lt;/code>を指定することに注意してください。&lt;/p>
 &lt;p>&lt;code>roslaunch three-dimensions_tutorial depth2pc.launch&lt;/code>を行い&lt;code>/camera/depth/points&lt;/code>トピックをrvizで可視化をすると三次元空間に点群データが表示されているのが確認できます。&lt;/p>
 &lt;h2 id="演習">演習&lt;/h2>
-&lt;!-- &lt;details class="spoiler " id="spoiler-0">
-&lt;summary>Dockerfileにamclを追加してBuildする&lt;/summary>
-&lt;p>&lt;/p>
-&lt;/details> -->
-&lt;details class="spoiler " id="spoiler-1">
-&lt;summary>ブランチの切り替え&lt;/summary>
-&lt;p>&lt;pre>&lt;code>(jetson, 開発PC) git fetch
-(jetson, 開発PC) git checkout feature/realsense
-&lt;/code>&lt;/pre>
-&lt;/p>
-&lt;/details>
-&lt;details class="spoiler " id="spoiler-2">
+&lt;details class="spoiler " id="spoiler-0">
 &lt;summary>(開発PC, jetson)起動準備&lt;/summary>
-&lt;p>&lt;pre>&lt;code>(jetson)./RUN-DOCKER-CONTAINER.sh
-(jetson)(docker) roslaunch roomba_bringup bringup.launch
-(開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+&lt;p>&lt;pre>&lt;code>(jetson)$ ./RUN-DOCKER-CONTAINER.sh
+(jetson)(docker)# roslaunch roomba_bringup bringup.launch
+(開発PC)$ ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
 &lt;/code>&lt;/pre>
-&lt;p>&lt;code>roslaunch roomba_bringup bringup.launch&lt;/code>でRealSenseも同時に起動するようになりました。&lt;/p>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-3">
+&lt;details class="spoiler " id="spoiler-1">
 &lt;summary>(開発PC)RealSenseのトピックの可視化&lt;/summary>
 &lt;p>&lt;pre>&lt;code>(開発PC)(docker) rviz
 &lt;/code>&lt;/pre>
 &lt;p>&lt;code>/camera/color/image_raw&lt;/code>と&lt;code>/camera/depth/image_raw&lt;/code>と&lt;code>/camera/aligned_depth_to_color/image_raw&lt;/code>を可視化して違いを確認してみよう。&lt;/p>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-4">
+&lt;details class="spoiler " id="spoiler-2">
 &lt;summary>(開発PC)物体検出を行う&lt;/summary>
 &lt;p>&lt;pre>&lt;code>(開発PC)(docker) cd catkin_ws; catkin_make; source devel/setup.bash
 (開発PC)(docker) roscd three-dimensions_tutorial; cd yolov3/weights; ./download_weights.sh
@@ -549,7 +533,7 @@ rvizで`/detection_result`を表示し結果を確認してみよう。
 &lt;/code>&lt;/pre>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-5">
+&lt;details class="spoiler " id="spoiler-3">
 &lt;summary>(開発PC)外部パッケージを使用&lt;/summary>
 &lt;p>&lt;pre>&lt;code>(開発PC)(docker) cd ~/external_catkin_ws/src
 (開発PC)(docker) git clone https://github.com/ros-perception/image_pipeline
@@ -561,7 +545,7 @@ rvizで`/detection_result`を表示し結果を確認してみよう。
 &lt;p>rvizで&lt;code>/camera/depth/points&lt;/code>トピックを追加して確認してみよう。&lt;/p>
 &lt;/p>
 &lt;/details>
-&lt;details class="spoiler " id="spoiler-6">
+&lt;details class="spoiler " id="spoiler-4">
 &lt;summary>余裕がある人向け&lt;/summary>
 &lt;p>&lt;p>物体を検出し、特定の物体の手前まで移動するスクリプトを作ってみましょう。&lt;/p>
 &lt;p>ヒント&lt;/p>
