@@ -29,12 +29,8 @@ RGB画像の`/camera/color/image_raw`、
 デプス画像の`/camera/depth/image_raw`
 が利用できます。これらのトピックはいずれも`sensor_msgs/Image`型です。
 
-RealSenseは物理的にRGB画像モジュールとデプス画像モジュールが離れているため、これら2つのトピックはいずれも画像データではあるものの、ピクセルの位置関係が対応しておらずそのままだとうまく画像処理に用いることができません。
-そこで、起動時に`align:=true`を指定することで、上記のトピックに加えてデプス画像をRGB画像のピクセルに対応するように変換する`/camera/aligned_depth_to_color/image_raw`トピックを使用できるようにします。
-他にも`pointcloud:=true`を指定するとデプス画像から点群を生成することができます。
-しかし、この処理は比較的重たいため今回はJetsonではなく、開発用PCでこの処理を行っていくことにします。
+RealSenseは物理的にRGB画像モジュールとデプス画像モジュールが離れているため、これら2つのトピックはいずれも画像データではあるものの、ピクセルの位置関係が対応しておらずそのままだとうまく画像処理に用いることができませんが、起動時に`align:=true`を指定すると、デプス画像をRGB画像のピクセルに対応するように変換された`/camera/aligned_depth_to_color/image_raw`トピックを使用できるようになります。
 
-それでは、RGB画像`/camera/color/image_raw`と整列されたデプス画像`/camera/aligned_depth_to_color/image_raw`の2種類のトピックを用いて三次元画像処理を行っていきましょう。
 
 ### 物体検出
 
@@ -126,7 +122,8 @@ cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
 また、ここでは既存の物体検出モジュールを使用しましたが、PyTorchなどで作成した自作のモデルも同様の枠組みで利用することができます。
 
 
-続いて、整列されたデプス画像データも統合して物体を検出し、物体までの距離を測定してみましょう。
+続いて、RGB画像に整列されたデプス画像データを統合して物体を検出し、物体までの距離を測定してみましょう。
+
 
 RGB画像`/camera/color/image_raw`と整列されたデプス画像`/camera/aligned_depth_to_color/image_raw`はそれぞれ独立したトピックであるため、同期を取る必要があります。
 
@@ -276,27 +273,14 @@ depth_image_procのwikiを参考に以下のようなlaunchファイルを作成
 `roslaunch three-dimensions_tutorial depth2pc.launch`を行い`/camera/depth/points`トピックをrvizで可視化をすると三次元空間に点群データが表示されているのが確認できます。
 
 ## 演習
-<!-- {{< spoiler text="Dockerfileにamclを追加してBuildする" >}}
-{{< /spoiler >}} -->
-
-{{< spoiler text="ブランチの切り替え" >}}
-
-```
-(jetson, 開発PC) git fetch
-(jetson, 開発PC) git checkout feature/realsense
-```
-
-{{< /spoiler >}}
-
 
 {{< spoiler text="(開発PC, jetson)起動準備" >}}
 
 ```
-(jetson)./RUN-DOCKER-CONTAINER.sh
-(jetson)(docker) roslaunch roomba_bringup bringup.launch
-(開発PC)./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
+(jetson)$ ./RUN-DOCKER-CONTAINER.sh
+(jetson)(docker)# roslaunch roomba_bringup bringup.launch
+(開発PC)$ ./RUN-DOCKER-CONTAINER.sh 192.168.10.7x
 ```
-`roslaunch roomba_bringup bringup.launch`でRealSenseも同時に起動するようになりました。
 {{< /spoiler >}}
 
 {{< spoiler text="(開発PC)RealSenseのトピックの可視化" >}}
