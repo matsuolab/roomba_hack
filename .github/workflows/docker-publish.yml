@@ -1,0 +1,79 @@
+name: Docker
+
+on:
+  push:
+    branches:
+      - master
+
+  # Run tests for any PRs.
+  pull_request:
+
+env:
+  IMAGE_NAME: roomba_hack
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run tests
+        run: docker build . --file docker/Dockerfile --tag $IMAGE_NAME:latest
+
+  test_jetson:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup docker for jetson and build image
+        run: |
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+            docker build . --file docker/Dockerfile.jetson --tag $IMAGE_NAME:jetson
+
+  push:
+    needs: test
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build . --file docker/Dockerfile --tag $IMAGE_NAME
+
+      - name: Log into registry
+        run: echo "${{secrets.CR_PAT}}" | docker login https://ghcr.io -u tmats --password-stdin
+
+      - name: Push image to GitHub Container Registry
+        run: |
+          IMAGE_ID=ghcr.io/${{github.repository_owner}}/$IMAGE_NAME
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=latest
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+  push_jetson:
+    needs: test_jetson
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup docker for jetson and build image
+        run: |
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+            docker build . --file docker/Dockerfile.jetson --tag $IMAGE_NAME:jetson
+      - name: Log into GitHub Container Registry
+        run: echo "${{secrets.CR_PAT}}" | docker login https://ghcr.io -u tmats --password-stdin
+
+      - name: Push image to GitHub Container Registry
+        run: |
+          IMAGE_ID=ghcr.io/${{github.repository_owner}}/$IMAGE_NAME
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          docker tag $IMAGE_NAME:jetson $IMAGE_ID:jetson
+          docker push $IMAGE_ID:jetson
