@@ -64,6 +64,7 @@ WORKDIR /root
 RUN mkdir -p external_catkin_ws/src && \
     cd external_catkin_ws/src && \
     git clone https://github.com/autonomylab/create_robot.git -b melodic && \
+    git clone https://github.com/ryuichiueda/emcl && \
     cd /root/external_catkin_ws && \
     rm -r src/create_robot/create_bringup && \
     rm -r src/create_robot/create_driver && \
@@ -75,7 +76,7 @@ RUN mkdir -p external_catkin_ws/src && \
     bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash; catkin build"
 
 # install PyTorch
-RUN pip install torch==1.10.1+cu111 torchvision==0.11.2+cu111 torchaudio==0.10.1 -f https://download.pytorch.org/whl/torch_stable.html 
+RUN pip install torch==1.10.1+cu111 torchvision==0.11.2+cu111 torchaudio==0.10.1 -f https://download.pytorch.org/whl/torch_stable.html
 
 # install YOLOv3
 RUN pip install pytorchyolo

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="rviz" default="true"/>
+
+    <!-- map server -->
+    <include file="$(find navigation_tutorial)/launch/map_server.launch">
+    </include>
+
+    <!-- localization -->
+    <include file="$(find navigation_tutorial)/launch/emcl.launch">
+    </include>
+
+    <!-- move_base -->
+    <include file="$(find navigation_tutorial)/launch/move_base.launch">
+    </include>
+
+    <!-- teleop -->
+    <include file="$(find roomba_teleop)/launch/teleop.launch">
+    </include>
+
+    <!-- rviz -->
+    <node pkg="rviz" type="rviz" name="navigation_rviz" args="-d $(find navigation_tutorial)/configs/navigation.rviz" if="$(arg rviz)"/>
+
+</launch>
