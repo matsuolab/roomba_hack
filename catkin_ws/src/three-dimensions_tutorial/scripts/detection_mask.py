@@ -34,7 +34,6 @@ class DetectionMask:
 
     def callback_rgbd(self, data1, data2, data3):
         cv_array = self.bridge.imgmsg_to_cv2(data1, 'bgr8')
-        cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
         self.rgb_image = cv_array
 
         cv_array = self.bridge.imgmsg_to_cv2(data2, 'passthrough')
