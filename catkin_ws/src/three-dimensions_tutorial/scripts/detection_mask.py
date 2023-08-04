@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-
-import rospy
-import message_filters
-from sensor_msgs.msg import Image, CameraInfo
-from cv_bridge import CvBridge
-from pytorchyolo import detect, models
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import numpy as np
-import cv2
 import copy
+from typing import List
+
+import cv2
+import message_filters
+import numpy as np
+import rospy
+from cv_bridge import CvBridge
+from sensor_msgs.msg import CameraInfo, Image
+from ultralytics import YOLO
+from ultralytics.engine.results import Results
+
 
 class DetectionMask:
     def __init__(self):
@@ -29,6 +30,8 @@ class DetectionMask:
         self.bridge = CvBridge()
         self.rgb_image, self.depth_image, self.camera_info = None, None, None
 
+        self.model = YOLO('yolov8n.pt')
+
     def callback_rgbd(self, data1, data2, data3):
         cv_array = self.bridge.imgmsg_to_cv2(data1, 'bgr8')
         cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
@@ -40,39 +43,33 @@ class DetectionMask:
         self.camera_info = data3
 
     def process(self):
-        path = "/root/roomba_hack/catkin_ws/src/three-dimensions_tutorial/yolov3/"
-
-        # load category
-        with open(path+"data/coco.names") as f:
-            category = f.read().splitlines()
-
-        # prepare model
-        model = models.load_model(path+"config/yolov3.cfg", path+"weights/yolov3.weights")
-
         while not rospy.is_shutdown():
             if self.rgb_image is None:
                 continue
 
-            # inference
             tmp_rgb_image = copy.copy(self.rgb_image)
             tmp_depth_image = copy.copy(self.depth_image)
             tmp_camera_info = copy.copy(self.camera_info)
 
-            boxes = detect.detect_image(model, tmp_rgb_image)
-            # [[x1, y1, x2, y2, confidence, class]]
-
             depth_mask = np.zeros_like(tmp_depth_image)
 
-            # plot bouding box
-            for box in boxes:
-                x1, y1, x2, y2 = map(int, box[:4])
-                cls_pred = int(box[5])
-                tmp_rgb_image = cv2.rectangle(tmp_rgb_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
-                tmp_rgb_image = cv2.putText(tmp_rgb_image, category[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
+            results: List[Results] = self.model.predict(self.rgb_image)
+
+            # plot bounding box
+            tmp_image = copy.deepcopy(self.rgb_image)
+            for result in results:
+                boxes = result.boxes.cpu().numpy()
+                names = result.names
+                if len(boxes.xyxy) == 0:
+                    continue
+                x1, y1, x2, y2 = map(int, boxes.xyxy[0][:4])
+                cls_pred = boxes.cls[0]
+                tmp_image = cv2.rectangle(tmp_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
+                tmp_image = cv2.putText(tmp_image, names[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
                 depth_mask[y1:y2, x1:x2] = 1
-            
-            tmp_rgb_image = cv2.cvtColor(tmp_rgb_image, cv2.COLOR_RGB2BGR)
-            detection_result = self.bridge.cv2_to_imgmsg(tmp_rgb_image, "bgr8")
+
+            # publish image
+            detection_result = self.bridge.cv2_to_imgmsg(tmp_image, "bgr8")
             self.detection_result_pub.publish(detection_result)
 
             masked_depth = np.where(depth_mask, tmp_depth_image, 0)
