@@ -42,10 +42,13 @@ class ObjectDetection:
             for result in results:
                 boxes = result.boxes.cpu().numpy()
                 names = result.names
-                x1, y1, x2, y2 = map(int, boxes.xyxy[0][:4])
-                cls_pred = boxes.cls[0]
-                tmp_image = cv2.rectangle(tmp_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
-                tmp_image = cv2.putText(tmp_image, names[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
+                for xyxy, conf, cls in zip(boxes.xyxy, boxes.conf, boxes.cls):
+                    if conf < 0.5:
+                        continue
+                    x1, y1, x2, y2 = map(int, xyxy[:4])
+                    cls_pred = cls
+                    tmp_image = cv2.rectangle(tmp_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
+                    tmp_image = cv2.putText(tmp_image, names[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
 
             # publish image
             detection_result = self.bridge.cv2_to_imgmsg(tmp_image, "bgr8")
