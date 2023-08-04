@@ -54,8 +54,6 @@ class DetectionMask:
 
             results: List[Results] = self.model.predict(self.rgb_image)
 
-            # plot bounding box
-            tmp_image = copy.deepcopy(self.rgb_image)
             for result in results:
                 boxes = result.boxes.cpu().numpy()
                 names = result.names
@@ -63,12 +61,12 @@ class DetectionMask:
                     continue
                 x1, y1, x2, y2 = map(int, boxes.xyxy[0][:4])
                 cls_pred = boxes.cls[0]
-                tmp_image = cv2.rectangle(tmp_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
-                tmp_image = cv2.putText(tmp_image, names[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
+                tmp_rgb_image = cv2.rectangle(tmp_rgb_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
+                tmp_rgb_image = cv2.putText(tmp_rgb_image, names[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
                 depth_mask[y1:y2, x1:x2] = 1
 
             # publish image
-            detection_result = self.bridge.cv2_to_imgmsg(tmp_image, "bgr8")
+            detection_result = self.bridge.cv2_to_imgmsg(tmp_rgb_image, "bgr8")
             self.detection_result_pub.publish(detection_result)
 
             masked_depth = np.where(depth_mask, tmp_depth_image, 0)
