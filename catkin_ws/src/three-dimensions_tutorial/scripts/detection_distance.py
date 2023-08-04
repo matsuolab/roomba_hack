@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
-import rospy
-import message_filters
-from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
-from pytorchyolo import detect, models
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import cv2
 import copy
+from typing import List
+
+import cv2
+import message_filters
+import rospy
+from cv_bridge import CvBridge
+from sensor_msgs.msg import Image
+from ultralytics import YOLO
+from ultralytics.engine.results import Results
+
 
 class DetectionDistance:
     def __init__(self):
@@ -25,6 +27,8 @@ class DetectionDistance:
         self.bridge = CvBridge()
         self.rgb_image, self.depth_image = None, None
 
+        self.model = YOLO('yolov8n.pt')
+
     def callback_rgbd(self, data1, data2):
         cv_array = self.bridge.imgmsg_to_cv2(data1, 'bgr8')
         cv_array = cv2.cvtColor(cv_array, cv2.COLOR_BGR2RGB)
@@ -34,33 +38,28 @@ class DetectionDistance:
         self.depth_image = cv_array
 
     def process(self):
-        path = "/root/roomba_hack/catkin_ws/src/three-dimensions_tutorial/yolov3/"
-
-        # load category
-        with open(path+"data/coco.names") as f:
-            category = f.read().splitlines()
-
-        # prepare model
-        model = models.load_model(path+"config/yolov3.cfg", path+"weights/yolov3.weights")
-
         while not rospy.is_shutdown():
             if self.rgb_image is None:
                 continue
 
             # inference
             tmp_image = copy.copy(self.rgb_image)
-            boxes = detect.detect_image(model, tmp_image)
-            # [[x1, y1, x2, y2, confidence, class]]
+
+            results: List[Results] = self.model.predict(self.rgb_image, verbose=False)
 
             # plot bouding box
-            for box in boxes:
-                x1, y1, x2, y2 = map(int, box[:4])
-                cls_pred = int(box[5])
+            for result in results:
+                boxes = result.boxes.cpu().numpy()
+                names = result.names
+                if len(boxes.xyxy) == 0:
+                    continue
+                x1, y1, x2, y2 = map(int, boxes.xyxy[0][:4])
+                cls_pred = boxes.cls[0]
                 tmp_image = cv2.rectangle(tmp_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
-                tmp_image = cv2.putText(tmp_image, category[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
+                tmp_image = cv2.putText(tmp_image, names[cls_pred], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
                 cx, cy = (x1+x2)//2, (y1+y2)//2
-                print(category[cls_pred], self.depth_image[cy][cx]/1000, "m")
-            
+                print(names[cls_pred], self.depth_image[cy][cx]/1000, "m")
+
             # publish image
             tmp_image = cv2.cvtColor(tmp_image, cv2.COLOR_RGB2BGR)
             detection_result = self.bridge.cv2_to_imgmsg(tmp_image, "bgr8")
